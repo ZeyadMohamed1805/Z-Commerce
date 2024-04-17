@@ -24,14 +24,10 @@ import { MatButton } from '@angular/material/button';
   styleUrl: './categories.component.scss',
 })
 export class CategoriesComponent {
-  isExpanded: boolean = false;
+  isExpanded: boolean = true;
   showSubmenu: boolean = false;
-  isShowing: boolean = false;
+  isShowing: boolean = true;
   showSubSubMenu: boolean = false;
-
-  expand() {
-    this.isExpanded = !this.isExpanded;
-  }
 
   mouseenter() {
     if (!this.isExpanded) {
@@ -41,7 +37,7 @@ export class CategoriesComponent {
 
   mouseleave() {
     if (!this.isExpanded) {
-      this.isShowing = false;
+      this.isShowing = true;
     }
   }
 }

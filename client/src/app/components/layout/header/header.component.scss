@@ -5,6 +5,8 @@ header {
     display: flex;
     align-items: center;
     box-shadow: 0 0 5px black;
+    position: sticky;
+    top: 0;
 
     nav {
         width: 100%;

@@ -28,16 +28,24 @@
       <mat-menu #wishMenu="matMenu" xPosition="before">
         <mat-nav-list>
           <div class="wishList">
-            <p mat-list-item class="menuMessage">Login Required...</p>
-            <button mat-list-item class="menuButtons">Login</button>
+            <p mat-list-item class="menuMessage">
+              <span>Login Required...</span>
+            </p>
+            <button mat-list-item class="menuButtons">
+              <span>Login</span>
+            </button>
           </div>
         </mat-nav-list>
       </mat-menu>
       <mat-menu #cartMenu="matMenu" xPosition="before">
         <mat-nav-list>
           <div class="cartList">
-            <p mat-list-item class="menuMessage">Login Required...</p>
-            <button mat-list-item class="menuButtons">Login</button>
+            <p mat-list-item class="menuMessage">
+              <span>Login Required...</span>
+            </p>
+            <button mat-list-item class="menuButtons">
+              <span>Login</span>
+            </button>
           </div>
         </mat-nav-list>
       </mat-menu>
@@ -61,7 +69,7 @@
           *ngIf="isExpanded || isShowing"
           mat-list-item
           href="#"
-          >{{ navLink | titlecase }}</a
+          ><span>{{ navLink | titlecase }}</span></a
         >
         } @for(navButton of navButtons; track navButton) {
         <a
@@ -69,7 +77,10 @@
           *ngIf="isExpanded || isShowing"
           mat-list-item
           href="#"
-          >{{ navButton | titlecase }}</a
+        >
+          <span>
+            {{ navButton | titlecase }}
+          </span></a
         >
         }
       </mat-nav-list>

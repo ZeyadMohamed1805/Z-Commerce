@@ -1,61 +1,63 @@
-<mat-sidenav-container class="example-container" autosize>
-  <mat-sidenav
-    #sidenav
-    class="example-sidenav"
-    mode="side"
-    opened="true"
-    (mouseenter)="mouseenter()"
-    (mouseleave)="mouseleave()"
-  >
-    <mat-nav-list>
-      <mat-list-item (click)="showSubmenu = !showSubmenu" class="parent">
-        <span class="full-width" *ngIf="isExpanded || isShowing"
-          >Category One</span
+<mat-sidenav
+  #categoryNav
+  class="category-sidenav"
+  mode="side"
+  opened="true"
+  (mouseenter)="mouseenter()"
+  (mouseleave)="mouseleave()"
+>
+  <mat-nav-list>
+    <mat-list-item (click)="showSubmenu = !showSubmenu" class="parent">
+      <div class="navItemClass">
+        <span class="category-full-width" *ngIf="isExpanded || isShowing"
+          >Categories</span
         >
-        <img
-          class="menu-button catIcon"
-          mat-list-icon
-          src="../../../../assets/icons/categories.svg"
-          [ngClass]="{ categoriesIcon: isShowing }"
-          *ngIf="!isExpanded"
-          alt="Categories"
-        />
-      </mat-list-item>
-      <div
-        class="submenu"
-        [ngClass]="{ expanded: showSubmenu }"
-        *ngIf="isShowing || isExpanded"
-      >
-        <a mat-list-item href="...">SubCategory One</a>
-        <a mat-list-item href="...">SubCategory Two</a>
-        <a mat-list-item href="...">SubCategory Three</a>
-        <mat-list-item
-          (click)="showSubSubMenu = !showSubSubMenu"
-          class="parent"
+        <mat-icon
+          class="category-menu-button"
+          [ngClass]="{ rotated: showSubmenu }"
+          *ngIf="isExpanded || isShowing"
+          >expand_more</mat-icon
         >
-          <span class="full-width" *ngIf="isExpanded || isShowing"
+      </div>
+      <img
+        class="category-menu-button catIcon"
+        mat-list-icon
+        src="../../../../assets/icons/categories.svg"
+        [ngClass]="{ categoriesIcon: isShowing }"
+        *ngIf="!isExpanded"
+        alt="Categories"
+      />
+    </mat-list-item>
+    <div
+      class="category-submenu"
+      [ngClass]="{ expanded: showSubmenu }"
+      *ngIf="isShowing || isExpanded"
+    >
+      <a mat-list-item href="..."><span>Category One</span></a>
+      <a mat-list-item href="..."><span>Category Two</span></a>
+      <a mat-list-item href="..."><span>Category Three</span></a>
+      <mat-list-item (click)="showSubSubMenu = !showSubSubMenu" class="parent">
+        <div class="navItemClass">
+          <span class="category-full-width" *ngIf="isExpanded || isShowing"
             >Nested Categories</span
           >
           <mat-icon
-            class="menu-button"
+            class="category-menu-button"
             [ngClass]="{ rotated: showSubSubMenu }"
             *ngIf="isExpanded || isShowing"
             >expand_more</mat-icon
           >
-        </mat-list-item>
-        <div
-          class="submenu"
-          [ngClass]="{ expanded: showSubSubMenu }"
-          *ngIf="isShowing || isExpanded"
-        >
-          <mat-list-item>SubCategory One</mat-list-item>
-          <mat-list-item>SubCategory Two</mat-list-item>
-          <mat-list-item>SubCategory Three</mat-list-item>
         </div>
+      </mat-list-item>
+      <div
+        class="category-submenu"
+        [ngClass]="{ expanded: showSubSubMenu }"
+        *ngIf="isShowing || isExpanded"
+      >
+        <mat-list-item><span>SubCategory One</span></mat-list-item>
+        <mat-list-item><span>SubCategory Two</span></mat-list-item>
+        <mat-list-item><span>SubCategory Three</span></mat-list-item>
       </div>
-    </mat-nav-list>
-    <mat-nav-list> </mat-nav-list>
-  </mat-sidenav>
-
-  <div class="example-sidenav-content">Main content that resizes properly</div>
-</mat-sidenav-container>
+    </div>
+  </mat-nav-list>
+</mat-sidenav>
