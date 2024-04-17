@@ -1,1 +1,78 @@
-<p>header works!</p>
+<header>
+  <nav>
+    <img id="logo" src="../../../../assets/images/light-logo.svg" alt="Logo" />
+    <input type="search" placeholder="Search" class="main-search" />
+    <div class="interactions">
+      <ul class="nav-list">
+        @for( navLink of navLinks; track navLink ) {
+        <li>
+          <a href="#">{{ navLink | titlecase }}</a>
+        </li>
+        } @for( navButton of navButtons; track navButton; ) {
+        <li>
+          <button class="{{ navButton }}">{{ navButton | titlecase }}</button>
+        </li>
+        }
+      </ul>
+      <div class="icons">
+        <button mat-icon-button [matMenuTriggerFor]="wishMenu">
+          <img src="../../../../assets/icons/heart.svg" alt="WishList" />
+        </button>
+        <button mat-icon-button [matMenuTriggerFor]="cartMenu">
+          <img src="../../../../assets/icons/cart.svg" alt="Cart" />
+        </button>
+        <button mat-icon-button (click)="expand()" class="menuIcon">
+          <img src="../../../../assets/icons/menu.svg" alt="Menu" />
+        </button>
+      </div>
+      <mat-menu #wishMenu="matMenu" xPosition="before">
+        <mat-nav-list>
+          <div class="wishList">
+            <p mat-list-item class="menuMessage">Login Required...</p>
+            <button mat-list-item class="menuButtons">Login</button>
+          </div>
+        </mat-nav-list>
+      </mat-menu>
+      <mat-menu #cartMenu="matMenu" xPosition="before">
+        <mat-nav-list>
+          <div class="cartList">
+            <p mat-list-item class="menuMessage">Login Required...</p>
+            <button mat-list-item class="menuButtons">Login</button>
+          </div>
+        </mat-nav-list>
+      </mat-menu>
+    </div>
+  </nav>
+  <mat-sidenav-container class="example-container" autosize>
+    <mat-sidenav #sidenav class="example-sidenav" mode="side" opened="true">
+      <mat-nav-list>
+        <div class="search-container">
+          <input
+            type="search"
+            class="full-width"
+            *ngIf="isExpanded || isShowing"
+            mat-list-item
+            placeholder="Search"
+          />
+        </div>
+        @for(navLink of navLinks; track navLink) {
+        <a
+          class="full-width"
+          *ngIf="isExpanded || isShowing"
+          mat-list-item
+          href="#"
+          >{{ navLink | titlecase }}</a
+        >
+        } @for(navButton of navButtons; track navButton) {
+        <a
+          class="full-width"
+          *ngIf="isExpanded || isShowing"
+          mat-list-item
+          href="#"
+          >{{ navButton | titlecase }}</a
+        >
+        }
+      </mat-nav-list>
+    </mat-sidenav>
+  </mat-sidenav-container>
+</header>

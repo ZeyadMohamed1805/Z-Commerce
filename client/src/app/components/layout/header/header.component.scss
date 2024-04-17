@@ -1,0 +1,190 @@
+header {
+    height: 120px;
+    width: 100%;
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 0 5px black;
+
+    nav {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+
+        #logo {
+            width: 160px;
+        }
+
+        input {
+            max-width: 400px;
+            width: 100%;
+            background-color: rgb(240, 240, 240);
+            padding: 8px 16px;
+            border: solid 1px black;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .interactions {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+
+            ul {
+                list-style: none;
+                display: flex;
+                align-items: center;
+                gap: 16px;
+    
+                li { 
+                    a {
+                        text-decoration: none;
+                        color: black;
+                        border-bottom: solid 2px transparent;
+                        transition-duration: 0.25s;
+                        font-size: 16px;
+        
+                        &:hover {
+                            border-bottom: solid 2px #db4444;
+                        }
+                    }
+                    
+                    button {
+                        padding: 8px 16px;
+                        border: solid 2px #db4444;
+                        background-color: #fff;
+                        cursor: pointer;
+                        transition-duration: 0.25s;
+                        font-size: 16px;
+
+                        &:hover {
+                            opacity: 0.5;
+                        }
+                    }
+
+                    .register {
+                        background-color: #db4444;
+                        color: #fff;
+                    }
+                }
+            }
+
+            .icons {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+                button {
+                    display: grid;
+                    place-items: center;
+                    background-color: #ffffff;
+                    border: none;
+                    
+                    img {
+                        height: 32px;
+                        cursor: pointer;
+                    }
+                }
+
+                .menuIcon {
+                  display: none;
+                }
+            }
+        }
+    }
+}
+
+.example-container {
+    min-height: calc(100vh - 120px);
+    position: fixed;
+    right: -32px;
+    top: 120px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+  }
+  .example-sidenav-content {
+    display: flex;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
+  .example-sidenav {
+     user-select: none;
+
+     div {
+      padding: 0 16px;
+      display: none;
+
+      input {
+        width: 100%;
+        background-color: rgb(240, 240, 240);
+        padding: 8px 16px;
+        border: solid 1px black;
+        outline: none;
+        font-size: 16px;
+    }
+     }
+     
+  }
+  .full-width {
+    width: 100%;
+    min-width: 250px;
+  }
+  .menu-button {
+    transition: 300ms ease-in-out;
+    transform: rotate(0deg);
+  }
+  .menu-button.rotated {
+    transform: rotate(180deg);
+  }
+  .submenu {
+    overflow-y: hidden;
+    transition: transform 300ms ease;
+    transform: scaleY(0);
+    transform-origin: top;
+    padding-left: 30px;
+  }
+  .submenu.expanded {
+    transform: scaleY(1);
+  }
+  .catIcon.categoriesIcon {
+    display: none;
+  }
+  .wishList, .cartList {
+    color: #fff;
+    width: 250px;
+    padding: 0 16px;
+  }
+  .menuMessage {
+    text-align: center;
+    color: #808080;
+    font-size: 12px;
+  }
+  .menuButtons {
+    border: solid 2px #db4444;
+    padding: 8px 16px;
+  }
+  .menuIcon {
+    display: none;
+  }
+
+@media (max-width: 1200px) {
+  
+  header nav .interactions ul {
+    display: none;
+  }
+
+  header nav .interactions .icons .menuIcon {
+    display: flex;
+  }
+}
+
+@media (max-width: 800px) {
+  header nav .main-search {
+    display: none;
+  }
+  .example-sidenav div {
+    display: flex;
+  }
+}
