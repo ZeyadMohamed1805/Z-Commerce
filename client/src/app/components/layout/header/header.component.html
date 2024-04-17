@@ -6,7 +6,7 @@
       <ul class="nav-list">
         @for( navLink of navLinks; track navLink ) {
         <li>
-          <a href="#">{{ navLink | titlecase }}</a>
+          <a [routerLink]="navLink">{{ navLink | titlecase }}</a>
         </li>
         } @for( navButton of navButtons; track navButton; ) {
         <li>
