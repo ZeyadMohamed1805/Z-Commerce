@@ -1,0 +1,39 @@
+form {
+    width: 500px;
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+    gap: 16px;
+
+    h1 {
+        text-align: center;
+    }
+      
+      .password-icon {
+        border: none;
+        cursor: pointer;
+        background-color: transparent;
+        margin-right: 8px;
+        padding: 4px;
+      }
+
+      .submit-button {
+        background-color: #db4444;
+        color: #FFF;
+        padding: 8px 16px;
+        border: none;
+        cursor: pointer;
+        transition-duration: 0.25s;
+        font-size: 16px;
+
+        &:hover {
+            opacity: 0.5;
+        }
+      }
+}
+
+@media ( max-width: 750px ) {
+    form {
+        width: 100%;
+    }
+}

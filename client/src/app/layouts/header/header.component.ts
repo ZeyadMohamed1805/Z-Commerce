@@ -6,7 +6,10 @@ import { MatNavList, MatListItem } from '@angular/material/list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
+import { MatDialog } from '@angular/material/dialog';
 import { RouterLink } from '@angular/router';
+import { LoginComponent } from '../../components/auth/login/login.component';
+import { RegisterComponent } from '../../components/auth/register/register.component';
 
 @Component({
   selector: 'app-header',
@@ -36,6 +39,16 @@ export class HeaderComponent {
   isShowing: boolean = false;
   showSubSubMenu: boolean = false;
   options: Array<string> = ['One', 'Two', 'Three'];
+
+  constructor(public dialog: MatDialog) {}
+
+  openDialog(index: number): void {
+    const dialogRef = this.dialog.open( index ? RegisterComponent : LoginComponent);
+
+    dialogRef.afterClosed().subscribe((result) => {
+      console.log('The dialog was closed');
+    });
+  }
 
   expand() {
     this.isExpanded = !this.isExpanded;

@@ -22,7 +22,7 @@
         </li>
         } @for( navButton of navButtons; track navButton; ) {
         <li>
-          <button class="{{ navButton }}">
+          <button class="{{ navButton }}" (click)="openDialog($index)">
             <span>
               {{ navButton | titlecase }}
             </span>
