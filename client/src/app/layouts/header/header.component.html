@@ -1,7 +1,19 @@
 <header>
   <nav>
     <img id="logo" src="../../../../assets/images/light-logo.svg" alt="Logo" />
-    <input type="search" placeholder="Search" class="main-search" />
+    <input
+      type="search"
+      placeholder="Search"
+      aria-label="Number"
+      class="main-search"
+      matInput
+      [matAutocomplete]="auto"
+    />
+    <mat-autocomplete #auto="matAutocomplete">
+      @for (option of options; track option) {
+      <mat-option [value]="option">{{ option }}</mat-option>
+      }
+    </mat-autocomplete>
     <div class="interactions">
       <ul class="nav-list">
         @for( navLink of navLinks; track navLink ) {
@@ -10,7 +22,11 @@
         </li>
         } @for( navButton of navButtons; track navButton; ) {
         <li>
-          <button class="{{ navButton }}">{{ navButton | titlecase }}</button>
+          <button class="{{ navButton }}">
+            <span>
+              {{ navButton | titlecase }}
+            </span>
+          </button>
         </li>
         }
       </ul>

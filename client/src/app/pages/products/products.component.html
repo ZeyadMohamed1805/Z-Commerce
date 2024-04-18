@@ -1,0 +1,41 @@
+<section class="products">
+  <div class="container">
+    <div class="input-container">
+      <input
+        type="search"
+        placeholder="Product Name"
+        class="search"
+        matInput
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        @for (option of options; track option) {
+        <mat-option [value]="option"
+          ><span>{{ option }}</span></mat-option
+        >
+        }
+      </mat-autocomplete>
+      <mat-select [value]="products[0]" class="select">
+        @for (product of products; track product) {
+        <mat-option [value]="product"
+          ><span>{{ product }}</span></mat-option
+        >
+        }
+      </mat-select>
+    </div>
+    <div class="cards-container">
+      @for(card of productCards; track card._id) {
+      <app-product-card [details]="card"></app-product-card>
+      }
+    </div>
+    <div class="paginator-container">
+      <mat-paginator
+        [length]="100"
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        aria-label="Select page"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</section>

@@ -1,6 +1,7 @@
 header {
     height: 120px;
     width: 100%;
+    background-color: #FFF;
     padding: 24px 40px;
     display: flex;
     align-items: center;
@@ -23,7 +24,6 @@ header {
         input {
             max-width: 400px;
             width: 100%;
-            background-color: rgb(240, 240, 240);
             padding: 8px 16px;
             border: solid 1px black;
             outline: none;
@@ -62,6 +62,10 @@ header {
                         transition-duration: 0.25s;
                         font-size: 16px;
 
+                        span {
+                          font-family: "Poppins", sans-serif !important;
+                        }
+
                         &:hover {
                             opacity: 0.5;
                         }
@@ -80,15 +84,15 @@ header {
                 gap: 8px;
 
                 button {
-                    display: grid;
-                    place-items: center;
-                    background-color: #ffffff;
-                    border: none;
-                    
-                    img {
-                        height: 32px;
-                        cursor: pointer;
-                    }
+                  display: grid;
+                  place-items: center;
+                  background-color: #fff;
+                  border: none;
+                  
+                  img {
+                      height: 32px;
+                      cursor: pointer;
+                  }
                 }
 
                 .menuIcon {

@@ -1,0 +1,39 @@
+<mat-card class="card" [id]="details._id">
+  <img [src]="details.photo" [alt]="details.name" mat-card-image />
+  <mat-card-header>
+    <div class="header">
+      <h3>{{ details.name | titlecase }}</h3>
+      <button>
+        {{ details.rating }}
+      </button>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="body">
+      <span>Categories: </span>
+      <mat-chip-set aria-label="categories">
+        @for( category of details.categories; track category ) {
+        <mat-chip> {{ category }} </mat-chip>
+        }
+      </mat-chip-set>
+    </div>
+    <div class="body">
+      <span>Price: </span>
+      <p>
+        {{ details.price | currency }}
+      </p>
+    </div>
+    <p>
+      {{ details.description }}
+    </p>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <div class="footer">
+        <button>Add To Cart</button>
+        <button>Add To Wishlist</button>
+        <button>View Product</button>
+      </div>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>

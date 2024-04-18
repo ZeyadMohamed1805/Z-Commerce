@@ -1,6 +1,9 @@
 
   .category-sidenav {
      user-select: none;
+    position: fixed;
+    top: 120px;
+    left: 0;
   }
   .category-full-width {
     width: 100%;

@@ -1,0 +1,41 @@
+<section class="sellers">
+  <div class="container">
+    <div class="input-container">
+      <input
+        type="search"
+        placeholder="Seller Name"
+        class="search"
+        matInput
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        @for (option of options; track option) {
+        <mat-option [value]="option"
+          ><span>{{ option }}</span></mat-option
+        >
+        }
+      </mat-autocomplete>
+      <mat-select [value]="sellers[0]" class="select">
+        @for (seller of sellers; track seller) {
+        <mat-option [value]="seller"
+          ><span>{{ seller }}</span></mat-option
+        >
+        }
+      </mat-select>
+    </div>
+    <div class="cards-container">
+      @for(card of sellerCards; track card._id) {
+      <app-seller-card [details]="card"></app-seller-card>
+      }
+    </div>
+    <div class="paginator-container">
+      <mat-paginator
+        [length]="100"
+        [pageSize]="10"
+        [pageSizeOptions]="[5, 10, 25, 100]"
+        aria-label="Select page"
+      >
+      </mat-paginator>
+    </div>
+  </div>
+</section>

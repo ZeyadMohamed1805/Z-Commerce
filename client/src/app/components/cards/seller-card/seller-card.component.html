@@ -1,0 +1,26 @@
+<mat-card class="card" [id]="details._id">
+  <img [src]="details.photo" [alt]="details.name" mat-card-image />
+  <mat-card-header>
+    <div class="header">
+      <h3>{{ details.name | titlecase }}</h3>
+      <button>
+        {{ details.rating }}
+      </button>
+    </div>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="body">
+      <span> Products: </span>
+      @for(product of details.products; track product) {
+      <span> {{ product }}, </span>
+      }
+    </div>
+  </mat-card-content>
+  <mat-card-footer>
+    <mat-card-actions>
+      <div class="footer">
+        <button>View Profile</button>
+      </div>
+    </mat-card-actions>
+  </mat-card-footer>
+</mat-card>

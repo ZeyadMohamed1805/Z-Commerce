@@ -1,8 +1,9 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { MatSidenavContainer, MatSidenav } from '@angular/material/sidenav';
 import { MatNavList, MatListItem } from '@angular/material/list';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
@@ -11,8 +12,10 @@ import { RouterLink } from '@angular/router';
   selector: 'app-header',
   standalone: true,
   imports: [
+    AsyncPipe,
     CommonModule,
     RouterLink,
+    MatAutocompleteModule,
     MatButton,
     MatMenu,
     MatMenuTrigger,
@@ -32,6 +35,7 @@ export class HeaderComponent {
   showSubmenu: boolean = false;
   isShowing: boolean = false;
   showSubSubMenu: boolean = false;
+  options: Array<string> = ['One', 'Two', 'Three'];
 
   expand() {
     this.isExpanded = !this.isExpanded;

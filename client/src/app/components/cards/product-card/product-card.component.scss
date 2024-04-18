@@ -1,0 +1,48 @@
+.card {
+    .header {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        button {
+            padding: 4px 8px;
+            background-color: gold;
+            border: solid 1px black;
+        }
+    }
+
+    .body {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+    }
+
+    .footer {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        button {
+            width: 100%;
+            background-color: #FFF;
+            color: black;
+            border: solid 2px #db4444;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition-duration: 0.25s;
+
+            &:hover {
+                opacity: 0.5;
+            }
+        }
+
+        button:last-child {
+            background-color: #db4444;
+            color: #FFF;
+        }
+    }
+}
