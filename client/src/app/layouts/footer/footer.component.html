@@ -1,1 +1,40 @@
-<p>footer works!</p>
+<footer>
+  <div class="container">
+    <div class="content">
+      <img src="../../../assets/images/dark-logo.svg" alt="Logo" />
+      <ul class="nav-list">
+        <li>Pages</li>
+        @for( navLink of navLinks; track navLink ) {
+        <li>
+          <a [routerLink]="navLink">{{ navLink | titlecase }}</a>
+        </li>
+        }
+      </ul>
+      <ul>
+        <li>Account</li>
+        @for( navButton of navButtons; track navButton; ) {
+        <li>
+          <a [routerLink]="navButton">{{ navButton | titlecase }}</a>
+        </li>
+        }
+      </ul>
+      <input
+        type="search"
+        placeholder="Search"
+        aria-label="Number"
+        class="main-search"
+        matInput
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        @for (option of options; track option) {
+        <mat-option [value]="option">{{ option }}</mat-option>
+        }
+      </mat-autocomplete>
+    </div>
+    <mat-divider class="divider" />
+    <div class="copyrights">
+      <p>Copyright - Zeyad Mohamed</p>
+    </div>
+  </div>
+</footer>

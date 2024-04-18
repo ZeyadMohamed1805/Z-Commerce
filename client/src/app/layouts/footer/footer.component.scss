@@ -1,0 +1,107 @@
+footer {
+    width: 100%;
+    background-color: black;
+    z-index: 1000;
+    position: relative;
+    padding: 24px 40px;
+    display: flex;
+    align-items: center;
+
+    .container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+
+        .content {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 32px;
+
+            img {
+                width: 160px;
+            }
+
+            ul {
+                list-style: none;
+                display: flex;
+                flex-direction: column;
+                gap: 16px;
+    
+                li { 
+                    color: #FFF;
+                    font-size: 16px;
+                    a {
+                        text-decoration: none;
+                        color: #FFF;
+                        border-bottom: solid 2px transparent;
+                        transition-duration: 0.25s;
+                        font-size: 16px;
+        
+                        &:hover {
+                            border-bottom: solid 2px #db4444;
+                        }
+                    }
+                }
+            }
+
+            input {
+                max-width: 400px;
+                height: 40px;
+                width: 100%;
+                padding: 8px 16px;
+                border: solid 1px black;
+                outline: none;
+                font-size: 16px;
+            }
+        }
+
+        .divider {
+            background-color: #FFF;
+        }
+
+        .copyrights {
+            width: 100%;
+            display: grid;
+            place-items: center;
+
+            p {
+                text-align: center;
+                color: #FFF;
+            }
+        }
+    }
+}
+
+@media ( max-width: 1000px ) {
+    footer .container .content {
+        grid-template-columns: repeat(2, 1fr);
+
+        ul {
+            grid-row:  2 / 3;
+        }
+    }
+}
+
+@media ( max-width: 500px ) {
+    footer .container .content {
+        img {
+            justify-self: center;
+            grid-column: 1 / 3;
+            grid-row: 1 / 2;
+        }
+
+        input {
+            grid-column: 1 / 3;
+            grid-row: 2 / 3;
+        }
+
+        ul {
+            grid-column: auto;
+            grid-row: 3 / 4;
+        }
+
+        
+    }
+}
