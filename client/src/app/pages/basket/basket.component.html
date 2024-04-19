@@ -1,0 +1,38 @@
+<section class="basket">
+  <div class="container">
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Cart
+          <button
+            class="icon-buttons"
+            mat-icon-button
+            matBadge="0"
+            matBadgePosition="after"
+            matBadgeSize="small"
+            matBadgeColor="warn"
+          >
+            <img src="../../../../assets/icons/cart.svg" alt="Cart" />
+          </button>
+        </ng-template>
+        <app-cart></app-cart>
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Wishlist
+          <button
+            class="icon-buttons"
+            mat-icon-button
+            matBadge="0"
+            matBadgePosition="after"
+            matBadgeSize="small"
+            matBadgeColor="warn"
+          >
+            <img src="../../../../assets/icons/heart.svg" alt="WishList" />
+          </button>
+        </ng-template>
+        <app-wishlist></app-wishlist>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</section>

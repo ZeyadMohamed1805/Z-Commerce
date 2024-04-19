@@ -23,7 +23,7 @@ import { RouterLink } from '@angular/router';
 })
 export class FooterComponent {
   options: Array<string> = ['One', 'Two', 'Three'];
-  navLinks: Array<string> = ['home', 'products', 'sellers'];
+  navLinks: Array<string> = ['home', 'products', 'sellers', 'basket'];
   navButtons: Array<string> = ['login', 'register'];
 
   constructor(public dialog: MatDialog) {}

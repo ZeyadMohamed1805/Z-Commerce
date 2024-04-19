@@ -33,7 +33,7 @@ export class CategoriesComponent {
   constructor(private router: Router) {}
 
   routerPage(): boolean {
-    return this.router.url.includes('cart');
+    return this.router.url.includes('basket');
   }
 
   mouseenter() {

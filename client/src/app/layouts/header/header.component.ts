@@ -34,7 +34,7 @@ import { RegisterComponent } from '../../components/auth/register/register.compo
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent {
-  navLinks: Array<string> = ['home', 'products', 'sellers'];
+  navLinks: Array<string> = ['home', 'products', 'sellers', 'basket'];
   navButtons: Array<string> = ['login', 'register'];
   isExpanded: boolean = false;
   showSubmenu: boolean = false;
