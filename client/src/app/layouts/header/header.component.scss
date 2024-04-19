@@ -6,7 +6,7 @@ header {
     display: flex;
     align-items: center;
     box-shadow: 0 0 5px black;
-    position: sticky;
+    position: fixed;
     top: 0;
     z-index: 999;
 
@@ -81,7 +81,7 @@ header {
             .icons {
                 display: flex;
                 align-items: center;
-                gap: 8px;
+                gap: 12px;
 
                 button {
                   display: grid;
@@ -128,7 +128,7 @@ header {
         width: 100%;
         background-color: rgb(240, 240, 240);
         padding: 8px 16px;
-        border: solid 1px black;
+        border: 1px solid rgba(0, 0, 0, 0.5);
         outline: none;
         font-size: 16px;
     }
@@ -175,6 +175,12 @@ header {
   }
   .menuIcon {
     display: none;
+  }
+
+  .example-sidenav button {
+    border: none;
+    box-shadow: none;
+    text-align: left;
   }
 
 @media (max-width: 1200px) {

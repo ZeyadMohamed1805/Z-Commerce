@@ -32,12 +32,15 @@ footer {
                 li { 
                     color: #FFF;
                     font-size: 16px;
-                    a {
+                    a, button {
                         text-decoration: none;
+                        border: none;
+                        background-color: transparent;
                         color: #FFF;
                         border-bottom: solid 2px transparent;
                         transition-duration: 0.25s;
                         font-size: 16px;
+                        cursor: pointer;
         
                         &:hover {
                             border-bottom: solid 2px #db4444;

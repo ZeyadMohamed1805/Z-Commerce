@@ -31,10 +31,24 @@
         }
       </ul>
       <div class="icons">
-        <button mat-icon-button [matMenuTriggerFor]="wishMenu">
+        <button
+          mat-icon-button
+          matBadge="0"
+          matBadgePosition="after"
+          matBadgeSize="medium"
+          matBadgeColor="warn"
+          [matMenuTriggerFor]="wishMenu"
+        >
           <img src="../../../../assets/icons/heart.svg" alt="WishList" />
         </button>
-        <button mat-icon-button [matMenuTriggerFor]="cartMenu">
+        <button
+          mat-icon-button
+          matBadge="0"
+          matBadgePosition="after"
+          matBadgeSize="medium"
+          matBadgeColor="warn"
+          [matMenuTriggerFor]="cartMenu"
+        >
           <img src="../../../../assets/icons/cart.svg" alt="Cart" />
         </button>
         <button mat-icon-button (click)="expand()" class="menuIcon">
@@ -84,20 +98,22 @@
           class="full-width"
           *ngIf="isExpanded || isShowing"
           mat-list-item
+          [routerLink]="navLink"
           href="#"
           ><span>{{ navLink | titlecase }}</span></a
         >
         } @for(navButton of navButtons; track navButton) {
-        <a
+        <button
           class="full-width"
+          (click)="openDialog($index)"
           *ngIf="isExpanded || isShowing"
           mat-list-item
           href="#"
         >
           <span>
             {{ navButton | titlecase }}
-          </span></a
-        >
+          </span>
+        </button>
         }
       </mat-nav-list>
     </mat-sidenav>

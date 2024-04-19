@@ -1,12 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 import { TSeller } from './seller-card.types';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-seller-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule],
+  imports: [CommonModule, MatCardModule, MatChipsModule],
   templateUrl: './seller-card.component.html',
   styleUrl: './seller-card.component.scss',
 })

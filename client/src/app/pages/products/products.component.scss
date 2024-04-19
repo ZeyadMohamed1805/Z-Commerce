@@ -5,7 +5,7 @@
     .container {
         min-height: calc(100vh - 120px);
         width: 100%;
-        padding: 24px 40px 24px 300px;
+        padding: 144px 40px 24px 300px;
         display: flex;
         flex-direction: column;
         gap: 32px;
@@ -22,7 +22,8 @@
             }
     
             .select {
-                border: solid 1px black;
+                
+    border: 1px solid rgba(0, 0, 0, 0.5);
                 padding: 8px 16px;
             }
         }

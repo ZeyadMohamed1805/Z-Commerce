@@ -10,10 +10,12 @@
   </mat-card-header>
   <mat-card-content>
     <div class="body">
-      <span> Products: </span>
-      @for(product of details.products; track product) {
-      <span> {{ product }}, </span>
-      }
+      <span>Products: </span>
+      <mat-chip-set aria-label="categories">
+        @for( product of details.products; track product ) {
+        <mat-chip> {{ product }} </mat-chip>
+        }
+      </mat-chip-set>
     </div>
   </mat-card-content>
   <mat-card-footer>

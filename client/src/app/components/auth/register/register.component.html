@@ -3,6 +3,10 @@
     <span>Register</span>
   </h1>
   <mat-form-field>
+    <mat-label>Name</mat-label>
+    <input matInput placeholder="Name" required />
+  </mat-form-field>
+  <mat-form-field>
     <mat-label>Email</mat-label>
     <input
       matInput
@@ -17,7 +21,7 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Password</mat-label>
-    <input matInput [type]="hide ? 'password' : 'text'" />
+    <input matInput required [type]="hide ? 'password' : 'text'" />
     <button
       mat-icon-button
       class="password-icon"
@@ -30,7 +34,7 @@
     </button>
   </mat-form-field>
   <mat-form-field>
-    <mat-select [value]="options[0]" class="select">
+    <mat-select class="select" placeholder="Role" required>
       @for (option of options; track option) {
       <mat-option [value]="option"
         ><span>{{ option }}</span></mat-option

@@ -5,6 +5,7 @@ import { MatSidenavContainer, MatSidenav } from '@angular/material/sidenav';
 import { MatNavList, MatListItem } from '@angular/material/list';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatIcon } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { RouterLink } from '@angular/router';
@@ -23,6 +24,7 @@ import { RegisterComponent } from '../../components/auth/register/register.compo
     MatMenu,
     MatMenuTrigger,
     MatIcon,
+    MatBadgeModule,
     MatSidenavContainer,
     MatSidenav,
     MatNavList,
@@ -43,7 +45,9 @@ export class HeaderComponent {
   constructor(public dialog: MatDialog) {}
 
   openDialog(index: number): void {
-    const dialogRef = this.dialog.open( index ? RegisterComponent : LoginComponent);
+    const dialogRef = this.dialog.open(
+      index ? RegisterComponent : LoginComponent
+    );
 
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');

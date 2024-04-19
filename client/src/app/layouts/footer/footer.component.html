@@ -14,7 +14,9 @@
         <li>Account</li>
         @for( navButton of navButtons; track navButton; ) {
         <li>
-          <a [routerLink]="navButton">{{ navButton | titlecase }}</a>
+          <button (click)="openDialog($index)">
+            {{ navButton | titlecase }}
+          </button>
         </li>
         }
       </ul>
