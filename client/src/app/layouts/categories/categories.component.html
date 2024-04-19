@@ -1,6 +1,7 @@
 <mat-sidenav
   #categoryNav
-  class="category-sidenav"
+  class="category-sidenav hide"
+  [class.hide]="routerPage()"
   mode="side"
   opened="true"
   (mouseenter)="mouseenter()"

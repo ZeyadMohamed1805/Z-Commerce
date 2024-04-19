@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { MatSidenavContainer, MatSidenav } from '@angular/material/sidenav';
@@ -28,6 +29,12 @@ export class CategoriesComponent {
   showSubmenu: boolean = false;
   isShowing: boolean = true;
   showSubSubMenu: boolean = false;
+
+  constructor(private router: Router) {}
+
+  routerPage(): boolean {
+    return this.router.url.includes('cart');
+  }
 
   mouseenter() {
     if (!this.isExpanded) {
