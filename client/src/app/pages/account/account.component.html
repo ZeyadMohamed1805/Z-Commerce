@@ -1,0 +1,54 @@
+<section class="account">
+  <div class="container">
+    <mat-tab-group>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Profile
+          <button
+            class="icon-buttons"
+            mat-icon-button
+            matBadge="0"
+            matBadgePosition="after"
+            matBadgeSize="small"
+            matBadgeColor="warn"
+          >
+            <img src="../../../../assets/icons/profile.svg" alt="Profile" />
+          </button>
+        </ng-template>
+        <app-profile />
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Inventory
+          <button
+            class="icon-buttons"
+            mat-icon-button
+            matBadge="0"
+            matBadgePosition="after"
+            matBadgeSize="small"
+            matBadgeColor="warn"
+          >
+            <img src="../../../../assets/icons/inventory.svg" alt="Inventory" />
+          </button>
+        </ng-template>
+        <app-inventory />
+      </mat-tab>
+      <mat-tab>
+        <ng-template mat-tab-label>
+          Orders
+          <button
+            class="icon-buttons"
+            mat-icon-button
+            matBadge="0"
+            matBadgePosition="after"
+            matBadgeSize="small"
+            matBadgeColor="warn"
+          >
+            <img src="../../../../assets/icons/orders.svg" alt="Orders" />
+          </button>
+        </ng-template>
+        <app-orders />
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</section>

@@ -1,0 +1,68 @@
+<mat-accordion>
+  <mat-expansion-panel hideToggle disabled>
+    <mat-expansion-panel-header>
+      <mat-panel-title><span style="color: black"> ID </span></mat-panel-title>
+      <mat-panel-description
+        ><span style="color: black"> Date </span></mat-panel-description
+      >
+      <mat-panel-description
+        ><span style="color: black"> Buyer </span></mat-panel-description
+      >
+      <mat-panel-description
+        ><span style="color: black"> State </span></mat-panel-description
+      >
+    </mat-expansion-panel-header>
+  </mat-expansion-panel>
+  @for( element of ELEMENT_DATA; track element.id ) {
+  <mat-expansion-panel
+    (opened)="panelOpenState = true"
+    (closed)="panelOpenState = false"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        {{ element.id }}
+      </mat-panel-title>
+      <mat-panel-description>
+        <span>
+          {{ element.date }}
+        </span>
+      </mat-panel-description>
+      <mat-panel-description>
+        <span>
+          {{ element.buyer }}
+        </span>
+      </mat-panel-description>
+      <mat-panel-description>
+        <span>
+          {{ element.state }}
+        </span>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="checkout-table">
+      <table mat-table [dataSource]="dataSourceTwo" class="mat-elevation-z8">
+        <!--- Note that these columns can be defined in any order.
+                    The actual rendered columns are set as a property on the row definition" -->
+
+        <!-- Position Column -->
+        <ng-container matColumnDef="title">
+          <th mat-header-cell *matHeaderCellDef>Summary</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.title | titlecase }}
+          </td>
+        </ng-container>
+
+        <!-- Name Column -->
+        <ng-container matColumnDef="value">
+          <th mat-header-cell *matHeaderCellDef>{{ "" }}</th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.value | currency }}
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumnsTwo"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumnsTwo"></tr>
+      </table>
+    </div>
+  </mat-expansion-panel>
+  }
+</mat-accordion>

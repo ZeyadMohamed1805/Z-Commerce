@@ -34,7 +34,9 @@ export class CategoriesComponent {
 
   routerPage(): boolean {
     return (
-      this.router.url.includes('basket') || this.router.url.includes('checkout')
+      this.router.url.includes('basket') ||
+      this.router.url.includes('checkout') ||
+      this.router.url.includes('account')
     );
   }
 

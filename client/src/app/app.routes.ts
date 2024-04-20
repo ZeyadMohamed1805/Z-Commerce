@@ -5,6 +5,7 @@ import { ProductsComponent } from './pages/products/products.component';
 import { SellersComponent } from './pages/sellers/sellers.component';
 import { BasketComponent } from './pages/basket/basket.component';
 import { CheckoutComponent } from './pages/checkout/checkout.component';
+import { AccountComponent } from './pages/account/account.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -13,5 +14,6 @@ export const routes: Routes = [
   { path: 'sellers', component: SellersComponent },
   { path: 'basket', component: BasketComponent },
   { path: 'checkout', component: CheckoutComponent },
+  { path: 'account', component: AccountComponent },
   { path: '**', component: NotFoundComponent },
 ];

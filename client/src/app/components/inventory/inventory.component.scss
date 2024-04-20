@@ -1,0 +1,103 @@
+.scroll-container {
+    width: 100%;
+    overflow: scroll;
+}
+
+.product-container {
+    padding: 40px 0;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+
+    p {
+        margin: 0;
+    }
+
+    img {
+        width: 160px;
+    }
+
+}
+
+.select {
+    border: solid black 1px;
+    padding: 8px 16px;
+}
+
+table {
+    box-shadow: none;
+
+    .product-container {
+        padding: 40px 0;
+        display: flex;
+        align-items: center;
+        gap: 32px;
+
+        p {
+            margin: 0;
+        }
+
+        img {
+            width: 160px;
+        }
+
+    }
+
+    .select {
+        border: solid black 1px;
+        padding: 8px 16px;
+    }
+}
+
+.icon-buttons {
+    margin: 24px 0;
+    display: grid;
+    place-items: center;
+    background-color: transparent;
+    border: none;
+    
+    img {
+        height: 24px;
+        cursor: pointer;
+    }
+  }
+
+  form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 24px 0;
+    gap: 16px;
+
+    h1 {
+        text-align: center;
+    }
+      
+      .password-icon {
+        border: none;
+        cursor: pointer;
+        background-color: transparent;
+        margin-right: 8px;
+        padding: 4px;
+      }
+
+      .submit-button {
+        background-color: #db4444;
+        color: #FFF;
+        padding: 8px 16px;
+        border: none;
+        cursor: pointer;
+        transition-duration: 0.25s;
+        font-size: 16px;
+
+        &:hover {
+            opacity: 0.5;
+        }
+      }
+}
+
+@media ( max-width: 750px ) {
+    form {
+        width: 100%;
+    }
+}
