@@ -1,0 +1,110 @@
+.checkout {
+    width: 100%;
+    min-height: calc(100vh - 120px);
+
+    .container {
+        min-height: calc(100vh - 120px);
+        width: 100%;
+        padding: 144px 40px 24px 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+
+        .inputs-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        table {
+            box-shadow: none;
+        }
+
+        .product-container {
+            padding: 40px 0;
+            display: flex;
+            align-items: center;
+            gap: 32px;
+
+            p {
+                margin: 0;
+            }
+
+            img {
+                width: 160px;
+            }
+
+        }
+
+        .checkout-button {
+            width: 100%;
+            margin-top: 32px;
+            background-color: #db4444;
+            color: #FFF;
+            border: none;
+            padding: 8px 16px;
+            cursor: pointer;
+            transition-duration: 0.25s;
+            font-size: 16px;
+
+            &:hover {
+                opacity: 0.5;
+            }
+        }
+
+        .confirmation-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            img {
+                width: 100%;
+                max-width: 320px;
+            }
+
+            p {
+                max-width: 240px;
+            }
+
+            h1 {
+                font-size: 32px;
+                text-align: center;
+            }
+
+            button {
+                width: fit-content;
+            }
+        }
+    }
+}
+
+.previous-button, .next-button {
+    background-color: #db4444;
+    border: solid 2px #db4444;
+    color: #FFF;
+    width: 100%;
+    padding: 12px 16px;
+    cursor: pointer;
+    font-size: 16px;
+    transition-duration: 0.25s;
+
+    &:hover {
+        opacity: 0.5;
+    }
+}
+
+.previous-button {
+    background-color: #FFF;
+    margin: 8px 0;
+    color: black;
+}
+
+.mat-stepper-horizontal {
+    margin-top: 8px;
+  }
+  
+  .mat-mdc-form-field {
+    margin-top: 16px;
+  }

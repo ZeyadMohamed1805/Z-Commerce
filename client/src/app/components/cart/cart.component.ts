@@ -4,12 +4,14 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatBadgeModule } from '@angular/material/badge';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
   imports: [
     CommonModule,
+    RouterLink,
     MatTableModule,
     MatSelectModule,
     MatTabsModule,
