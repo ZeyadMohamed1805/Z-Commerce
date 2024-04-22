@@ -7,6 +7,11 @@ lib-cov
 *.pid
 *.gz
 
+.env
+.env.example
+.env.local
+.env.staging
+
 pids
 logs
 results
