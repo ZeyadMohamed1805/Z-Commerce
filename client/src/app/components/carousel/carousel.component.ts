@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { trigger, transition, useAnimation } from '@angular/animations';
 import { MatCardModule } from '@angular/material/card';
 import { MatIconModule } from '@angular/material/icon';
@@ -22,22 +23,33 @@ import { fadeIn, fadeOut } from './carousel.animations';
     ]),
   ],
 })
-export class CarouselComponent {
+export class CarouselComponent implements OnInit {
   items: string[] = [
     '../../../assets/images/light-logo.svg',
     '../../../assets/images/dark-logo.svg',
   ];
   currentSlide = 0;
+  interval: any = true;
 
-  constructor() {}
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
+  ngOnInit(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.interval = setInterval(() => this.onNextClick(), 5000);
+    }
+  }
 
   onPreviousClick() {
     const previous = this.currentSlide - 1;
     this.currentSlide = previous < 0 ? this.items.length - 1 : previous;
+    clearInterval(this.interval);
+    this.interval = setInterval(() => this.onNextClick(), 5000);
   }
 
   onNextClick() {
     const next = this.currentSlide + 1;
     this.currentSlide = next === this.items.length ? 0 : next;
+    clearInterval(this.interval);
+    this.interval = setInterval(() => this.onNextClick(), 5000);
   }
 }
