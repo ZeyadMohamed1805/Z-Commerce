@@ -37,6 +37,7 @@
           matBadgePosition="after"
           matBadgeSize="medium"
           matBadgeColor="warn"
+          [matMenuTriggerFor]="notificationMenu"
         >
           <img
             src="../../../../assets/icons/notification.svg"
@@ -54,6 +55,18 @@
           <img src="../../../../assets/icons/menu.svg" alt="Menu" />
         </button>
       </div>
+      <mat-menu #notificationMenu="matMenu" xPosition="before">
+        <mat-nav-list>
+          <div class="wishList">
+            <p mat-list-item class="menuMessage">
+              <span>Login Required...</span>
+            </p>
+            <button mat-list-item class="menuButtons">
+              <span>Login</span>
+            </button>
+          </div>
+        </mat-nav-list>
+      </mat-menu>
     </div>
   </nav>
   <mat-sidenav-container class="example-container" autosize>
