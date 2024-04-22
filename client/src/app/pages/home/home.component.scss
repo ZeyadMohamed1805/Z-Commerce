@@ -9,5 +9,13 @@
         display: flex;
         flex-direction: column;
         gap: 32px;
+
+        .cards-container {
+            width: 100%;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            justify-content: space-between;
+            gap: 32px;
+        }
     }
 }
