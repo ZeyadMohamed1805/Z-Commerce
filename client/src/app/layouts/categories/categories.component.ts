@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
@@ -32,6 +32,28 @@ export class CategoriesComponent {
 
   constructor(private router: Router) {}
 
+  @HostListener('window:load', [])
+  onLoad() {
+    if (window.innerWidth >= 800) {
+      this.isExpanded = true;
+      this.isShowing = true;
+    } else {
+      this.isExpanded = false;
+      this.isShowing = false;
+    }
+  }
+
+  @HostListener('window:resize', [])
+  onResize() {
+    if (window.innerWidth >= 800) {
+      this.isExpanded = true;
+      this.isShowing = true;
+    } else {
+      this.isExpanded = false;
+      this.isShowing = false;
+    }
+  }
+
   routerPage(): boolean {
     return (
       this.router.url.includes('basket') ||
@@ -48,7 +70,7 @@ export class CategoriesComponent {
 
   mouseleave() {
     if (!this.isExpanded) {
-      this.isShowing = true;
+      this.isShowing = false;
     }
   }
 }

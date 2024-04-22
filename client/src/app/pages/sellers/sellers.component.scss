@@ -45,6 +45,10 @@
 }
 
 @media ( max-width: 800px ) {
+    .sellers .container {
+        padding: 144px 40px 24px 104px;
+    } 
+    
     .sellers .container .input-container {
         grid-template-columns: 1fr;
         grid-template-rows: repeat(2, 40px);
