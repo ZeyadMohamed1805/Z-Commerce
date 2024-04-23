@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export enum EUserRole {
 	" buyer",
 	"seller",
@@ -11,8 +13,8 @@ export interface IUser {
 	lastName?: string;
 	email: string;
 	password: string;
-	paymentDetails: Array<string>;
 	role: EUserRole;
-	orders: Array<string>;
-	notifications: Array<string>;
+	paymentDetails: Array<Types.ObjectId>;
+	orders: Array<Types.ObjectId>;
+	notifications: Array<Types.ObjectId>;
 }

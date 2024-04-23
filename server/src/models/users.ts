@@ -1,7 +1,7 @@
 // Modules
 import mongoose, { Model } from "mongoose";
 import { IUser, EUserRole } from "../types/users";
-const { Schema, Types } = mongoose;
+const { Schema } = mongoose;
 
 // User Schema
 const UserSchema = new Schema<IUser, Model<IUser>>(
@@ -24,9 +24,9 @@ const UserSchema = new Schema<IUser, Model<IUser>>(
 		},
 		password: { type: String, required: true, minlength: 12 },
 		role: { type: Number, required: true, enum: EUserRole },
-		paymentDetails: [{ type: Types.ObjectId, ref: "Payment" }],
-		orders: [{ type: Types.ObjectId, ref: "Order" }],
-		notifications: [{ type: Types.ObjectId, ref: "Notification" }],
+		paymentDetails: [{ type: Schema.Types.ObjectId, ref: "Payment" }],
+		orders: [{ type: Schema.Types.ObjectId, ref: "Order" }],
+		notifications: [{ type: Schema.Types.ObjectId, ref: "Notification" }],
 	},
 	{ timestamps: true }
 );
