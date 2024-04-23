@@ -5,10 +5,8 @@ export enum EUserRole {
 	"seller",
 }
 
-export type TUser = {};
-
 export interface IUser {
-	_id: string;
+	_id: Types.ObjectId;
 	firstName: string;
 	lastName?: string;
 	email: string;
