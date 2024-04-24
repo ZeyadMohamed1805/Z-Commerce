@@ -11,7 +11,7 @@ const port = process.env.PORT || 5000;
 const server: Express = express();
 
 server.get("/", async (request: Request, response: Response) =>
-	response.status(200).end("Welcome To Z-Commerce Server")
+	response.status(200).json("Welcome To Z-Commerce Server")
 );
 
 // Connect To Database

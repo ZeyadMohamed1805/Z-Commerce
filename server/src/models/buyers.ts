@@ -3,7 +3,7 @@ import mongoose, { Model } from "mongoose";
 import { IBuyer } from "../types/buyers";
 const { Schema } = mongoose;
 
-// Categories Schema
+// Buyer Schema
 const BuyerSchema = new Schema<IBuyer, Model<IBuyer>>(
 	{
 		user: {
