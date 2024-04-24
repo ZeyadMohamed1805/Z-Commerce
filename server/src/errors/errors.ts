@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import { TError } from "../types/error";
 
 // Custom Error
-const customError = (
+export const customError = (
 	error: TError,
 	request: Request,
 	response: Response,
@@ -15,5 +15,11 @@ const customError = (
 		.json({ status: "Fail", message: errorMessage });
 };
 
-// Exports
-export default customError;
+// Create Error
+export const createError = (status: number, message: string) => {
+	const error: TError = new Error();
+	error.status = status;
+	error.message = message;
+
+	return error;
+};

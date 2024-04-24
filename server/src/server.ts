@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import CateogoryRoute from "./routes/categories";
-import customError from "./middlewares/errors";
+import { customError } from "./errors/errors";
 
 // Access Environment Variables
 dotenv.config();

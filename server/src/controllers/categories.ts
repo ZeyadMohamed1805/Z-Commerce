@@ -1,6 +1,7 @@
 // Modules & Variables
 import { NextFunction, Request, Response } from "express";
 import Category from "../models/categories";
+import { createError } from "../errors/errors";
 
 // Read Categories
 export const readCategories = async (
@@ -13,7 +14,8 @@ export const readCategories = async (
 		const categories = await Category.find();
 		// If Categories Don't Exist
 		if (!categories.length)
-			return next({ status: 404, message: "No categories found" });
+			// Return The Error To The Client
+			return next(createError(404, "No categories found"));
 		// Send The Categories As A Response To The Client
 		return response
 			.status(200)
