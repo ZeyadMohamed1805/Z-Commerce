@@ -8,6 +8,7 @@ const CategorySchema = new Schema<ICategory, Model<ICategory>>(
 	{
 		name: { type: String, required: true, unique: true },
 		products: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+		supcategory: { type: Schema.Types.ObjectId, ref: "Category" },
 		subcategories: [{ type: Schema.Types.ObjectId, ref: "Category" }],
 	},
 	{ timestamps: true }
