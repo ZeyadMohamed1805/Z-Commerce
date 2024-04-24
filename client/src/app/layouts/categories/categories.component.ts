@@ -1,4 +1,4 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
@@ -6,6 +6,8 @@ import { MatSidenavContainer, MatSidenav } from '@angular/material/sidenav';
 import { MatNavList, MatListItem } from '@angular/material/list';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
+import { ApiService } from '../../services/api/api.service';
+import { TCategory } from './categories.types';
 
 @Component({
   selector: 'app-categories',
@@ -24,13 +26,26 @@ import { MatButton } from '@angular/material/button';
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.scss',
 })
-export class CategoriesComponent {
+export class CategoriesComponent implements OnInit {
+  categories: Array<TCategory> = [];
   isExpanded: boolean = true;
-  showSubmenu: boolean = false;
+  showSubmenu: Array<boolean> = [false, false, false, false];
   isShowing: boolean = true;
-  showSubSubMenu: boolean = false;
+  showSubSubMenu: Array<boolean> = [false, false, false, false];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private apiService: ApiService) {}
+
+  ngOnInit(): void {
+    try {
+      this.apiService
+        .readData<Array<TCategory>>('categories')
+        .subscribe((response: any) => {
+          this.categories = response.categories;
+        });
+    } catch (error: unknown) {
+      error instanceof Error && console.log(error);
+    }
+  }
 
   @HostListener('window:load', [])
   onLoad() {

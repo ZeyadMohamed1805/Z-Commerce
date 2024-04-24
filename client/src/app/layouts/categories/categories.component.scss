@@ -4,10 +4,13 @@
   }
   
   .category-sidenav {
-     user-select: none;
+    user-select: none;
     position: fixed;
     top: 120px;
     left: 0;
+  }
+  .navList {
+    position: relative;
   }
   .category-full-width {
     width: 100%;
@@ -21,12 +24,15 @@
   }
   .category-submenu {
     overflow-y: hidden;
+    height: 0;
     transition: transform 300ms ease;
     transform: scaleY(0);
     transform-origin: top;
+    transition-duration: 0.25s;
     padding-left: 30px;
   }
   .category-submenu.expanded {
+    height: fit-content;
     transform: scaleY(1);
   }
   .catIcon.categoriesIcon {

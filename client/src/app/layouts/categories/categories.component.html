@@ -8,57 +8,77 @@
   (mouseleave)="mouseleave()"
 >
   <mat-nav-list>
-    <mat-list-item (click)="showSubmenu = !showSubmenu" class="parent">
+    @for(category of categories; track category._id) {
+    @if(!category.supcategory) {
+    <mat-list-item
+      (click)="showSubmenu[$index] = !showSubmenu[$index]"
+      class="parent"
+    >
       <div class="navItemClass">
-        <span class="category-full-width" *ngIf="isExpanded || isShowing"
-          >Categories</span
-        >
+        <span class="category-full-width" *ngIf="isExpanded || isShowing">{{
+          category.name | titlecase
+        }}</span>
+        @if(category.subcategories && category.subcategories.length) {
         <mat-icon
           class="category-menu-button"
-          [ngClass]="{ rotated: showSubmenu }"
+          [ngClass]="{ rotated: showSubmenu[$index] }"
           *ngIf="isExpanded || isShowing"
           >expand_more</mat-icon
         >
+        }
       </div>
       <img
         class="category-menu-button catIcon"
         mat-list-icon
         src="../../../../assets/icons/categories.svg"
         [ngClass]="{ categoriesIcon: isShowing }"
-        *ngIf="!isExpanded"
+        *ngIf="!isExpanded && $first"
         alt="Categories"
       />
     </mat-list-item>
+    @if(category.subcategories && category.subcategories.length) {
     <div
       class="category-submenu"
-      [ngClass]="{ expanded: showSubmenu }"
+      [ngClass]="{ expanded: showSubmenu[$index] }"
       *ngIf="isShowing || isExpanded"
     >
-      <a mat-list-item href="..."><span>Category One</span></a>
-      <a mat-list-item href="..."><span>Category Two</span></a>
-      <a mat-list-item href="..."><span>Category Three</span></a>
-      <mat-list-item (click)="showSubSubMenu = !showSubSubMenu" class="parent">
+      @for(subcategory of categories; track subcategory._id) { @if(
+      subcategory.supcategory && subcategory.supcategory === category._id ) {
+      <mat-list-item
+        (click)="showSubSubMenu[$index] = !showSubSubMenu[$index]"
+        class="parent"
+      >
         <div class="navItemClass">
-          <span class="category-full-width" *ngIf="isExpanded || isShowing"
-            >Nested Categories</span
-          >
+          <span class="category-full-width" *ngIf="isExpanded || isShowing">{{
+            subcategory.name | titlecase
+          }}</span>
+          @if ( subcategory.subcategories && subcategory.subcategories.length )
+          {
           <mat-icon
             class="category-menu-button"
-            [ngClass]="{ rotated: showSubSubMenu }"
+            [ngClass]="{ rotated: showSubSubMenu[$index] }"
             *ngIf="isExpanded || isShowing"
             >expand_more</mat-icon
           >
+          }
         </div>
       </mat-list-item>
+      @if ( subcategory.subcategories && subcategory.subcategories.length ) {
       <div
         class="category-submenu"
-        [ngClass]="{ expanded: showSubSubMenu }"
+        [ngClass]="{ expanded: showSubSubMenu[$index] }"
         *ngIf="isShowing || isExpanded"
       >
-        <mat-list-item><span>SubCategory One</span></mat-list-item>
-        <mat-list-item><span>SubCategory Two</span></mat-list-item>
-        <mat-list-item><span>SubCategory Three</span></mat-list-item>
+        @for( subsubcategory of categories; track subsubcategory._id ) {
+        @if(subsubcategory.supcategory && subsubcategory.supcategory ===
+        subcategory._id) {
+        <mat-list-item
+          ><span>{{ subsubcategory.name | titlecase }}</span></mat-list-item
+        >
+        } }
       </div>
+      } } }
     </div>
+    } } }
   </mat-nav-list>
 </mat-sidenav>
