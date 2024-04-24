@@ -7,7 +7,7 @@ const { Schema } = mongoose;
 const NotificationSchema = new Schema<INotification, Model<INotification>>(
 	{
 		message: { type: String, required: true },
-		date: { type: Date, default: Date.now, required: true },
+		date: { type: Date, default: Date.now(), required: true },
 		user: { type: Schema.Types.ObjectId, ref: "User" },
 	},
 	{ timestamps: true }
