@@ -15,6 +15,9 @@ export interface IOrder {
 	buyer: Types.ObjectId;
 	sellers: Array<Types.ObjectId>;
 	state: EOrderState;
-	products: Array<Types.ObjectId>;
+	products: Array<{
+		_id: Types.ObjectId;
+		quantity: number;
+	}>;
 	summary: Types.ObjectId;
 }

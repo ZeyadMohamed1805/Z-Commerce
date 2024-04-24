@@ -13,7 +13,14 @@ const OrderSchema = new Schema<IOrder, Model<IOrder>>(
 			{ type: Schema.Types.ObjectId, ref: "Seller", required: true },
 		],
 		products: [
-			{ type: Schema.Types.ObjectId, ref: "Product", required: true },
+			{
+				_id: {
+					type: Schema.Types.ObjectId,
+					ref: "Product",
+					required: true,
+				},
+				quantity: { type: Number, required: true, min: 1 },
+			},
 		],
 		summary: {
 			type: Schema.Types.ObjectId,

@@ -12,8 +12,18 @@ const BuyerSchema = new Schema<IBuyer, Model<IBuyer>>(
 			required: true,
 			ref: "User",
 		},
-		cart: [{ type: Schema.Types.ObjectId, ref: "Product" }],
-		wishlist: [{ type: Schema.Types.ObjectId, ref: "Product" }],
+		cart: [
+			{
+				_id: { type: Schema.Types.ObjectId, ref: "Product" },
+				quantity: { type: Number },
+			},
+		],
+		wishlist: [
+			{
+				_id: { type: Schema.Types.ObjectId, ref: "Product" },
+				quantity: { type: Number },
+			},
+		],
 	},
 	{ timestamps: true }
 );
