@@ -2,6 +2,9 @@
 import express, { Express, Request, Response } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from "cors";
+import CateogoryRoute from "./routes/categories";
+import customError from "./middlewares/errors";
 
 // Access Environment Variables
 dotenv.config();
@@ -10,9 +13,16 @@ dotenv.config();
 const port = process.env.PORT || 5000;
 const server: Express = express();
 
-server.get("/", async (request: Request, response: Response) =>
-	response.status(200).json("Welcome To Z-Commerce Server")
+// Middlewares
+server.use(
+	cors({
+		origin: ["http://localhost:4200"],
+	})
 );
+server.use(express.json());
+server.use(express.urlencoded({ extended: false }));
+server.use("/api/v1/categories", CateogoryRoute);
+server.use(customError);
 
 // Connect To Database
 const connectDatabase = async () => {
