@@ -1,10 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CarouselComponent } from '../../components/carousel/carousel.component';
 import { ProductCardComponent } from '../../components/cards/product-card/product-card.component';
 import { SellerCardComponent } from '../../components/cards/seller-card/seller-card.component';
 import { TProduct } from '../../components/cards/product-card/product-card.types';
 import { TSeller } from '../../components/cards/seller-card/seller-card.types';
 import { MatDividerModule } from '@angular/material/divider';
+import { ApiService } from '../../services/api/api.service';
 
 @Component({
   selector: 'app-home',
@@ -18,45 +19,8 @@ import { MatDividerModule } from '@angular/material/divider';
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent {
-  productCards: Array<TProduct> = [
-    {
-      _id: 'ID0',
-      _v: 'V',
-      name: 'Name',
-      photo: '../../../../assets/images/light-logo.svg',
-      seller: 'Seller',
-      categories: ['One', 'Two', 'Three'],
-      rating: 5,
-      price: 199,
-      creationDate: new Date(),
-      description: 'Description',
-    },
-    {
-      _id: 'ID1',
-      _v: 'V',
-      name: 'Name',
-      photo: '../../../../assets/images/light-logo.svg',
-      seller: 'Seller',
-      categories: ['One', 'Two', 'Three'],
-      rating: 5,
-      price: 199,
-      creationDate: new Date(),
-      description: 'Description',
-    },
-    {
-      _id: 'ID2',
-      _v: 'V',
-      name: 'Name',
-      photo: '../../../../assets/images/light-logo.svg',
-      seller: 'Seller',
-      categories: ['One', 'Two', 'Three'],
-      rating: 5,
-      price: 199,
-      creationDate: new Date(),
-      description: 'Description',
-    },
-  ];
+export class HomeComponent implements OnInit {
+  productCards: Array<TProduct> = [];
   sellerCards: Array<TSeller> = [
     {
       _id: 'ID0',
@@ -83,4 +47,18 @@ export class HomeComponent {
       products: ['One', 'Two', 'Three'],
     },
   ];
+
+  constructor(private apiService: ApiService) {}
+
+  ngOnInit(): void {
+    try {
+      this.apiService
+        .readData<Array<TProduct>>('products')
+        .subscribe((response: any) => {
+          this.productCards = response.products;
+        });
+    } catch (error: unknown) {
+      error instanceof Error && console.log(error);
+    }
+  }
 }

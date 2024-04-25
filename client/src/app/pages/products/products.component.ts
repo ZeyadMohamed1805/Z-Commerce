@@ -6,6 +6,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { TProduct } from '../../components/cards/product-card/product-card.types';
 import { ProductCardComponent } from '../../components/cards/product-card/product-card.component';
+import { ApiService } from '../../services/api/api.service';
 
 @Component({
   selector: 'app-products',
@@ -24,78 +25,19 @@ import { ProductCardComponent } from '../../components/cards/product-card/produc
 export class ProductsComponent {
   options: Array<string> = ['One', 'Two', 'Three'];
   products: Array<string> = ['One', 'Two', 'Three'];
-  productCards: Array<TProduct> = [
-    {
-      _id: 'ID0',
-      _v: 'V',
-      name: 'Name',
-      photo: '../../../../assets/images/light-logo.svg',
-      seller: 'Seller',
-      categories: ['One', 'Two', 'Three'],
-      rating: 5,
-      price: 199,
-      creationDate: new Date(),
-      description: 'Description',
-    },
-    {
-      _id: 'ID1',
-      _v: 'V',
-      name: 'Name',
-      photo: '../../../../assets/images/light-logo.svg',
-      seller: 'Seller',
-      categories: ['One', 'Two', 'Three'],
-      rating: 5,
-      price: 199,
-      creationDate: new Date(),
-      description: 'Description',
-    },
-    {
-      _id: 'ID2',
-      _v: 'V',
-      name: 'Name',
-      photo: '../../../../assets/images/light-logo.svg',
-      seller: 'Seller',
-      categories: ['One', 'Two', 'Three'],
-      rating: 5,
-      price: 199,
-      creationDate: new Date(),
-      description: 'Description',
-    },
-    {
-      _id: 'ID3',
-      _v: 'V',
-      name: 'Name',
-      photo: '../../../../assets/images/light-logo.svg',
-      seller: 'Seller',
-      categories: ['One', 'Two', 'Three'],
-      rating: 5,
-      price: 199,
-      creationDate: new Date(),
-      description: 'Description',
-    },
-    {
-      _id: 'ID4',
-      _v: 'V',
-      name: 'Name',
-      photo: '../../../../assets/images/light-logo.svg',
-      seller: 'Seller',
-      categories: ['One', 'Two', 'Three'],
-      rating: 5,
-      price: 199,
-      creationDate: new Date(),
-      description: 'Description',
-    },
-    {
-      _id: 'ID5',
-      _v: 'V',
-      name: 'Name',
-      photo: '../../../../assets/images/light-logo.svg',
-      seller: 'Seller',
-      categories: ['One', 'Two', 'Three'],
-      rating: 5,
-      price: 199,
-      creationDate: new Date(),
-      description: 'Description',
-    },
-  ];
+  productCards: Array<TProduct> = [];
+
+  constructor(private apiService: ApiService) {}
+
+  ngOnInit(): void {
+    try {
+      this.apiService
+        .readData<Array<TProduct>>('products')
+        .subscribe((response: any) => {
+          this.productCards = response.products;
+        });
+    } catch (error: unknown) {
+      error instanceof Error && console.log(error);
+    }
+  }
 }

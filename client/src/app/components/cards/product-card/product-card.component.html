@@ -1,5 +1,5 @@
 <mat-card class="card" [id]="details._id">
-  <img [src]="details.photo" [alt]="details.name" mat-card-image />
+  <img [src]="details.images[0]" [alt]="details.name" mat-card-image />
   <mat-card-header>
     <div class="header">
       <h3>{{ details.name | titlecase }}</h3>
@@ -12,8 +12,8 @@
     <div class="body">
       <span>Categories: </span>
       <mat-chip-set aria-label="categories">
-        @for( category of details.categories; track category ) {
-        <mat-chip> {{ category }} </mat-chip>
+        @for( category of details.categories; track category._id ) {
+        <mat-chip> {{ category.name }} </mat-chip>
         }
       </mat-chip-set>
     </div>

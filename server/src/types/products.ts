@@ -7,16 +7,20 @@ export enum EProductState {
 
 export interface IProduct {
 	_id: Types.ObjectId;
+	name: string;
 	price: number;
 	rating: number;
-	categories: Array<Types.ObjectId>;
+	categories: Array<{
+		_id: Types.ObjectId,
+		name: string
+	}>;
 	description: string;
 	images: Array<string>;
 	state: EProductState;
-    seller: {
-        _id: Types.ObjectId,
-        name: string
-    }
-    quantity: number,
+	seller: {
+		_id: Types.ObjectId;
+		name: string;
+	};
+	quantity: number;
 	creationDate: Date;
 }

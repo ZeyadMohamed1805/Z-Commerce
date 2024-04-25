@@ -1,12 +1,24 @@
+export enum EProductState {
+  'Out Of Stock',
+  'In Stock',
+}
+
 export type TProduct = {
   _id: string;
   name: string;
-  description: string;
-  photo: string;
-  seller: string;
-  categories: Array<string>;
-  rating: number;
   price: number;
-  creationDate: Date;
-  _v: string;
+  rating: number;
+  categories: Array<{
+    _id: string;
+    name: string;
+  }>;
+  description: string;
+  images: Array<string>;
+  state: EProductState;
+  seller: {
+    _id: string;
+    name: string;
+  };
+  quantity: number;
+  creationDate?: Date;
 };

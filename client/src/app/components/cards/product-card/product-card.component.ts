@@ -14,14 +14,21 @@ import { TProduct } from './product-card.types';
 export class ProductCardComponent {
   @Input() details: TProduct = {
     _id: 'ID',
-    name: 'Name',
+    name: 'Product',
     description: 'Description',
-    photo: 'Photo.png',
-    seller: 'Seller',
-    categories: ['One, Two', 'Three'],
+    images: ['Photo.png'],
+    seller: {
+      _id: 'ID',
+      name: 'Seller',
+    },
+    categories: [
+      { _id: 'ID0', name: 'Category' },
+      { _id: 'ID1', name: 'Category' },
+      { _id: 'ID2', name: 'Category' },
+    ],
     rating: 5,
     price: 199,
-    creationDate: new Date(),
-    _v: 'Version',
+    state: 1,
+    quantity: 5,
   };
 }
