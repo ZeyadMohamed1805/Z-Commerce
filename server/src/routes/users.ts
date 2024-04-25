@@ -1,10 +1,12 @@
 // Modules
 import express from "express";
-import { readUsers } from "../controllers/users";
+import { createUser, readUser, updateUser } from "../controllers/users";
 const router = express.Router();
 
 // Routes
-router.get("/", readUsers);
+router.get("/:id", readUser);
+router.post("/", createUser);
+router.put("/:id", updateUser);
 
 // Exports
 export default router;

@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 
 export enum EUserRole {
-	" buyer",
+	"buyer",
 	"seller",
 }
 
