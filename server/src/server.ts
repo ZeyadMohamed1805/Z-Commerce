@@ -1,10 +1,9 @@
 // Imports
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
-import CateogoryRoute from "./routes/categories";
-import ProductRoute from "./routes/products";
+import { routes } from "./exports/routes";
 import { customError } from "./errors/errors";
 
 // Access Environment Variables
@@ -14,6 +13,11 @@ dotenv.config();
 const port = process.env.PORT || 5000;
 const server: Express = express();
 
+// Routes
+routes.forEach((route) => {
+	server.use(`/api/v1/${route.route}`, route.module);
+});
+
 // Middlewares
 server.use(
 	cors({
@@ -22,8 +26,6 @@ server.use(
 );
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
-server.use("/api/v1/categories", CateogoryRoute);
-// server.use("/api/v1/products", ProductRoute);
 server.use(customError);
 
 // Connect To Database

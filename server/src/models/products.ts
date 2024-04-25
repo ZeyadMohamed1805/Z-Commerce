@@ -21,7 +21,7 @@ const ProductSchema = new Schema<IProduct, Model<IProduct>>(
 			{ type: Schema.Types.ObjectId, required: true, ref: "Category" },
 		],
 		quantity: { type: Number, required: true, default: 0 },
-		seller: { Type: Schema.Types.ObjectId, ref: "Seller", required: true },
+		seller: { type: Schema.Types.ObjectId, ref: "Seller", required: true },
 	},
 	{ timestamps: true }
 );
