@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import cors from "cors";
 import CateogoryRoute from "./routes/categories";
+import ProductRoute from "./routes/products";
 import { customError } from "./errors/errors";
 
 // Access Environment Variables
@@ -22,6 +23,7 @@ server.use(
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use("/api/v1/categories", CateogoryRoute);
+// server.use("/api/v1/products", ProductRoute);
 server.use(customError);
 
 // Connect To Database
