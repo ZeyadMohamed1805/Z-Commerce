@@ -9,9 +9,14 @@ export const readProducts = async (
 	response: Response,
 	next: NextFunction
 ) => {
+	// Destruct The Name And Seller Name From The Params
+	const { name, seller } = request.query;
+
 	try {
 		// Get The Products From The Database
-		const products = await Product.find();
+		const products = name
+			? await Product.find({ name: { $regex: name } })
+			: await Product.find();
 		// If Products Don't Exist
 		if (!products.length)
 			// Return The Error To The Client

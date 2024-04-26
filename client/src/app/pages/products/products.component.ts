@@ -23,7 +23,8 @@ import { ApiService } from '../../services/api/api.service';
   styleUrl: './products.component.scss',
 })
 export class ProductsComponent {
-  options: Array<string> = ['One', 'Two', 'Three'];
+  searching: boolean = true;
+  options: Array<string> = [];
   products: Array<string> = ['One', 'Two', 'Three'];
   productCards: Array<TProduct> = [];
 
@@ -34,10 +35,38 @@ export class ProductsComponent {
       this.apiService
         .readData<Array<TProduct>>('products')
         .subscribe((response: any) => {
+          this.searching = false;
+          this.options = response.products.map(
+            (product: TProduct) => product.name
+          );
           this.productCards = response.products;
         });
     } catch (error: unknown) {
+      this.searching = false;
       error instanceof Error && console.log(error);
+    }
+  }
+
+  onSearchChange(name: string): void {
+    this.searching = true;
+    this.productCards = [];
+    this.options = [];
+
+    try {
+      this.apiService
+        .readData<Array<TProduct>>(`products?name=${name}`)
+        .subscribe((response: any) => {
+          if (response.status == 'Success') {
+            this.options = response.products.map(
+              (product: TProduct) => product.name
+            );
+            this.productCards = response.products;
+          }
+        });
+    } catch (error: unknown) {
+      this.productCards = [];
+      this.options = [];
+      this.searching = false;
     }
   }
 }

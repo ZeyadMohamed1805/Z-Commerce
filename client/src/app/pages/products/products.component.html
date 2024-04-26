@@ -6,13 +6,15 @@
         placeholder="Product Name"
         class="search"
         matInput
+        (input)="onSearchChange(productNameSearch.value)"
+        #productNameSearch
         [matAutocomplete]="auto"
       />
       <mat-autocomplete #auto="matAutocomplete">
-        @for (option of options; track option) {
-        <mat-option [value]="option"
-          ><span>{{ option }}</span></mat-option
-        >
+        @for (option of options; track option;) {
+        <mat-option [value]="option" *ngIf="$index < 3">
+          <span>{{ option }}</span>
+        </mat-option>
         }
       </mat-autocomplete>
       <mat-select [value]="products[0]" class="select">
@@ -26,6 +28,15 @@
     <div class="cards-container">
       @for(card of productCards; track card._id) {
       <app-product-card [details]="card"></app-product-card>
+      } @empty {
+      <div
+        style="
+          height: 100vh;
+          display: grid;
+          place-items: center;
+          text-align: center;
+        "
+      ></div>
       }
     </div>
     <div class="paginator-container">
