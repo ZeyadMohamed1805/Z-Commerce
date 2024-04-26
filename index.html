@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<form id="uploadForm" enctype="multipart/form-data">
+			<input type="file" name="image" id="image" />
+			<input
+				type="text"
+				name="jsonData"
+				id="jsonData"
+				placeholder="Enter JSON data"
+			/>
+			<button type="button" onclick="uploadFormData()">Upload</button>
+		</form>
+		<img
+			src="https://res.cloudinary.com/dwunqhvhr/image/upload/v1714081690/oxkl9z5pfa7x17xjxpjh.png"
+			alt="Image"
+		/>
+		<script>
+			fetch("http://localhost:5000/api/v1/sellers")
+				.then((response) => response.json())
+				.then((data) => console.log(data));
+
+			function uploadFormData() {
+				const formData = new FormData();
+				const imageInput = document.getElementById("image");
+				const jsonDataInput = document.getElementById("jsonData");
+
+				// Add the image file to FormData
+				formData.append("image", imageInput.files[0]);
+
+				// Add JSON data to FormData
+				const jsonData = JSON.parse(jsonDataInput.value);
+				Object.keys(jsonData).forEach((key) => {
+					formData.append(key, jsonData[key]);
+				});
+
+				// Send the FormData with Fetch API
+				fetch(
+					"http://localhost:5000/api/v1/products/662ae17de49fef5c59b15607",
+					{
+						method: "PUT",
+						body: formData,
+					}
+				)
+					.then((response) => {
+						if (!response.ok) {
+							throw new Error("Error uploading data");
+						}
+						return response.json();
+					})
+					.then((data) => {
+						console.log("Upload successful:", data);
+					})
+					.catch((error) => {
+						console.error("Error:", error);
+					});
+			}
+		</script>
+	</body>
+</html>
