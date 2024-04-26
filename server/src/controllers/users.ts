@@ -1,7 +1,14 @@
 // Modules & Variables
 import { NextFunction, Request, Response } from "express";
 import User from "../models/users";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import comparePassword from "../utils/compare";
 import { createError } from "../errors/errors";
+import hashPassword from "../utils/hash";
+
+// Access Environment Variables
+dotenv.config();
 
 // Read User
 export const readUser = async (
@@ -42,7 +49,13 @@ export const createUser = async (
 			// Return The Error To The Client
 			return next(createError(404, `No user found in the body`));
 		// Create A New User
-		const newUser = new User(body);
+		const newUser = new User({
+			email: body.email,
+			password: hashPassword(body.password),
+			firstName: body.firstName,
+			lastName: body.lastName,
+			role: body.role,
+		});
 		// Save The User To The Database
 		const savedUser = await newUser.save();
 		// Send The User As A Response To The Client
@@ -89,5 +102,42 @@ export const updateUser = async (
 	} catch (error: unknown) {
 		// Send The Error As A Response To The Client
 		return next(error);
+	}
+};
+
+// Login User
+export const loginUser = async (
+	request: Request,
+	response: Response,
+	next: NextFunction
+) => {
+	// Destruct the Email & Password from the Request Body
+	const { email, password } = request.body;
+
+	try {
+		// Find The User With The Requested Username
+		const user = await User.findOne({ email: email });
+
+		// Check If User Doesn't Exist
+		if (!user)
+			return next(createError(404, `No user with email ${email}...`));
+
+		// Compare Passwords
+		const passwordCheck = await comparePassword(password, user.password);
+
+		// Check If Passwords Don't Match
+		if (!passwordCheck)
+			return next(createError(400, "Incorrect email or password"));
+
+		// Create JWT Token
+		const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET!, {
+			expiresIn: process.env.JWT_LIFETIME,
+		});
+
+		// Send The User As A Response To The Client
+		response.status(200).json({ user: user, token: token });
+	} catch (error) {
+		// Send The Error As A Response To The Client
+		return next(createError(500, "Login Failed..."));
 	}
 };
