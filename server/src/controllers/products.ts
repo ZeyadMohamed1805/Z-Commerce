@@ -16,6 +16,8 @@ export const readProducts = async (
 		// Get The Products From The Database
 		const products = name
 			? await Product.find({ name: { $regex: name } })
+			: seller
+			? await Product.find({ "seller.name": { $regex: seller } })
 			: await Product.find();
 		// If Products Don't Exist
 		if (!products.length)

@@ -3,7 +3,7 @@
     <div class="input-container">
       <input
         type="search"
-        placeholder="Product Name"
+        [placeholder]="selectedType.concat(' Name')"
         class="search"
         matInput
         (input)="onSearchChange(productNameSearch.value)"
@@ -17,10 +17,10 @@
         </mat-option>
         }
       </mat-autocomplete>
-      <mat-select [value]="products[0]" class="select">
-        @for (product of products; track product) {
-        <mat-option [value]="product"
-          ><span>{{ product }}</span></mat-option
+      <mat-select [value]="types[0]" class="select" [(value)]="selectedType">
+        @for (type of types; track type) {
+        <mat-option [value]="type"
+          ><span>{{ type }}</span></mat-option
         >
         }
       </mat-select>

@@ -25,7 +25,8 @@ import { ApiService } from '../../services/api/api.service';
 export class ProductsComponent {
   searching: boolean = true;
   options: Array<string> = [];
-  products: Array<string> = ['One', 'Two', 'Three'];
+  types: Array<string> = ['Product', 'Seller'];
+  selectedType: string = this.types[0];
   productCards: Array<TProduct> = [];
 
   constructor(private apiService: ApiService) {}
@@ -54,7 +55,11 @@ export class ProductsComponent {
 
     try {
       this.apiService
-        .readData<Array<TProduct>>(`products?name=${name}`)
+        .readData<Array<TProduct>>(
+          `products?${
+            this.selectedType === 'Product' ? 'name' : 'seller'
+          }=${name}`
+        )
         .subscribe((response: any) => {
           if (response.status == 'Success') {
             this.options = response.products.map(
