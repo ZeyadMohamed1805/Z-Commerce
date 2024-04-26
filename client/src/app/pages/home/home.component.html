@@ -2,17 +2,17 @@
   <div class="container">
     <app-carousel />
     <mat-divider />
-    <h2><span>Most Selling Products</span></h2>
+    <h2><span>Recently Added</span></h2>
     <div class="cards-container">
-      @for(card of productCards; track card._id) {
+      @for(card of newestCards; track card._id) {
       <app-product-card [details]="card"></app-product-card>
       }
     </div>
     <mat-divider />
-    <h2><span>Highest Rated Sellers</span></h2>
+    <h2><span>Most Loved</span></h2>
     <div class="cards-container">
-      @for(card of sellerCards; track card._id) {
-      <app-seller-card [details]="card"></app-seller-card>
+      @for(card of mostLovedCards; track card._id) {
+      <app-product-card [details]="card"></app-product-card>
       }
     </div>
   </div>

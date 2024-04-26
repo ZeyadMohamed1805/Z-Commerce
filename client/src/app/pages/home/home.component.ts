@@ -3,7 +3,6 @@ import { CarouselComponent } from '../../components/carousel/carousel.component'
 import { ProductCardComponent } from '../../components/cards/product-card/product-card.component';
 import { SellerCardComponent } from '../../components/cards/seller-card/seller-card.component';
 import { TProduct } from '../../components/cards/product-card/product-card.types';
-import { TSeller } from '../../components/cards/seller-card/seller-card.types';
 import { MatDividerModule } from '@angular/material/divider';
 import { ApiService } from '../../services/api/api.service';
 
@@ -20,42 +19,27 @@ import { ApiService } from '../../services/api/api.service';
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnInit {
-  productCards: Array<TProduct> = [];
-  sellerCards: Array<TSeller> = [
-    {
-      _id: 'ID0',
-      _v: 'V',
-      name: 'Name',
-      photo: '../../../../assets/images/light-logo.svg',
-      rating: 5,
-      products: ['One', 'Two', 'Three'],
-    },
-    {
-      _id: 'ID1',
-      _v: 'V',
-      name: 'Name',
-      photo: '../../../../assets/images/light-logo.svg',
-      rating: 5,
-      products: ['One', 'Two', 'Three'],
-    },
-    {
-      _id: 'ID2',
-      _v: 'V',
-      name: 'Name',
-      photo: '../../../../assets/images/light-logo.svg',
-      rating: 5,
-      products: ['One', 'Two', 'Three'],
-    },
-  ];
+  newestCards: Array<TProduct> = [];
+  mostLovedCards: Array<TProduct> = [];
 
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
     try {
       this.apiService
-        .readData<Array<TProduct>>('products')
+        .readData<Array<TProduct>>('products/newest')
         .subscribe((response: any) => {
-          this.productCards = response.products;
+          this.newestCards = response.products;
+        });
+    } catch (error: unknown) {
+      error instanceof Error && console.log(error);
+    }
+
+    try {
+      this.apiService
+        .readData<Array<TProduct>>('products/most-loved')
+        .subscribe((response: any) => {
+          this.mostLovedCards = response.products;
         });
     } catch (error: unknown) {
       error instanceof Error && console.log(error);

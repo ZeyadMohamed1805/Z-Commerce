@@ -6,12 +6,22 @@
       placeholder="Search"
       aria-label="Number"
       class="main-search"
+      (input)="onSearchChange(productNameSearch.value)"
+      #productNameSearch
       matInput
       [matAutocomplete]="auto"
     />
     <mat-autocomplete #auto="matAutocomplete">
-      @for (option of options; track option) {
-      <mat-option [value]="option">{{ option }}</mat-option>
+      @for (option of options; track option;) {
+      <mat-option [value]="option" *ngIf="$index < 3">
+        <span>{{ option }}</span>
+      </mat-option>
+      } @empty {
+      <mat-option
+        ><span>{{
+          searching ? "Loading..." : "Not Found..."
+        }}</span></mat-option
+      >
       }
     </mat-autocomplete>
     <div class="interactions">
@@ -78,6 +88,8 @@
             class="full-width"
             *ngIf="isExpanded || isShowing"
             mat-list-item
+            (input)="onSearchChange(productSideNameSearch.value)"
+            #productSideNameSearch
             placeholder="Search"
           />
         </div>

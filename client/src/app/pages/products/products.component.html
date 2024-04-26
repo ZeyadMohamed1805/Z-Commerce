@@ -15,6 +15,12 @@
         <mat-option [value]="option" *ngIf="$index < 3">
           <span>{{ option }}</span>
         </mat-option>
+        } @empty {
+        <mat-option
+          ><span>{{
+            searching ? "Loading..." : "Not Found..."
+          }}</span></mat-option
+        >
         }
       </mat-autocomplete>
       <mat-select [value]="types[0]" class="select" [(value)]="selectedType">
@@ -31,19 +37,21 @@
       } @empty {
       <div
         style="
-          height: 100vh;
+          height: calc(100vh - 320px);
           display: grid;
           place-items: center;
           text-align: center;
+          font-size: 24px;
         "
-      ></div>
+      >
+        {{ searching ? "Loading..." : "Not Found..." }}
+      </div>
       }
     </div>
     <div class="paginator-container">
       <mat-paginator
-        [length]="100"
-        [pageSize]="10"
-        [pageSizeOptions]="[5, 10, 25, 100]"
+        [length]="this.productCards.length"
+        [pageSize]="6"
         aria-label="Select page"
       >
       </mat-paginator>

@@ -34,6 +34,56 @@ export const readProducts = async (
 	}
 };
 
+// Read Newest Products
+export const readNewestProducts = async (
+	request: Request,
+	response: Response,
+	next: NextFunction
+) => {
+	try {
+		// Get The Products From The Database
+		const products = await Product.find({}, null, {
+			sort: { createdAt: -1 },
+		}).limit(3);
+		// If Products Don't Exist
+		if (!products.length)
+			// Return The Error To The Client
+			return next(createError(404, "No products found"));
+		// Send The Products As A Response To The Client
+		return response
+			.status(200)
+			.json({ status: "Success", products: products });
+	} catch (error: unknown) {
+		// Send The Error As A Response To The Client
+		return next(error);
+	}
+};
+
+// Read Most Loved Products
+export const readMostLovedProducts = async (
+	request: Request,
+	response: Response,
+	next: NextFunction
+) => {
+	try {
+		// Get The Products From The Database
+		const products = await Product.find({}, null, {
+			sort: { rating: -1 },
+		}).limit(3);
+		// If Products Don't Exist
+		if (!products.length)
+			// Return The Error To The Client
+			return next(createError(404, "No products found"));
+		// Send The Products As A Response To The Client
+		return response
+			.status(200)
+			.json({ status: "Success", products: products });
+	} catch (error: unknown) {
+		// Send The Error As A Response To The Client
+		return next(error);
+	}
+};
+
 // Create Product
 export const createProduct = async (
 	request: Request,

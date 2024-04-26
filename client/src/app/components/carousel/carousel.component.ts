@@ -25,8 +25,10 @@ import { fadeIn, fadeOut } from './carousel.animations';
 })
 export class CarouselComponent implements OnInit {
   items: string[] = [
-    '../../../assets/images/light-logo.svg',
-    '../../../assets/images/dark-logo.svg',
+    '../../../assets/images/carousel-two.svg',
+    '../../../assets/images/carousel-one.svg',
+    '../../../assets/images/carousel-three.svg',
+    '../../../assets/images/carousel-five.svg',
   ];
   currentSlide = 0;
   interval: any = true;
