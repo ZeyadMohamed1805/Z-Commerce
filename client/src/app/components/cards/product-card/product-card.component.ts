@@ -69,6 +69,23 @@ export class ProductCardComponent {
   addToWishlist(): void {
     const user = localStorage.getItem('user');
     if (user) {
+      const parsedUser = JSON.parse(user);
+      try {
+        this.apiService
+          .createData<any>(`products/add-wishlist/${parsedUser.user._id}`, {
+            productId: this.details._id,
+            token: parsedUser.token,
+          })
+          .subscribe((response) => {
+            console.log(response);
+            this.openSnackBar(
+              `${this.details.name} was added to your wishlist!`,
+              'Close'
+            );
+          });
+      } catch (error: unknown) {
+        this.openSnackBar(`Something went wrong`, 'Close');
+      }
     } else {
       this.openSnackBar('You must login first', 'Close');
     }

@@ -2,6 +2,7 @@
 import express from "express";
 import {
 	addToCart,
+	addToWishlist,
 	createProduct,
 	readMostLovedProducts,
 	readNewestProducts,
@@ -18,6 +19,7 @@ router.get("/newest", readNewestProducts);
 router.get("/most-loved", readMostLovedProducts);
 router.post("/", upload.single("image"), createProduct);
 router.post("/add-cart/:id", verifyUser, addToCart);
+router.post("/add-wishlist/:id", verifyUser, addToWishlist);
 router.put("/:id", upload.single("image"), updateProduct);
 
 // Exports

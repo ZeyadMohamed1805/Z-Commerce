@@ -316,3 +316,79 @@ export const addToCart = async (
 		return next(error);
 	}
 };
+
+// Add Product To Wishlist
+export const addToWishlist = async (
+	request: Request,
+	response: Response,
+	next: NextFunction
+) => {
+	// Destruct The ID From The Request Params
+	const {
+		params: { id },
+		body: { productId },
+	} = request;
+
+	try {
+		// If Id Was Not Sent
+		if (!id)
+			return response.status(404).json({
+				status: "Fail",
+				message: "Id was not found in the params",
+			});
+		// If Product Was Not Sent
+		if (!productId)
+			return response.status(404).json({
+				status: "Fail",
+				message: "Product Id was not found in the body",
+			});
+		// Get The User Data
+		const user = await User.findById(id);
+		// If User Was Not Found
+		if (!user)
+			return response.status(404).json({
+				status: "Fail",
+				message: `User with id ${id} was not found`,
+			});
+		// If The User Was Not A Buyer
+		if (user.role)
+			return response.status(401).json({
+				status: "Fail",
+				message: `Non buyers are not authorized to add an item to the cart`,
+			});
+		// Get The Buyer
+		const buyer = await Buyer.findOne({ user: user._id });
+		// If Buyer Was Not Found
+		if (!buyer)
+			return response.status(404).json({
+				status: "Fail",
+				message: `This user id doesn't belong to a buyer`,
+			});
+		// Find If The Buyer has this item in the wishlist
+		const isItemWished = buyer.wishlist.findIndex(
+			(item) => item._id === productId
+		);
+		// If Item Was Found In The Wishlist
+		if (isItemWished === -1) {
+			return response.status(400).json({
+				status: "Fail",
+				message: `This item is already in you wishlist`,
+			});
+		}
+		// Add The Product To The Wishlist
+		const updatedProductBuyer = await Buyer.findByIdAndUpdate(
+			buyer._id,
+			{ $push: { wishlist: { _id: productId, quantity: 1 } } },
+			{ new: true }
+		);
+		// If Product Was Added
+		if (updatedProductBuyer)
+			// Return Response To The Client
+			return response
+				.status(200)
+				.json({ status: "Success", product: updatedProductBuyer });
+	} catch (error: unknown) {
+		// Send The Error As A Response To The Client
+		return next(error);
+	}
+};
