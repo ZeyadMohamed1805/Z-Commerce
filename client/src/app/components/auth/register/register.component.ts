@@ -64,7 +64,7 @@ export class RegisterComponent {
     this.snackBar.open(message, action);
   }
 
-  register(event: Event) {
+  onSubmit(event: Event) {
     event.preventDefault();
     if (!this.errorMessage) {
       this.apiService

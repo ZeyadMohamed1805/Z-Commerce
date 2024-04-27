@@ -1,4 +1,4 @@
-<form>
+<form (submit)="onSubmit($event)">
   <h1>
     <span>Login</span>
   </h1>
@@ -17,7 +17,11 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Password</mat-label>
-    <input matInput [type]="hide ? 'password' : 'text'" />
+    <input
+      matInput
+      [type]="hide ? 'password' : 'text'"
+      [formControl]="password"
+    />
     <button
       mat-icon-button
       class="password-icon"

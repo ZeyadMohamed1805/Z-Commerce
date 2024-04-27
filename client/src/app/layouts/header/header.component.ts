@@ -93,7 +93,7 @@ export class HeaderComponent implements OnInit {
   }
 
   openDialog(index: number): void {
-    const dialogRef = this.dialog.open(
+    const dialogRef = this.dialog.open<RegisterComponent | LoginComponent>(
       index ? RegisterComponent : LoginComponent
     );
 
