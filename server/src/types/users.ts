@@ -7,8 +7,7 @@ export enum EUserRole {
 
 export interface IUser {
 	_id: Types.ObjectId;
-	firstName: string;
-	lastName?: string;
+	name: string;
 	email: string;
 	password: string;
 	role: EUserRole;

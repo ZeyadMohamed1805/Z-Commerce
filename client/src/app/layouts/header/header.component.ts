@@ -97,9 +97,21 @@ export class HeaderComponent implements OnInit {
       index ? RegisterComponent : LoginComponent
     );
 
+    // Subscribe to the close event emitted by the dialog component
+    dialogRef.componentInstance.closeDialog.subscribe(() => {
+      // Close the dialog when the event is emitted
+      dialogRef.close();
+    });
+
     dialogRef.afterClosed().subscribe((result) => {
       console.log('The dialog was closed');
     });
+  }
+
+  closeDialog(close: boolean) {
+    console.log('close!');
+
+    this.dialog.closeAll();
   }
 
   expand() {

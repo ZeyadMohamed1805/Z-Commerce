@@ -1,6 +1,8 @@
 // Modules & Variables
 import { NextFunction, Request, Response } from "express";
 import User from "../models/users";
+import Buyer from "../models/buyers";
+import Seller from "../models/sellers";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import comparePassword from "../utils/compare";
@@ -52,12 +54,18 @@ export const createUser = async (
 		const newUser = new User({
 			email: body.email,
 			password: hashPassword(body.password),
-			firstName: body.firstName,
-			lastName: body.lastName,
+			name: body.name,
 			role: body.role,
 		});
 		// Save The User To The Database
 		const savedUser = await newUser.save();
+		// Create A New Role
+		!body.role
+			? await new Buyer({ user: savedUser._id }).save()
+			: await new Seller({
+					user: savedUser._id,
+					inventory: ["662ae178e49fef5c59b15606"],
+			  }).save();
 		// Send The User As A Response To The Client
 		return response
 			.status(200)

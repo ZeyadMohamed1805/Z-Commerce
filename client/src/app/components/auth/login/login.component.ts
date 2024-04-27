@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormControl,
@@ -46,4 +46,6 @@ export class LoginComponent {
       this.errorMessage = '';
     }
   }
+
+  @Output() closeDialog = new EventEmitter<boolean>();
 }

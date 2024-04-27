@@ -13,4 +13,8 @@ export class ApiService {
   readData<T>(endpoint: string): Observable<T> {
     return this.http.get<T>(`${this.baseUrl}/${endpoint}`);
   }
+
+  createData<T>(endpoint: string, body: T): Observable<T> {
+    return this.http.post<T>(`${this.baseUrl}/${endpoint}`, body);
+  }
 }

@@ -5,6 +5,6 @@ export interface ISeller {
 	rating: number;
 	image?: string;
 	cloudinary_id?: string;
-	inventory: Array<Types.ObjectId>;
+	inventory?: Array<Types.ObjectId>;
 	user: Types.ObjectId;
 }

@@ -6,13 +6,12 @@ const { Schema } = mongoose;
 // User Schema
 const UserSchema = new Schema<IUser, Model<IUser>>(
 	{
-		firstName: {
+		name: {
 			type: String,
 			required: true,
 			minlength: 5,
 			maxlength: 25,
 		},
-		lastName: { type: String, minlength: 5, maxlength: 25 },
 		email: {
 			type: String,
 			required: true,
