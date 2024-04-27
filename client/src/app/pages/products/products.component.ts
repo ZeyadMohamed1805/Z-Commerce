@@ -9,6 +9,10 @@ import { ProductCardComponent } from '../../components/cards/product-card/produc
 import { ApiService } from '../../services/api/api.service';
 import { catchError } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatIconButton } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-products',
@@ -16,6 +20,9 @@ import { EMPTY } from 'rxjs';
   imports: [
     CommonModule,
     ProductCardComponent,
+    MatIconModule,
+    MatChipsModule,
+    MatCardModule,
     MatInputModule,
     MatSelectModule,
     MatPaginatorModule,

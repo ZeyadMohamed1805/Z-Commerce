@@ -3,11 +3,12 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { TProduct } from './product-card.types';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatChipsModule],
+  imports: [CommonModule, MatCardModule, MatChipsModule, MatIconModule],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
 })
