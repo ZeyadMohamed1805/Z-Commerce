@@ -30,7 +30,7 @@
         <li>
           <a [routerLink]="navLink">{{ navLink | titlecase }}</a>
         </li>
-        } @for( navButton of navButtons; track navButton; ) {
+        } @if(!loggedIn) { @for( navButton of navButtons; track navButton; ) {
         <li>
           <button class="{{ navButton }}" (click)="openDialog($index)">
             <span>
@@ -38,10 +38,17 @@
             </span>
           </button>
         </li>
+        } } @else {
+        <li>
+          <button class="register" (click)="logout()">
+            <span> Logout </span>
+          </button>
+        </li>
         }
       </ul>
       <div class="icons">
-        <!-- <button
+        @if(loggedIn) {
+        <button
           mat-icon-button
           matBadge="0"
           matBadgePosition="after"
@@ -60,7 +67,8 @@
             routerLink="account"
             alt="Account"
           />
-        </button> -->
+        </button>
+        }
         <button mat-icon-button (click)="expand()" class="menuIcon">
           <img src="../../../../assets/icons/menu.svg" alt="Menu" />
         </button>
@@ -102,7 +110,7 @@
           href="#"
           ><span>{{ navLink | titlecase }}</span></a
         >
-        } @for(navButton of navButtons; track navButton) {
+        } @if(!loggedIn) { @for(navButton of navButtons; track navButton) {
         <button
           class="full-width"
           (click)="openDialog($index)"
@@ -113,6 +121,16 @@
           <span>
             {{ navButton | titlecase }}
           </span>
+        </button>
+        } } @else {
+        <button
+          class="full-width"
+          (click)="logout()"
+          *ngIf="isExpanded || isShowing"
+          mat-list-item
+          href="#"
+        >
+          <span> Logout </span>
         </button>
         }
       </mat-nav-list>

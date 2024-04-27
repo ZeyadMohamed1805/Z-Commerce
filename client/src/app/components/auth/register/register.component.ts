@@ -42,7 +42,7 @@ export class RegisterComponent {
   hide = true;
   errorMessage = '';
 
-  @Output() closeDialog = new EventEmitter<boolean>();
+  @Output() closeDialog = new EventEmitter<any>();
 
   constructor(private apiService: ApiService, private snackBar: MatSnackBar) {
     merge(this.email.statusChanges, this.email.valueChanges)
@@ -76,7 +76,7 @@ export class RegisterComponent {
         })
         .subscribe((response: any) => {
           this.openSnackBar('Registration was successful!', 'Close');
-          this.closeDialog.emit(true);
+          this.closeDialog.emit(response);
         });
     }
   }

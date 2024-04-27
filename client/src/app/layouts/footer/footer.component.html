@@ -14,25 +14,44 @@
       <ul>
         <li>Account</li>
         <mat-divider class="divider" />
-        @for( navButton of navButtons; track navButton; ) {
+        @if(loggedIn) {
+        <li>
+          <button>
+            <a routerLink="account">Profile</a>
+          </button>
+        </li>
+        <li>
+          <button (click)="logout()">Logout</button>
+        </li>
+        } @else { @for( navButton of navButtons; track navButton; ) {
         <li>
           <button (click)="openDialog($index)">
             {{ navButton | titlecase }}
           </button>
         </li>
-        }
+        } }
       </ul>
       <input
         type="search"
         placeholder="Search"
         aria-label="Number"
         class="main-search"
+        (input)="onSearchChange(productNameSearch.value)"
+        #productNameSearch
         matInput
         [matAutocomplete]="auto"
       />
       <mat-autocomplete #auto="matAutocomplete">
-        @for (option of options; track option) {
-        <mat-option [value]="option">{{ option }}</mat-option>
+        @for (option of options; track option;) {
+        <mat-option [value]="option" *ngIf="$index < 3">
+          <span>{{ option }}</span>
+        </mat-option>
+        } @empty {
+        <mat-option
+          ><span>{{
+            searching ? "Loading..." : "Not Found..."
+          }}</span></mat-option
+        >
         }
       </mat-autocomplete>
     </div>

@@ -1,5 +1,5 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { MatSidenavContainer, MatSidenav } from '@angular/material/sidenav';
 import { MatNavList, MatListItem } from '@angular/material/list';
@@ -41,11 +41,17 @@ export class HeaderComponent implements OnInit {
   navLinks: Array<string> = ['home', 'products', 'basket'];
   navButtons: Array<string> = ['login', 'register'];
   isExpanded: boolean = false;
+  loggedIn: boolean = false;
   showSubmenu: boolean = false;
   isShowing: boolean = false;
   showSubSubMenu: boolean = false;
   options: Array<string> = [];
   searching: boolean = false;
+
+  @HostListener('window:load')
+  onLoad() {
+    this.loggedIn = Boolean(localStorage.getItem('user'));
+  }
 
   constructor(public dialog: MatDialog, private apiService: ApiService) {}
 
@@ -98,9 +104,13 @@ export class HeaderComponent implements OnInit {
     );
 
     // Subscribe to the close event emitted by the dialog component
-    dialogRef.componentInstance.closeDialog.subscribe(() => {
+    dialogRef.componentInstance.closeDialog.subscribe((response) => {
       // Close the dialog when the event is emitted
       dialogRef.close();
+      if (response.token) {
+        localStorage.setItem('user', JSON.stringify(response));
+        window.location.reload();
+      }
     });
 
     dialogRef.afterClosed().subscribe((result) => {
@@ -112,6 +122,11 @@ export class HeaderComponent implements OnInit {
     console.log('close!');
 
     this.dialog.closeAll();
+  }
+
+  logout() {
+    localStorage.removeItem('user');
+    window.location.reload();
   }
 
   expand() {

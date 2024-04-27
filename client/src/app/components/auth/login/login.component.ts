@@ -34,7 +34,7 @@ export class LoginComponent {
   password = new FormControl('', [Validators.required]);
   hide = true;
   errorMessage = '';
-  @Output() closeDialog = new EventEmitter<boolean>();
+  @Output() closeDialog = new EventEmitter<any>();
 
   constructor(private apiService: ApiService, private snackBar: MatSnackBar) {
     merge(this.email.statusChanges, this.email.valueChanges)
@@ -66,7 +66,7 @@ export class LoginComponent {
         })
         .subscribe((response: any) => {
           this.openSnackBar('Login was successful!', 'Close');
-          this.closeDialog.emit(true);
+          this.closeDialog.emit(response);
         });
     }
     console.log(this.email.value, this.password.value);
