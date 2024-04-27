@@ -38,7 +38,7 @@ import { EMPTY } from 'rxjs';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit {
-  navLinks: Array<string> = ['home', 'products', 'sellers', 'basket'];
+  navLinks: Array<string> = ['home', 'products', 'basket'];
   navButtons: Array<string> = ['login', 'register'];
   isExpanded: boolean = false;
   showSubmenu: boolean = false;
