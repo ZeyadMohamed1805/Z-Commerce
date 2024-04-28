@@ -11,7 +11,7 @@
     <div style="display: flex; align-items: center; gap: 4px">
       <button
         mat-icon-button
-        (click)="addToCart()"
+        (click)="addToBasket('cart')"
         style="
           background-color: transparent;
           cursor: pointer;
@@ -24,7 +24,7 @@
       </button>
       <button
         mat-icon-button
-        (click)="addToWishlist()"
+        (click)="addToBasket('wishlist')"
         style="
           background-color: transparent;
           cursor: pointer;

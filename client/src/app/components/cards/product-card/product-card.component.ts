@@ -47,12 +47,8 @@ export class ProductCardComponent {
     let isItemAdded = false;
 
     parsedCartItems.forEach((element: any) => {
-      console.log(parsedCartItems, 1);
-
       if (element._id === this.details._id) {
         isItemAdded = true;
-        element.amount += 1;
-        console.log(parsedCartItems, 2);
       }
 
       return element;
@@ -63,10 +59,10 @@ export class ProductCardComponent {
         'cart',
         JSON.stringify([...parsedCartItems, { ...this.details, amount: 1 }])
       );
+      this.openSnackBar('Item is added to your cart!', 'Close');
     } else {
-      localStorage.setItem('cart', JSON.stringify(parsedCartItems));
+      this.openSnackBar('Item is already in your cart', 'Close');
     }
-    console.log(localStorage.getItem('cart'), 3);
   }
 
   addToWishlist(): void {
@@ -77,7 +73,6 @@ export class ProductCardComponent {
     parsedWishlistItems = parsedWishlistItems.map((element: any) => {
       if (element._id === this.details._id) {
         isItemAdded = true;
-        element.amount++;
       }
 
       return element;
@@ -88,7 +83,66 @@ export class ProductCardComponent {
         'wishlist',
         JSON.stringify([...parsedWishlistItems, { ...this.details, amount: 1 }])
       );
+      this.openSnackBar('Item is added to your wishlist!', 'Close');
+    } else {
+      this.openSnackBar('Item is already in your wishlist', 'Close');
     }
-    console.log(localStorage.getItem('wishlist'));
+  }
+
+  addToBasket(type: string): void {
+    const cartItems = localStorage.getItem('cart');
+    const wishlistItems = localStorage.getItem('wishlist');
+    let parsedCartItems = cartItems ? JSON.parse(cartItems) : [];
+    let parsedWishlistItems = wishlistItems ? JSON.parse(wishlistItems) : [];
+    let isItemAddedToCart = false;
+    let isItemAddedToWishlist = false;
+
+    parsedCartItems.forEach((element: any) => {
+      if (element._id === this.details._id) {
+        isItemAddedToCart = true;
+      }
+    });
+
+    parsedWishlistItems.forEach((element: any) => {
+      if (element._id === this.details._id) {
+        isItemAddedToWishlist = true;
+      }
+    });
+
+    if (!isItemAddedToCart && !isItemAddedToWishlist) {
+      localStorage.setItem(
+        type,
+        JSON.stringify(
+          type === 'cart'
+            ? [...parsedCartItems, { ...this.details, amount: 1 }]
+            : [...parsedWishlistItems, { ...this.details, amount: 1 }]
+        )
+      );
+      this.openSnackBar(`Item is added to your ${type}!`, 'Close');
+    } else {
+      if (type === 'cart') {
+        if (isItemAddedToCart)
+          this.openSnackBar('Item is already in your cart', 'Close');
+        else if (isItemAddedToWishlist) {
+          localStorage.setItem(
+            'wishlist',
+            JSON.stringify(
+              parsedWishlistItems.filter(
+                (item: any) => item._id !== this.details._id
+              )
+            )
+          );
+          localStorage.setItem(
+            'cart',
+            JSON.stringify([...parsedCartItems, { ...this.details, amount: 1 }])
+          );
+        }
+      } else {
+        isItemAddedToWishlist &&
+          this.openSnackBar('Item is already in your wishlist', 'Close');
+        isItemAddedToCart &&
+          this.openSnackBar('Item is already in your cart', 'Close');
+      }
+    }
   }
 }
