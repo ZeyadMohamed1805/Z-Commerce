@@ -7,7 +7,7 @@
           <button
             class="icon-buttons"
             mat-icon-button
-            matBadge="0"
+            [matBadge]="cartQuantity"
             matBadgePosition="after"
             matBadgeSize="small"
             matBadgeColor="warn"
@@ -23,7 +23,7 @@
           <button
             class="icon-buttons"
             mat-icon-button
-            matBadge="0"
+            [matBadge]="wishlistQuantity"
             matBadgePosition="after"
             matBadgeSize="small"
             matBadgeColor="warn"
