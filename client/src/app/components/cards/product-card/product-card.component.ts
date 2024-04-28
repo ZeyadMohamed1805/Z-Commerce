@@ -42,52 +42,53 @@ export class ProductCardComponent {
   }
 
   addToCart(): void {
-    const user = localStorage.getItem('user');
-    if (user) {
-      const parsedUser = JSON.parse(user);
-      try {
-        this.apiService
-          .createData<any>(`products/add-cart/${parsedUser.user._id}`, {
-            productId: this.details._id,
-            token: parsedUser.token,
-          })
-          .subscribe((response) => {
-            console.log(response);
-            this.openSnackBar(
-              `${this.details.name} was added to your cart!`,
-              'Close'
-            );
-          });
-      } catch (error: unknown) {
-        this.openSnackBar(`Something went wrong`, 'Close');
+    const cartItems = localStorage.getItem('cart');
+    let parsedCartItems = cartItems ? JSON.parse(cartItems) : [];
+    let isItemAdded = false;
+
+    parsedCartItems.forEach((element: any) => {
+      console.log(parsedCartItems, 1);
+
+      if (element._id === this.details._id) {
+        isItemAdded = true;
+        element.amount += 1;
+        console.log(parsedCartItems, 2);
       }
+
+      return element;
+    });
+
+    if (!isItemAdded) {
+      localStorage.setItem(
+        'cart',
+        JSON.stringify([...parsedCartItems, { ...this.details, amount: 1 }])
+      );
     } else {
-      this.openSnackBar('You must login first', 'Close');
+      localStorage.setItem('cart', JSON.stringify(parsedCartItems));
     }
+    console.log(localStorage.getItem('cart'), 3);
   }
 
   addToWishlist(): void {
-    const user = localStorage.getItem('user');
-    if (user) {
-      const parsedUser = JSON.parse(user);
-      try {
-        this.apiService
-          .createData<any>(`products/add-wishlist/${parsedUser.user._id}`, {
-            productId: this.details._id,
-            token: parsedUser.token,
-          })
-          .subscribe((response) => {
-            console.log(response);
-            this.openSnackBar(
-              `${this.details.name} was added to your wishlist!`,
-              'Close'
-            );
-          });
-      } catch (error: unknown) {
-        this.openSnackBar(`Something went wrong`, 'Close');
+    const wishlistItems = localStorage.getItem('wishlist');
+    let parsedWishlistItems = wishlistItems ? JSON.parse(wishlistItems) : [];
+    let isItemAdded = false;
+
+    parsedWishlistItems = parsedWishlistItems.map((element: any) => {
+      if (element._id === this.details._id) {
+        isItemAdded = true;
+        element.amount++;
       }
-    } else {
-      this.openSnackBar('You must login first', 'Close');
+
+      return element;
+    });
+
+    if (!isItemAdded) {
+      localStorage.setItem(
+        'wishlist',
+        JSON.stringify([...parsedWishlistItems, { ...this.details, amount: 1 }])
+      );
     }
+    console.log(localStorage.getItem('wishlist'));
   }
 }

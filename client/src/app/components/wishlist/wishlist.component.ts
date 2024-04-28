@@ -2,52 +2,31 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-wishlist',
   standalone: true,
-  imports: [CommonModule, MatTableModule, MatSelectModule],
+  imports: [CommonModule, RouterLink, MatTableModule, MatSelectModule],
   templateUrl: './wishlist.component.html',
   styleUrl: './wishlist.component.scss',
 })
 export class WishlistComponent {
-  displayedColumns: string[] = [
-    'product',
-    'price',
-    'quantity',
-    'subtotal',
-    'state',
-    'cart',
-  ];
-  amounts: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  ELEMENT_DATA: Array<{
-    product: { image: string; name: string };
-    price: number;
-    quantity: number;
-    subtotal: number;
-    state: number;
-  }> = [
-    {
-      product: { image: '../../../assets/images/light-logo.svg', name: 'Name' },
-      price: 250,
-      quantity: 0,
-      subtotal: 200,
-      state: 0,
-    },
-    {
-      product: { image: '../../../assets/images/light-logo.svg', name: 'Name' },
-      price: 250,
-      quantity: 0,
-      subtotal: 200,
-      state: 1,
-    },
-    {
-      product: { image: '../../../assets/images/light-logo.svg', name: 'Name' },
-      price: 250,
-      quantity: 0,
-      subtotal: 200,
-      state: 0,
-    },
-  ];
+  displayedColumns: string[] = ['product', 'price', 'state', 'cart'];
+  ELEMENT_DATA: Array<any> = JSON.parse(localStorage.getItem('wishlist')!);
   dataSource = this.ELEMENT_DATA;
+
+  onMoveToCart(element: any) {
+    localStorage.setItem(
+      'wishlist',
+      JSON.stringify(
+        this.ELEMENT_DATA.filter((item) => item._id !== element._id)
+      )
+    );
+    const cartItems = localStorage.getItem('cart');
+    const parsedCartItems = cartItems ? JSON.parse(cartItems) : [];
+
+    localStorage.setItem('cart', JSON.stringify([...parsedCartItems, element]));
+    window.location.reload();
+  }
 }

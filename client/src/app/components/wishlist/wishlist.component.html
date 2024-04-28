@@ -1,16 +1,17 @@
 <div class="scroll-container">
+  @if( ELEMENT_DATA.length ) {
   <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
     <!--- Note that these columns can be defined in any order.
-                The actual rendered columns are set as a property on the row definition" -->
+                  The actual rendered columns are set as a property on the row definition" -->
 
     <!-- Position Column -->
     <ng-container matColumnDef="product">
       <th mat-header-cell *matHeaderCellDef>Product</th>
       <td mat-cell *matCellDef="let element">
         <div class="product-container">
-          <img [src]="element.product.image" [alt]="element.product.name" />
+          <img [src]="element.images[0]" [alt]="element.name" />
           <p>
-            {{ element.product.name }}
+            {{ element.name }}
           </p>
         </div>
       </td>
@@ -22,27 +23,6 @@
       <td mat-cell *matCellDef="let element">{{ element.price }}</td>
     </ng-container>
 
-    <!-- Symbol Column -->
-    <ng-container matColumnDef="quantity">
-      <th mat-header-cell *matHeaderCellDef>Quantity</th>
-      <td mat-cell *matCellDef="let quantity">
-        <mat-select [value]="0" class="select">
-          @for (amount of amounts; track amount) {
-          <mat-option [value]="amount"
-            ><span>{{ amount }}</span></mat-option
-          >
-          }
-        </mat-select>
-      </td>
-    </ng-container>
-
-    <ng-container matColumnDef="subtotal">
-      <th mat-header-cell *matHeaderCellDef>Subtotal</th>
-      <td mat-cell *matCellDef="let element">
-        {{ element.subtotal | currency }}
-      </td>
-    </ng-container>
-
     <ng-container matColumnDef="state">
       <th mat-header-cell *matHeaderCellDef>State</th>
       <td mat-cell *matCellDef="let element">
@@ -51,13 +31,37 @@
     </ng-container>
 
     <ng-container matColumnDef="cart">
-      <th mat-header-cell *matHeaderCellDef></th>
+      <th mat-header-cell *matHeaderCellDef>{{ "" }}</th>
       <td mat-cell *matCellDef="let element">
-        <button class="cart-button">Move To Cart</button>
+        <button class="cart-button" (click)="onMoveToCart(element)">
+          Move To Cart
+        </button>
       </td>
     </ng-container>
 
     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
+  } @else {
+  <div
+    style="
+      height: calc(100vh - 320px);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-size: 24px;
+    "
+  >
+    <div>
+      <h1>
+        <span>
+          {{ "Your wishlist is still empty!?" }}
+        </span>
+      </h1>
+      <button class="cart-button" routerLink="../products">
+        Browse Products
+      </button>
+    </div>
+  </div>
+  }
 </div>

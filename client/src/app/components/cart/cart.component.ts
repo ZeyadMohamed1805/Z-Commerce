@@ -21,39 +21,53 @@ import { RouterLink } from '@angular/router';
   styleUrl: './cart.component.scss',
 })
 export class CartComponent {
-  displayedColumns: string[] = ['product', 'price', 'quantity', 'subtotal'];
-  displayedColumnsTwo: string[] = ['title', 'value'];
-  amounts: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-  ELEMENT_DATA: Array<{
-    product: { image: string; name: string };
-    price: number;
-    quantity: number;
-    subtotal: number;
-  }> = [
-    {
-      product: { image: '../../../assets/images/light-logo.svg', name: 'Name' },
-      price: 250,
-      quantity: 0,
-      subtotal: 200,
-    },
-    {
-      product: { image: '../../../assets/images/light-logo.svg', name: 'Name' },
-      price: 250,
-      quantity: 0,
-      subtotal: 200,
-    },
-    {
-      product: { image: '../../../assets/images/light-logo.svg', name: 'Name' },
-      price: 250,
-      quantity: 0,
-      subtotal: 200,
-    },
+  displayedColumns: string[] = [
+    'product',
+    'price',
+    'quantity',
+    'subtotal',
+    'remove',
   ];
+  displayedColumnsTwo: string[] = ['title', 'value'];
+  ELEMENT_DATA: Array<any> = JSON.parse(localStorage.getItem('cart')!);
   ELEMENT_DATA_TWO = [
-    { title: 'Subtotal', value: 1750 },
+    {
+      title: 'Subtotal',
+      value: this.ELEMENT_DATA.length
+        ? this.ELEMENT_DATA.map(
+            (element) => element.price * element.amount
+          ).reduce((current, next) => current + next)
+        : 0,
+    },
     { title: 'Shipping', value: 0 },
-    { title: 'Total', value: 1750 },
+    {
+      title: 'Total',
+      value: this.ELEMENT_DATA.length
+        ? this.ELEMENT_DATA.map(
+            (element) => element.price * element.amount
+          ).reduce((current, next) => current + next)
+        : 0,
+    },
   ];
   dataSource = this.ELEMENT_DATA;
   dataSourceTwo = this.ELEMENT_DATA_TWO;
+
+  onAmountChange(element: any, amount: any) {
+    const index = this.ELEMENT_DATA.findIndex(
+      (item) => item._id === element._id
+    );
+    this.ELEMENT_DATA[index].amount = amount;
+    localStorage.setItem('cart', JSON.stringify(this.ELEMENT_DATA));
+    window.location.reload();
+  }
+
+  onRemove(element: any) {
+    localStorage.setItem(
+      'cart',
+      JSON.stringify(
+        this.ELEMENT_DATA.filter((item) => item._id !== element._id)
+      )
+    );
+    window.location.reload();
+  }
 }
