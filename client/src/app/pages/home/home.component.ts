@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { CarouselComponent } from '../../components/carousel/carousel.component';
 import { ProductCardComponent } from '../../components/cards/product-card/product-card.component';
 import { SellerCardComponent } from '../../components/cards/seller-card/seller-card.component';
@@ -21,6 +21,13 @@ import { ApiService } from '../../services/api/api.service';
 export class HomeComponent implements OnInit {
   newestCards: Array<TProduct> = [];
   mostLovedCards: Array<TProduct> = [];
+  @HostListener('window:load', [])
+  onLoad() {
+    !localStorage.getItem('cart') &&
+      localStorage.setItem('cart', JSON.stringify([]));
+    !localStorage.getItem('wishlist') &&
+      localStorage.setItem('wishlist', JSON.stringify([]));
+  }
 
   constructor(private apiService: ApiService) {}
 
