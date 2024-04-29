@@ -6,7 +6,7 @@
         [placeholder]="selectedType.concat(' Name')"
         class="search"
         matInput
-        (input)="onSearchChange(productNameSearch.value)"
+        (input)="onSearchChange(productNameSearch.value, select.value)"
         #productNameSearch
         [matAutocomplete]="auto"
       />
@@ -23,7 +23,13 @@
         >
         }
       </mat-autocomplete>
-      <mat-select [value]="types[0]" class="select" [(value)]="selectedType">
+      <mat-select
+        [value]="types[0]"
+        class="select"
+        [(value)]="selectedType"
+        (valueChange)="onTypeChange(select.value)"
+        #select
+      >
         @for (type of types; track type) {
         <mat-option [value]="type"
           ><span>{{ type }}</span></mat-option

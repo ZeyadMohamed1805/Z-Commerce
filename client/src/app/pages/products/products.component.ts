@@ -56,7 +56,7 @@ export class ProductsComponent {
     }
   }
 
-  onSearchChange(name: string): void {
+  onSearchChange(name: string, type: string): void {
     this.searching = true;
 
     try {
@@ -75,18 +75,28 @@ export class ProductsComponent {
           })
         )
         .subscribe((response: any) => {
-          if (response.status == 'Success') {
+          if (type === 'Product') {
             this.options = response.products.map(
               (product: TProduct) => product.name
             );
-            this.productCards = response.products;
-            this.searching = false;
+          } else {
+            this.options = response.products.map(
+              (product: TProduct) => product.seller.name
+            );
           }
+          this.productCards = response.products;
+          this.searching = false;
         });
     } catch (error: unknown) {
       this.productCards = [];
       this.options = [];
       this.searching = false;
     }
+  }
+
+  onTypeChange(type: string) {
+    this.options = this.productCards.map((product) =>
+      type === 'Product' ? product.name : product.seller.name
+    );
   }
 }
