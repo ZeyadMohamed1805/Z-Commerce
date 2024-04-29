@@ -4,7 +4,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatBadgeModule } from '@angular/material/badge';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-cart',
@@ -52,6 +53,12 @@ export class CartComponent {
   dataSource = this.ELEMENT_DATA;
   dataSourceTwo = this.ELEMENT_DATA_TWO;
 
+  constructor(private router: Router, private snackBar: MatSnackBar) {}
+
+  openSnackBar(message: string, action: string) {
+    this.snackBar.open(message, action);
+  }
+
   onAmountChange(element: any, amount: any) {
     const index = this.ELEMENT_DATA.findIndex(
       (item) => item._id === element._id
@@ -69,5 +76,14 @@ export class CartComponent {
       )
     );
     window.location.reload();
+  }
+
+  onCheckout() {
+    const user = localStorage.getItem('user');
+    if (user) {
+      this.router.navigateByUrl('checkout');
+    } else {
+      this.openSnackBar('You must login first', 'Close');
+    }
   }
 }

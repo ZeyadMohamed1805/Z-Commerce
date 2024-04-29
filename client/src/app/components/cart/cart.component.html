@@ -86,7 +86,7 @@
     <tr mat-header-row *matHeaderRowDef="displayedColumnsTwo"></tr>
     <tr mat-row *matRowDef="let row; columns: displayedColumnsTwo"></tr>
   </table>
-  <button class="checkout-button" routerLink="../checkout">
+  <button class="checkout-button" (click)="onCheckout()">
     Proceed To Checkout
   </button>
 </div>
