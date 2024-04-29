@@ -8,6 +8,7 @@ import dotenv from "dotenv";
 import comparePassword from "../utils/compare";
 import { createError } from "../errors/errors";
 import hashPassword from "../utils/hash";
+import Payment from "../models/payments";
 
 // Access Environment Variables
 dotenv.config();
@@ -147,5 +148,32 @@ export const loginUser = async (
 	} catch (error) {
 		// Send The Error As A Response To The Client
 		return next(createError(500, "Login Failed..."));
+	}
+};
+
+// Get User With Payment
+export const getUserWithPayment = async (
+	request: Request,
+	response: Response,
+	next: NextFunction
+) => {
+	// Destruct User ID From Params
+	const { id } = request.params;
+
+	try {
+		if (!id)
+			return next(createError(404, "User id was not sent in the params"));
+		const user = await User.findById(id);
+		if (!user)
+			return next(createError(404, `No user was found with id = ${id}`));
+		const payment = await Payment.findOne({ user: id });
+		return payment
+			? response
+					.status(200)
+					.json({ status: "Success", user: user, payment: payment })
+			: response.status(200).json({ status: "Success", user: user });
+	} catch (error: any) {
+		// Send The Error As A Response To The Client
+		return next(createError(500, error.message));
 	}
 };

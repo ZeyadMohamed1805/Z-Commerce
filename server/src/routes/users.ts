@@ -5,6 +5,7 @@ import {
 	loginUser,
 	readUser,
 	updateUser,
+	getUserWithPayment,
 } from "../controllers/users";
 import { verifyToken, verifyUser } from "../middlewares/verify";
 const router = express.Router();
@@ -21,6 +22,7 @@ router.get("/verify_user/:id", verifyUser, (request, response, next) => {
 router.get("/:id", verifyUser, readUser);
 router.post("/", createUser);
 router.post("/login", loginUser);
+router.post("/payment/:id", verifyUser, getUserWithPayment);
 router.put("/:id", verifyUser, updateUser);
 
 // Exports

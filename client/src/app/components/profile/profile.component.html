@@ -1,14 +1,21 @@
-<form>
+<form [formGroup]="formGroup">
   <mat-form-field>
     <mat-label>Name</mat-label>
-    <input matInput placeholder="Name" required />
+    <input
+      [readonly]="isReadOnly"
+      matInput
+      placeholder="Name"
+      required
+      formControlName="firstCtrl"
+    />
   </mat-form-field>
   <mat-form-field>
     <mat-label>Email</mat-label>
     <input
+      [readonly]="isReadOnly"
       matInput
       placeholder="pat@example.com"
-      [formControl]="email"
+      formControlName="secondCtrl"
       (blur)="updateErrorMessage()"
       required
     />
@@ -18,7 +25,13 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Password</mat-label>
-    <input matInput required [type]="hide ? 'password' : 'text'" />
+    <input
+      [readonly]="isReadOnly"
+      matInput
+      required
+      [type]="hide ? 'password' : 'text'"
+      formControlName="thirdCtrl"
+    />
     <button
       mat-icon-button
       class="password-icon"
@@ -31,7 +44,13 @@
     </button>
   </mat-form-field>
   <mat-form-field>
-    <mat-select class="select" placeholder="Role" required>
+    <mat-select
+      class="select"
+      placeholder="Role"
+      required
+      formControlName="fourthCtrl"
+      [disabled]="true"
+    >
       @for (option of options; track option) {
       <mat-option [value]="option"
         ><span>{{ option }}</span></mat-option
@@ -41,19 +60,45 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Address</mat-label>
-    <input matInput placeholder="Address" required />
+    <input
+      [readonly]="isReadOnly"
+      matInput
+      placeholder="Address"
+      required
+      formControlName="fifthCtrl"
+    />
   </mat-form-field>
   <mat-form-field>
     <mat-label>Phone</mat-label>
-    <input matInput placeholder="Phone" required />
+    <input
+      [readonly]="isReadOnly"
+      matInput
+      placeholder="Phone"
+      required
+      formControlName="sixthCtrl"
+    />
   </mat-form-field>
   <mat-form-field>
     <mat-label>CVV</mat-label>
-    <input matInput type="number" placeholder="CVV" required />
+    <input
+      [readonly]="isReadOnly"
+      matInput
+      type="number"
+      placeholder="CVV"
+      required
+      formControlName="seventhCtrl"
+    />
   </mat-form-field>
   <mat-form-field>
     <mat-label>Card No.</mat-label>
-    <input matInput placeholder="Card No." type="number" required />
+    <input
+      [readonly]="isReadOnly"
+      matInput
+      placeholder="Card No."
+      type="number"
+      required
+      formControlName="eighthCtrl"
+    />
   </mat-form-field>
   <mat-divider />
   <button mat-button class="submit-button">Update</button>
