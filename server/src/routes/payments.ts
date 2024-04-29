@@ -1,10 +1,11 @@
 // Modules
 import express from "express";
-import { readPayments } from "../controllers/payments";
+import { readPayment } from "../controllers/payments";
+import { verifyUser } from "../middlewares/verify";
 const router = express.Router();
 
 // Routes
-router.get("/", readPayments);
+router.post("/:id", verifyUser, readPayment);
 
 // Exports
 export default router;

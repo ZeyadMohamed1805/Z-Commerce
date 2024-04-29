@@ -10,14 +10,13 @@ export enum EOrderState {
 
 export interface IOrder {
 	_id: Types.ObjectId;
-	createdDate: Date;
 	deliveryDate: Date;
-	buyer: Types.ObjectId;
+	user: Types.ObjectId;
 	sellers: Array<Types.ObjectId>;
 	state: EOrderState;
 	products: Array<{
 		_id: Types.ObjectId;
 		quantity: number;
 	}>;
-	summary: Types.ObjectId;
+	summary?: Types.ObjectId;
 }

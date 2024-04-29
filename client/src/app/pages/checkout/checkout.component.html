@@ -89,7 +89,9 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumnsTwo"></tr>
           </table>
           <div>
-            <button matStepperNext class="next-button">Confirm</button>
+            <button matStepperNext (click)="onSubmit()" class="next-button">
+              Confirm
+            </button>
             <button matStepperPrevious class="previous-button">Back</button>
           </div>
         </form>

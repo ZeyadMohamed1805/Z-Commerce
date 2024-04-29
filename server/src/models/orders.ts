@@ -6,9 +6,8 @@ const { Schema } = mongoose;
 // Order Schema
 const OrderSchema = new Schema<IOrder, Model<IOrder>>(
 	{
-		createdDate: { type: Date, required: true, default: Date.now() },
 		deliveryDate: { type: Date, required: true },
-		buyer: { type: Schema.Types.ObjectId, ref: "Buyer", required: true },
+		user: { type: Schema.Types.ObjectId, ref: "User", required: true },
 		sellers: [
 			{ type: Schema.Types.ObjectId, ref: "Seller", required: true },
 		],
@@ -25,7 +24,6 @@ const OrderSchema = new Schema<IOrder, Model<IOrder>>(
 		summary: {
 			type: Schema.Types.ObjectId,
 			ref: "Summary",
-			required: true,
 		},
 		state: { type: Number, default: 0, required: true },
 	},

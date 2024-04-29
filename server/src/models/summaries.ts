@@ -6,6 +6,12 @@ const { Schema } = mongoose;
 // Summary Schema
 const SummarySchema = new Schema<ISummary, Model<ISummary>>(
 	{
+		products: [
+			{
+				_id: { type: Schema.Types.ObjectId, required: true },
+				quantity: { type: Number, required: true },
+			},
+		],
 		subtotal: { type: Number, required: true, min: 5 },
 		shipping: { type: Number, required: true, default: 0 },
 		taxes: { type: Number, required: true, default: 0 },
