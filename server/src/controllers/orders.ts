@@ -5,6 +5,7 @@ import Payment from "../models/payments";
 import Order from "../models/orders";
 import Summary from "../models/summaries";
 import User from "../models/users";
+import Seller from "../models/sellers";
 
 // Read Orders
 export const readOrders = async (
@@ -93,6 +94,20 @@ export const createOrder = async (
 					"Order was not linked to the user successfully"
 				)
 			);
+		const sellers = await Seller.find({ _id: { $in: order.sellers } });
+		sellers.forEach(async (seller: any) => {
+			const updatedSellerUser = await User.findByIdAndUpdate(
+				seller.user,
+				{ $push: { orders: order._id } },
+				{ new: true }
+			);
+
+			if (!updatedSellerUser)
+				// Return The Error To The Client
+				return next(
+					createError(500, "Seller order was not added successfully")
+				);
+		});
 		const summary = await new Summary({
 			...body.summary,
 			order: order._id,
@@ -131,7 +146,11 @@ export const readOrdersWithSummary = async (
 		if (!id)
 			// Return The Error To The Client
 			return next(createError(404, "User id was not send in the params"));
-		const orders = await Order.find({ user: id });
+		const user = await User.findById(id);
+		if (!user)
+			// Return The Error To The Client
+			return next(createError(404, "User was not found in the database"));
+		const orders = await Order.find({ _id: { $in: user?.orders } });
 		if (orders.length) {
 			const summaries = await Summary.find({
 				_id: { $in: orders.map((order) => order.summary) },
