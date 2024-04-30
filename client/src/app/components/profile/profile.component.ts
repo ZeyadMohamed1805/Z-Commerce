@@ -81,10 +81,10 @@ export class ProfileComponent implements OnInit {
             email: response.user.email,
             password: response.user.password,
             role: response.user.role,
-            address: response.payment.address,
-            phone: response.payment.phone,
-            cvv: response.payment.cvv,
-            card: response.payment.card,
+            address: response.payment && response.payment.address,
+            phone: response.payment && response.payment.phone,
+            cvv: response.payment && response.payment.cvv,
+            card: response.payment && response.payment.card,
           };
           this.formGroup = this._formBuilder.group({
             firstCtrl: [
