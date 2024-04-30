@@ -18,4 +18,6 @@ import { OrdersComponent } from '../../components/orders/orders.component';
   templateUrl: './account.component.html',
   styleUrl: './account.component.scss',
 })
-export class AccountComponent {}
+export class AccountComponent {
+  role = JSON.parse(localStorage.getItem('user')!).user.role;
+}

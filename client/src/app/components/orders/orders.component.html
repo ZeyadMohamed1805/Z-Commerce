@@ -39,7 +39,11 @@
       </mat-panel-description>
     </mat-expansion-panel-header>
     <div class="checkout-table">
-      <table mat-table [dataSource]="dataSourceTwo" class="mat-elevation-z8">
+      <table
+        mat-table
+        [dataSource]="dataSourceTwo[$index]"
+        class="mat-elevation-z8"
+      >
         <!--- Note that these columns can be defined in any order.
                     The actual rendered columns are set as a property on the row definition" -->
 

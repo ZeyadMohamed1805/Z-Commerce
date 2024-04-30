@@ -117,3 +117,37 @@ export const createOrder = async (
 		return next(error);
 	}
 };
+
+// Read Orders With Summary
+export const readOrdersWithSummary = async (
+	request: Request,
+	response: Response,
+	next: NextFunction
+) => {
+	// Destruct ID & Body From The Request
+	const { id } = request.params;
+
+	try {
+		if (!id)
+			// Return The Error To The Client
+			return next(createError(404, "User id was not send in the params"));
+		const orders = await Order.find({ user: id });
+		if (orders.length) {
+			const summaries = await Summary.find({
+				_id: { $in: orders.map((order) => order.summary) },
+			});
+			return response.status(200).json({
+				status: "Success",
+				orders: orders,
+				summaries: summaries,
+			});
+		} else {
+			return response
+				.status(200)
+				.json({ status: "Success", orders: [], summaries: [] });
+		}
+	} catch (error: unknown) {
+		// Send The Error As A Response To The Client
+		return next(error);
+	}
+};

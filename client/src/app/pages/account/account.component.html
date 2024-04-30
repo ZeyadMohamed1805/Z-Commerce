@@ -17,6 +17,8 @@
         </ng-template>
         <app-profile />
       </mat-tab>
+      @if(role) {
+
       <mat-tab>
         <ng-template mat-tab-label>
           Inventory
@@ -33,6 +35,7 @@
         </ng-template>
         <app-inventory />
       </mat-tab>
+      }
       <mat-tab>
         <ng-template mat-tab-label>
           Orders
