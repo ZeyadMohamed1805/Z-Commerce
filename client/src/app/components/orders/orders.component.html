@@ -68,5 +68,24 @@
       </table>
     </div>
   </mat-expansion-panel>
+  } @empty {
+  <div
+    style="
+      height: calc(100vh - 320px);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      font-size: 24px;
+    "
+  >
+    <div>
+      <h1>
+        <span>
+          {{ "No orders were made yet" }}
+        </span>
+      </h1>
+      <button class="remove-button" routerLink="../home">Home</button>
+    </div>
+  </div>
   }
 </mat-accordion>

@@ -4,6 +4,7 @@ import {
 	addToCart,
 	addToWishlist,
 	createProduct,
+	readInventory,
 	readMostLovedProducts,
 	readNewestProducts,
 	readProducts,
@@ -15,6 +16,7 @@ const router = express.Router();
 
 // Routes
 router.get("/", readProducts);
+router.post("/inventory/:id", verifyUser, readInventory);
 router.get("/newest", readNewestProducts);
 router.get("/most-loved", readMostLovedProducts);
 router.post("/:id", upload.single("image"), createProduct);

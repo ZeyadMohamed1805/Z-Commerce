@@ -45,7 +45,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 })
 export class InventoryComponent implements OnInit {
   panelOpenState = false;
-  displayedColumns: string[] = ['product', 'price', 'quantity'];
+  displayedColumns: string[] = ['image', 'name', 'price', 'quantity'];
   amounts: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   options: Array<string> = ['Buyer', 'Seller'];
   categories: Array<any> = [
@@ -78,12 +78,26 @@ export class InventoryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    const user = JSON.parse(localStorage.getItem('user')!);
     this.apiService.readData<any>('categories').subscribe((response: any) => {
       console.log(response);
       this.categories = response.categories
         .filter((category: any) => !category.subcategories.length)
         .map((category: any) => ({ _id: category._id, name: category.name }));
     });
+    this.apiService
+      .createData<any>(`products/inventory/${user.user._id}`, {
+        token: user.token,
+      })
+      .subscribe((response: any) => {
+        console.log(response);
+        this.ELEMENT_DATA = response.products.map((product: any) => ({
+          product: { image: product.images[0] || '', name: product.name },
+          price: product.price,
+          quantity: product.quantity,
+        }));
+        this.dataSource = this.ELEMENT_DATA;
+      });
     console.log(this.categories);
   }
 

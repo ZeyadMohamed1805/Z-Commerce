@@ -2,7 +2,10 @@
   <mat-expansion-panel hideToggle disabled>
     <mat-expansion-panel-header>
       <mat-panel-title
-        ><span style="color: black"> Product </span></mat-panel-title
+        ><span style="color: black"> Image </span></mat-panel-title
+      >
+      <mat-panel-description
+        ><span style="color: black"> Name </span></mat-panel-description
       >
       <mat-panel-description
         ><span style="color: black"> Price </span></mat-panel-description
@@ -19,13 +22,20 @@
   >
     <mat-expansion-panel-header>
       <mat-panel-title>
-        <span>
-          {{ element.product.name }}
-        </span>
+        <img
+          src="{{ element.product.image }}"
+          alt="{{ element.product.name }}"
+          style="height: 32px; aspect-ratio: 3 / 2"
+        />
       </mat-panel-title>
       <mat-panel-description>
         <span>
-          {{ element.price }}
+          {{ element.product.name }}
+        </span>
+      </mat-panel-description>
+      <mat-panel-description>
+        <span>
+          {{ element.price | currency }}
         </span>
       </mat-panel-description>
       <mat-panel-description>
@@ -63,14 +73,6 @@
   </h1>
   <div>
     <mat-label>Images</mat-label>
-    <!-- <input
-      type="file"
-      multiple
-      #file
-      [value]="file.files"
-      placeholder="Images"
-      formControlName="fourthCtrl"
-    /> -->
     <input
       type="file"
       (change)="onFileSelected($event)"

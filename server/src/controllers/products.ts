@@ -6,7 +6,6 @@ import { createError } from "../errors/errors";
 import User from "../models/users";
 import Buyer from "../models/buyers";
 import Seller from "../models/sellers";
-import categories from "../models/categories";
 
 // Read Products
 export const readProducts = async (
@@ -79,6 +78,43 @@ export const readMostLovedProducts = async (
 			// Return The Error To The Client
 			return next(createError(404, "No products found"));
 		// Send The Products As A Response To The Client
+		return response
+			.status(200)
+			.json({ status: "Success", products: products });
+	} catch (error: unknown) {
+		// Send The Error As A Response To The Client
+		return next(error);
+	}
+};
+
+// Read Inventory
+export const readInventory = async (
+	request: Request,
+	response: Response,
+	next: NextFunction
+) => {
+	// Destruct The User Id From The Params
+	const { id } = request.params;
+
+	try {
+		if (!id)
+			// Return The Error As A Response To The Client
+			return response.status(404).json({
+				status: "Fail",
+				message: "Id was not found in the params",
+			});
+		// Get The Seller With User ID
+		const seller = await Seller.findOne({ user: id });
+		if (!seller)
+			// Return The Error As A Response To The Client
+			return response.status(404).json({
+				status: "Fail",
+				message: "Cannot find the seller with the given user id",
+			});
+		// Get Products Of The Seller
+		const products = await Product.find({
+			"seller._id": { $in: seller._id },
+		});
 		return response
 			.status(200)
 			.json({ status: "Success", products: products });
