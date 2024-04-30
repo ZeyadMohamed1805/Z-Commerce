@@ -5,6 +5,8 @@ import cloudinary from "../utils/cloudinary";
 import { createError } from "../errors/errors";
 import User from "../models/users";
 import Buyer from "../models/buyers";
+import Seller from "../models/sellers";
+import categories from "../models/categories";
 
 // Read Products
 export const readProducts = async (
@@ -93,18 +95,44 @@ export const createProduct = async (
 	next: NextFunction
 ) => {
 	// Destruct The File And Body From The Request
-	const { body, file } = request;
+	const {
+		body,
+		file,
+		params: { id },
+	} = request;
 	console.log(body, file, 1);
 
 	try {
 		// If Body Was Not Sent
-		if (!body)
+		if (!body.product)
 			// Return The Error As A Response To The Client
 			return response.status(404).json({
 				status: "Fail",
-				message: "Body was not found in the params",
+				message: "Body was not found in the request",
 			});
-
+		// If ID Was Not Sent
+		if (!id)
+			// Return The Error As A Response To The Client
+			return response.status(404).json({
+				status: "Fail",
+				message: "Id was not found in the params",
+			});
+		// Find The User
+		const user = await User.findById(id);
+		if (!user)
+			// Return The Error As A Response To The Client
+			return response.status(404).json({
+				status: "Fail",
+				message: "User was not found in the database",
+			});
+		// Find The Seller
+		const seller = await Seller.findOne({ user: id });
+		if (!seller)
+			// Return The Error As A Response To The Client
+			return response.status(404).json({
+				status: "Fail",
+				message: "Seller was not found in the database",
+			});
 		let uploadedFile;
 		// If File Was Sent
 		if (file) {
@@ -112,16 +140,37 @@ export const createProduct = async (
 			uploadedFile = await cloudinary.uploader.upload(file.path);
 		}
 		console.log(2);
+
 		// Create The Product
 		const product = new Product({
-			...body,
+			...JSON.parse(body.product),
+			seller: {
+				_id: seller._id,
+				name: user.name,
+			},
 			images: uploadedFile && [uploadedFile.secure_url],
 			cloudinary_ids: [uploadedFile && uploadedFile.public_id],
 		});
 		console.log(3);
 		// Save The Product To The Database
 		const savedProduct = await product.save();
+		if (!savedProduct)
+			return response.status(500).json({
+				status: "Fail",
+				message: "Product was not saved successfully",
+			});
 		console.log(4);
+		// Update The Seller's Inventory
+		const updatedSeller = await Seller.findOneAndUpdate(
+			{ user: id },
+			{ $push: { inventory: savedProduct._id } },
+			{ new: true }
+		);
+		if (!updatedSeller)
+			return response.status(500).json({
+				status: "Fail",
+				message: "Seller inventory was not updated successfully",
+			});
 		// Return The Product As A Response To The Client
 		return response
 			.status(200)

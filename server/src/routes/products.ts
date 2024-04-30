@@ -17,7 +17,7 @@ const router = express.Router();
 router.get("/", readProducts);
 router.get("/newest", readNewestProducts);
 router.get("/most-loved", readMostLovedProducts);
-router.post("/", upload.single("image"), createProduct);
+router.post("/:id", upload.single("image"), createProduct);
 router.post("/add-cart/:id", verifyUser, addToCart);
 router.post("/add-wishlist/:id", verifyUser, addToWishlist);
 router.put("/:id", upload.single("image"), updateProduct);

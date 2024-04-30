@@ -17,4 +17,11 @@ export class ApiService {
   createData<T>(endpoint: string, body: T): Observable<T> {
     return this.http.post<T>(`${this.baseUrl}/${endpoint}`, body);
   }
+
+  createDataWithFile(endpoint: string, body: any, file: File): Observable<any> {
+    const formData = new FormData();
+    formData.append('image', file, file.name);
+    formData.append('product', JSON.stringify(body));
+    return this.http.post(`${this.baseUrl}/${endpoint}`, formData);
+  }
 }
