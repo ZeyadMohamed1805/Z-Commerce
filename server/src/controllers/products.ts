@@ -240,7 +240,7 @@ export const updateProduct = async (
 				message: "Id was not found in the params",
 			});
 		// If Body Was Not Sent
-		if (!body)
+		if (!body.product)
 			return response.status(404).json({
 				status: "Fail",
 				message: "Body was not found in the params",
@@ -254,29 +254,20 @@ export const updateProduct = async (
 				status: "Fail",
 				message: `No product was found by id = ${id}`,
 			});
-		let uploadedFile;
-		// If File Was Sent
-		if (file) {
-			// Delete image from cloudinary
-			product.cloudinary_ids.forEach(async (image) => {
-				await cloudinary.uploader.destroy(image);
-			});
-			// Upload image to cloudinary
-			uploadedFile = await cloudinary.uploader.upload(file.path);
-		}
 		console.log(3);
-		// Initialize The Product's New Data
-		const data = {
-			...body,
-			images: uploadedFile ? [uploadedFile.secure_url] : product.images,
-			cloudinary_ids: uploadedFile
-				? [uploadedFile.public_id]
-				: product.cloudinary_ids,
-		};
 		// Update The Product In The Database
-		const newProduct = await Product.findByIdAndUpdate(id, data, {
-			new: true,
-		});
+		const newProduct = await Product.findByIdAndUpdate(
+			id,
+			{
+				name: body.product.name,
+				price: body.product.price,
+				quantity: body.product.quantity,
+				description: body.product.description,
+			},
+			{
+				new: true,
+			}
+		);
 		console.log(4);
 		// Return The Response To The Client
 		return response

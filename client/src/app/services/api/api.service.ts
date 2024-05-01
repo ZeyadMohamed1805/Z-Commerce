@@ -24,4 +24,8 @@ export class ApiService {
     formData.append('product', JSON.stringify(body));
     return this.http.post(`${this.baseUrl}/${endpoint}`, formData);
   }
+
+  updateData<T>(endpoint: string, body: T): Observable<T> {
+    return this.http.put<T>(`${this.baseUrl}/${endpoint}`, body);
+  }
 }

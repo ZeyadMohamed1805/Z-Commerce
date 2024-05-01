@@ -93,11 +93,20 @@ export class InventoryComponent implements OnInit {
       .subscribe((response: any) => {
         console.log(response);
         this.ELEMENT_DATA = response.products.map((product: any) => ({
+          id: product._id,
           product: { image: product.images[0] || '', name: product.name },
           price: product.price,
           quantity: product.quantity,
         }));
         this.dataSource = this.ELEMENT_DATA;
+        this.updateFormGroups = response.products.map((product: any) =>
+          this._formBuilder.group({
+            firstCtrl: [product.name, Validators.required],
+            secondCtrl: [product.price, Validators.required],
+            thirdCtrl: [product.quantity, Validators.required],
+            fifthCtrl: [product.description, Validators.required],
+          })
+        );
       });
     console.log(this.categories);
   }
@@ -152,6 +161,35 @@ export class InventoryComponent implements OnInit {
       });
   }
 
+  updateProduct(id: string, index: number) {
+    console.log(id, this.updateFormGroups[index].value);
+    const user = JSON.parse(localStorage.getItem('user')!);
+    this.apiService
+      .updateData<any>(`products/${id}`, {
+        product: {
+          name: this.updateFormGroups[index].value.firstCtrl,
+          price: this.updateFormGroups[index].value.secondCtrl,
+          quantity: this.updateFormGroups[index].value.thirdCtrl,
+          description: this.updateFormGroups[index].value.fifthCtrl,
+        },
+        token: user.token,
+      })
+      .subscribe((response) => {
+        console.log(response);
+        this.openSnackBar('Product created successfully!', 'Close');
+        // this.updateFormGroups[index] = {
+        //   name: '',
+        //   price: null,
+        //   quantity: null,
+        //   images: null,
+        //   description: '',
+        //   creationDate: new Date(),
+        //   categories: [],
+        //   seller: {},
+        // };
+      });
+  }
+
   formGroup = this._formBuilder.group({
     firstCtrl: [this.addProductInfo.name, Validators.required],
     secondCtrl: [this.addProductInfo.price, Validators.required],
@@ -159,26 +197,8 @@ export class InventoryComponent implements OnInit {
     fifthCtrl: [this.addProductInfo.description, Validators.required],
     sixthCtrl: [this.addProductInfo.categories, Validators.required],
   });
-  ELEMENT_DATA: Array<{
-    product: { image: string; name: string };
-    price: number;
-    quantity: number;
-  }> = [
-    {
-      product: { image: '../../../assets/images/light-logo.svg', name: 'Name' },
-      price: 250,
-      quantity: 0,
-    },
-    {
-      product: { image: '../../../assets/images/light-logo.svg', name: 'Name' },
-      price: 250,
-      quantity: 0,
-    },
-    {
-      product: { image: '../../../assets/images/light-logo.svg', name: 'Name' },
-      price: 250,
-      quantity: 0,
-    },
-  ];
+
+  updateFormGroups: any = [];
+  ELEMENT_DATA: Array<any> = [];
   dataSource = this.ELEMENT_DATA;
 }
