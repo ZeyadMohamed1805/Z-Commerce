@@ -89,13 +89,40 @@
     <span>Add Product</span>
   </h1>
   <div>
-    <mat-label>Images</mat-label>
     <input
       type="file"
+      hidden
+      #fileInput
       (change)="onFileSelected($event)"
       accept="image/*"
       multiple
     />
+    <div
+      style="
+        width: 100%;
+        height: 320px;
+        border: solid 1px black;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+      "
+    >
+      <img
+        [src]="image"
+        style="width: 240px; aspect-ratio: 2 / 2"
+        alt="Product"
+      />
+      <button
+        type="button"
+        mat-raised-button
+        class="submit-button"
+        (click)="fileInput.click()"
+      >
+        Choose Image
+      </button>
+    </div>
   </div>
   <mat-form-field>
     <mat-label>Name</mat-label>

@@ -54,6 +54,7 @@ export class InventoryComponent implements OnInit {
     { _id: 2, name: 'Three' },
   ];
   email = new FormControl('', [Validators.required, Validators.email]);
+  image: string = '../../../assets/images/default-product.png';
   hide = true;
   errorMessage = '';
   addProductInfo = {
@@ -117,8 +118,7 @@ export class InventoryComponent implements OnInit {
 
   onFileSelected(event: any) {
     this.addProductInfo.images = event.target.files[0];
-    console.log(event.target.files[0]);
-    console.log(this.addProductInfo.images);
+    this.image = URL.createObjectURL(event.target.files[0]);
   }
 
   addProduct() {
