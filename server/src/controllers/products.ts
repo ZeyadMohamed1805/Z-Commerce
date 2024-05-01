@@ -6,6 +6,7 @@ import { createError } from "../errors/errors";
 import User from "../models/users";
 import Buyer from "../models/buyers";
 import Seller from "../models/sellers";
+import Category from "../models/categories";
 
 // Read Products
 export const readProducts = async (
@@ -14,14 +15,39 @@ export const readProducts = async (
 	next: NextFunction
 ) => {
 	// Destruct The Name And Seller Name From The Params
-	const { name, seller } = request.query;
+	const { name, seller, category } = request.query;
 
 	try {
+		let categoryID;
+		// Get The Category IDs
+		if (category) {
+			categoryID = await Category.findOne({
+				name: category && category,
+			});
+		}
 		// Get The Products From The Database
 		const products = name
-			? await Product.find({ name: { $regex: name } })
+			? categoryID
+				? await Product.find({
+						name: { $regex: name },
+						categories: categoryID,
+				  })
+				: await Product.find({
+						name: { $regex: name },
+				  })
 			: seller
-			? await Product.find({ "seller.name": { $regex: seller } })
+			? categoryID
+				? await Product.find({
+						"seller.name": { $regex: seller },
+						categories: categoryID,
+				  })
+				: await Product.find({
+						"seller.name": { $regex: seller },
+				  })
+			: categoryID
+			? await Product.find({
+					categories: categoryID,
+			  })
 			: await Product.find();
 		// If Products Don't Exist
 		if (!products.length)

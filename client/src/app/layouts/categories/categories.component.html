@@ -8,6 +8,21 @@
   (mouseleave)="mouseleave()"
 >
   <mat-nav-list>
+    <mat-list-item class="parent" (click)="onCategoryClick()">
+      <div class="navItemClass">
+        <span class="category-full-width" *ngIf="isExpanded || isShowing">{{
+          "All" | titlecase
+        }}</span>
+      </div>
+      <img
+        class="category-menu-button catIcon"
+        mat-list-icon
+        src="../../../../assets/icons/categories.svg"
+        [ngClass]="{ categoriesIcon: isShowing }"
+        *ngIf="!isExpanded"
+        alt="Categories"
+      />
+    </mat-list-item>
     @for(category of categories; track category._id) {
     @if(!category.supcategory) {
     <mat-list-item
@@ -27,14 +42,6 @@
         >
         }
       </div>
-      <img
-        class="category-menu-button catIcon"
-        mat-list-icon
-        src="../../../../assets/icons/categories.svg"
-        [ngClass]="{ categoriesIcon: isShowing }"
-        *ngIf="!isExpanded && $first"
-        alt="Categories"
-      />
     </mat-list-item>
     @if(category.subcategories && category.subcategories.length) {
     <div
