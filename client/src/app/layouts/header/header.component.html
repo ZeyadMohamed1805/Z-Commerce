@@ -8,6 +8,7 @@
       class="main-search"
       (input)="onSearchChange(productNameSearch.value)"
       #productNameSearch
+      (keydown.enter)="onSearchSubmit(productNameSearch.value)"
       matInput
       [matAutocomplete]="auto"
     />
@@ -97,6 +98,7 @@
             *ngIf="isExpanded || isShowing"
             mat-list-item
             (input)="onSearchChange(productSideNameSearch.value)"
+            (keydown.enter)="onSearchSubmit(productSideNameSearch.value)"
             #productSideNameSearch
             placeholder="Search"
           />

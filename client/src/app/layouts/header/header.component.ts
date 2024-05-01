@@ -8,7 +8,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
 import { MatButton } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { LoginComponent } from '../../components/auth/login/login.component';
 import { RegisterComponent } from '../../components/auth/register/register.component';
 import { ApiService } from '../../services/api/api.service';
@@ -53,7 +53,11 @@ export class HeaderComponent implements OnInit {
     this.loggedIn = Boolean(localStorage.getItem('user'));
   }
 
-  constructor(public dialog: MatDialog, private apiService: ApiService) {}
+  constructor(
+    public dialog: MatDialog,
+    private apiService: ApiService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     try {
@@ -96,6 +100,10 @@ export class HeaderComponent implements OnInit {
       this.options = [];
       this.searching = false;
     }
+  }
+
+  onSearchSubmit(product: string) {
+    this.router.navigateByUrl(`products?name=${product}`);
   }
 
   openDialog(index: number): void {

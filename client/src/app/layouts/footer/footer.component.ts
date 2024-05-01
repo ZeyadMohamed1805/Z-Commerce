@@ -6,7 +6,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatDivider } from '@angular/material/divider';
 import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api/api.service';
 import { catchError } from 'rxjs/operators';
 import { EMPTY } from 'rxjs';
@@ -37,7 +37,11 @@ export class FooterComponent {
     this.loggedIn = Boolean(localStorage.getItem('user'));
   }
 
-  constructor(public dialog: MatDialog, private apiService: ApiService) {}
+  constructor(
+    public dialog: MatDialog,
+    private apiService: ApiService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     try {
@@ -80,6 +84,10 @@ export class FooterComponent {
       this.options = [];
       this.searching = false;
     }
+  }
+
+  onSearchSubmit(product: string) {
+    this.router.navigateByUrl(`products?name=${product}`);
   }
 
   openDialog(index: number): void {

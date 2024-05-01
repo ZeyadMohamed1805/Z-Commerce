@@ -37,6 +37,7 @@
         aria-label="Number"
         class="main-search"
         (input)="onSearchChange(productNameSearch.value)"
+        (keydown.enter)="onSearchSubmit(productNameSearch.value)"
         #productNameSearch
         matInput
         [matAutocomplete]="auto"
