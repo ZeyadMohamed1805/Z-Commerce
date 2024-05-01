@@ -45,7 +45,13 @@ export class ProductsComponent {
   destroyedTwo = new Subject<void>();
   destroyedThree = new Subject<void>();
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private activatedRoute: ActivatedRoute
+  ) {
+    this.product = activatedRoute.snapshot.queryParamMap.get('name') || '';
+    this.category = activatedRoute.snapshot.queryParamMap.get('category') || '';
+  }
 
   ngOnInit(): void {
     try {
