@@ -49,9 +49,16 @@
         class="parent"
       >
         <div class="navItemClass">
-          <span class="category-full-width" *ngIf="isExpanded || isShowing">{{
-            subcategory.name | titlecase
-          }}</span>
+          <span
+            class="category-full-width"
+            (click)="
+              (!subcategory.subcategories ||
+                !subcategory.subcategories.length) &&
+                onCategoryClick(subcategory.name)
+            "
+            *ngIf="isExpanded || isShowing"
+            >{{ subcategory.name | titlecase }}</span
+          >
           @if ( subcategory.subcategories && subcategory.subcategories.length )
           {
           <mat-icon
@@ -73,7 +80,9 @@
         @if(subsubcategory.supcategory && subsubcategory.supcategory ===
         subcategory._id) {
         <mat-list-item
-          ><span>{{ subsubcategory.name | titlecase }}</span></mat-list-item
+          ><span (click)="onCategoryClick(subsubcategory.name)">{{
+            subsubcategory.name | titlecase
+          }}</span></mat-list-item
         >
         } }
       </div>

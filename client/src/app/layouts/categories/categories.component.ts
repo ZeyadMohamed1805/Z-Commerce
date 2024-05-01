@@ -69,6 +69,10 @@ export class CategoriesComponent implements OnInit {
     }
   }
 
+  onCategoryClick(category: string) {
+    this.router.navigateByUrl(`products?category=${category}`);
+  }
+
   routerPage(): boolean {
     return (
       this.router.url.includes('basket') ||
