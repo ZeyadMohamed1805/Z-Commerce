@@ -9,7 +9,7 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { merge } from 'rxjs';
+import { ReplaySubject, merge, takeUntil } from 'rxjs';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -41,12 +41,14 @@ export class RegisterComponent {
   option = new FormControl(0, [Validators.required]);
   hide = true;
   errorMessage = '';
+  destroyed = new ReplaySubject<void>();
+  destroyedTwo = new ReplaySubject<void>();
 
   @Output() closeDialog = new EventEmitter<any>();
 
   constructor(private apiService: ApiService, private snackBar: MatSnackBar) {
     merge(this.email.statusChanges, this.email.valueChanges)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntil(this.destroyed))
       .subscribe(() => this.updateErrorMessage());
   }
 
@@ -74,10 +76,18 @@ export class RegisterComponent {
           password: this.password.value!,
           role: this.option.value!,
         })
+        .pipe(takeUntil(this.destroyedTwo))
         .subscribe((response: any) => {
           this.openSnackBar('Registration was successful!', 'Close');
           this.closeDialog.emit(response);
         });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
+    this.destroyedTwo.next();
+    this.destroyedTwo.complete();
   }
 }

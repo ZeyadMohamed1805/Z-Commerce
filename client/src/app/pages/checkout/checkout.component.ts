@@ -14,6 +14,7 @@ import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api/api.service';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-checkout',
@@ -62,6 +63,8 @@ export class CheckoutComponent implements OnInit {
   amounts: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   ELEMENT_DATA_TWO: any = [];
   dataSourceTwo = this.ELEMENT_DATA_TWO;
+  destroyed = new ReplaySubject<void>();
+  destroyedTwo = new ReplaySubject<void>();
 
   constructor(
     private _formBuilder: FormBuilder,
@@ -73,6 +76,7 @@ export class CheckoutComponent implements OnInit {
     if (user) {
       this.apiService
         .createData<any>(`payments/${user.user._id}`, { token: user.token })
+        .pipe(takeUntil(this.destroyed))
         .subscribe((response) => {
           console.log(response);
           this.contactInfo = response.payment;
@@ -164,6 +168,7 @@ export class CheckoutComponent implements OnInit {
           },
           token: user.token,
         })
+        .pipe(takeUntil(this.destroyedTwo))
         .subscribe((response) => {
           console.log(response);
           localStorage.setItem('cart', JSON.stringify([]));
@@ -173,5 +178,12 @@ export class CheckoutComponent implements OnInit {
           );
         });
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
+    this.destroyedTwo.next();
+    this.destroyedTwo.complete();
   }
 }

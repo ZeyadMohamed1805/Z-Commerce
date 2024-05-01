@@ -13,8 +13,8 @@ import { LoginComponent } from '../../components/auth/login/login.component';
 import { RegisterComponent } from '../../components/auth/register/register.component';
 import { ApiService } from '../../services/api/api.service';
 import { TProduct } from '../../components/cards/product-card/product-card.types';
-import { catchError } from 'rxjs/operators';
-import { EMPTY } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
+import { EMPTY, ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -47,6 +47,8 @@ export class HeaderComponent implements OnInit {
   showSubSubMenu: boolean = false;
   options: Array<string> = [];
   searching: boolean = false;
+  destroyed = new ReplaySubject<void>();
+  destroyedTwo = new ReplaySubject<void>();
 
   @HostListener('window:load')
   onLoad() {
@@ -63,6 +65,7 @@ export class HeaderComponent implements OnInit {
     try {
       this.apiService
         .readData<Array<TProduct>>('products')
+        .pipe(takeUntil(this.destroyed))
         .subscribe((response: any) => {
           this.searching = false;
           this.options = response.products.map(
@@ -81,13 +84,7 @@ export class HeaderComponent implements OnInit {
     try {
       this.apiService
         .readData<Array<TProduct>>(`products?name=${name}`)
-        .pipe(
-          catchError((error) => {
-            this.searching = false;
-            this.options = [];
-            return EMPTY;
-          })
-        )
+        .pipe(takeUntil(this.destroyedTwo))
         .subscribe((response: any) => {
           if (response.status == 'Success') {
             this.options = response.products.map(
@@ -139,5 +136,12 @@ export class HeaderComponent implements OnInit {
 
   expand() {
     this.isExpanded = !this.isExpanded;
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
+    this.destroyedTwo.next();
+    this.destroyedTwo.complete();
   }
 }

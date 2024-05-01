@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { merge } from 'rxjs';
+import { ReplaySubject, merge, takeUntil } from 'rxjs';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
 import { TLoginUser } from './login.types';
@@ -34,11 +34,13 @@ export class LoginComponent {
   password = new FormControl('', [Validators.required]);
   hide = true;
   errorMessage = '';
+  destroyed = new ReplaySubject<void>();
+  destroyedTwo = new ReplaySubject<void>();
   @Output() closeDialog = new EventEmitter<any>();
 
   constructor(private apiService: ApiService, private snackBar: MatSnackBar) {
     merge(this.email.statusChanges, this.email.valueChanges)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntil(this.destroyed))
       .subscribe(() => this.updateErrorMessage());
   }
 
@@ -64,11 +66,19 @@ export class LoginComponent {
           email: this.email.value!,
           password: this.password.value!,
         })
+        .pipe(takeUntil(this.destroyedTwo))
         .subscribe((response: any) => {
           this.openSnackBar('Login was successful!', 'Close');
           this.closeDialog.emit(response);
         });
     }
     console.log(this.email.value, this.password.value);
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
+    this.destroyedTwo.next();
+    this.destroyedTwo.complete();
   }
 }

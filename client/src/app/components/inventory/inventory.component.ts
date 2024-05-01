@@ -16,7 +16,7 @@ import {
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { merge } from 'rxjs';
+import { ReplaySubject, merge, takeUntil } from 'rxjs';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
 import { ApiService } from '../../services/api/api.service';
@@ -67,6 +67,11 @@ export class InventoryComponent implements OnInit {
     categories: [],
     seller: {},
   };
+  destroyed = new ReplaySubject<void>();
+  destroyedTwo = new ReplaySubject<void>();
+  destroyedThree = new ReplaySubject<void>();
+  destroyedFour = new ReplaySubject<void>();
+  destroyedFive = new ReplaySubject<void>();
 
   constructor(
     private apiService: ApiService,
@@ -74,22 +79,26 @@ export class InventoryComponent implements OnInit {
     private snackBar: MatSnackBar
   ) {
     merge(this.email.statusChanges, this.email.valueChanges)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntil(this.destroyed))
       .subscribe(() => this.updateErrorMessage());
   }
 
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user')!);
-    this.apiService.readData<any>('categories').subscribe((response: any) => {
-      console.log(response);
-      this.categories = response.categories
-        .filter((category: any) => !category.subcategories.length)
-        .map((category: any) => ({ _id: category._id, name: category.name }));
-    });
+    this.apiService
+      .readData<any>('categories')
+      .pipe(takeUntil(this.destroyedTwo))
+      .subscribe((response: any) => {
+        console.log(response);
+        this.categories = response.categories
+          .filter((category: any) => !category.subcategories.length)
+          .map((category: any) => ({ _id: category._id, name: category.name }));
+      });
     this.apiService
       .createData<any>(`products/inventory/${user.user._id}`, {
         token: user.token,
       })
+      .pipe(takeUntil(this.destroyedThree))
       .subscribe((response: any) => {
         console.log(response);
         this.ELEMENT_DATA = response.products.map((product: any) => ({
@@ -145,6 +154,7 @@ export class InventoryComponent implements OnInit {
         },
         this.addProductInfo.images!
       )
+      .pipe(takeUntil(this.destroyedFour))
       .subscribe((response) => {
         console.log(response);
         this.openSnackBar('Product created successfully!', 'Close');
@@ -174,6 +184,7 @@ export class InventoryComponent implements OnInit {
         },
         token: user.token,
       })
+      .pipe(takeUntil(this.destroyedFive))
       .subscribe((response) => {
         console.log(response);
         this.openSnackBar('Product created successfully!', 'Close');
@@ -201,4 +212,17 @@ export class InventoryComponent implements OnInit {
   updateFormGroups: any = [];
   ELEMENT_DATA: Array<any> = [];
   dataSource = this.ELEMENT_DATA;
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
+    this.destroyedTwo.next();
+    this.destroyedTwo.complete();
+    this.destroyedThree.next();
+    this.destroyedThree.complete();
+    this.destroyedFour.next();
+    this.destroyedFour.complete();
+    this.destroyedFive.next();
+    this.destroyedFive.complete();
+  }
 }

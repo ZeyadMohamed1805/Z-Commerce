@@ -8,8 +8,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
 import { Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api/api.service';
-import { catchError } from 'rxjs/operators';
-import { EMPTY } from 'rxjs';
+import { catchError, takeUntil } from 'rxjs/operators';
+import { EMPTY, ReplaySubject } from 'rxjs';
 import { TProduct } from '../../components/cards/product-card/product-card.types';
 
 @Component({
@@ -31,6 +31,10 @@ export class FooterComponent {
   navButtons: Array<string> = ['login', 'register'];
   loggedIn: boolean = false;
   searching: boolean = false;
+  destroyed = new ReplaySubject<void>();
+  destroyedTwo = new ReplaySubject<void>();
+  destroyedThree = new ReplaySubject<void>();
+  destroyedFour = new ReplaySubject<void>();
 
   @HostListener('window:load')
   onLoad() {
@@ -47,6 +51,7 @@ export class FooterComponent {
     try {
       this.apiService
         .readData<Array<TProduct>>('products')
+        .pipe(takeUntil(this.destroyed))
         .subscribe((response: any) => {
           this.searching = false;
           this.options = response.products.map(
@@ -72,6 +77,7 @@ export class FooterComponent {
             return EMPTY;
           })
         )
+        .pipe(takeUntil(this.destroyedTwo))
         .subscribe((response: any) => {
           if (response.status == 'Success') {
             this.options = response.products.map(
@@ -96,18 +102,23 @@ export class FooterComponent {
     );
 
     // Subscribe to the close event emitted by the dialog component
-    dialogRef.componentInstance.closeDialog.subscribe((response) => {
-      // Close the dialog when the event is emitted
-      dialogRef.close();
-      if (response.token) {
-        localStorage.setItem('user', JSON.stringify(response));
-        window.location.reload();
-      }
-    });
+    dialogRef.componentInstance.closeDialog
+      .pipe(takeUntil(this.destroyedThree))
+      .subscribe((response) => {
+        // Close the dialog when the event is emitted
+        dialogRef.close();
+        if (response.token) {
+          localStorage.setItem('user', JSON.stringify(response));
+          window.location.reload();
+        }
+      });
 
-    dialogRef.afterClosed().subscribe((result) => {
-      console.log('The dialog was closed');
-    });
+    dialogRef
+      .afterClosed()
+      .pipe(takeUntil(this.destroyedFour))
+      .subscribe((result) => {
+        console.log('The dialog was closed');
+      });
   }
 
   closeDialog(close: boolean) {
@@ -119,5 +130,16 @@ export class FooterComponent {
   logout() {
     localStorage.removeItem('user');
     window.location.reload();
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
+    this.destroyedTwo.next();
+    this.destroyedTwo.complete();
+    this.destroyedThree.next();
+    this.destroyedThree.complete();
+    this.destroyedFour.next();
+    this.destroyedFour.complete();
   }
 }

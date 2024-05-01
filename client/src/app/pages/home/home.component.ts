@@ -5,6 +5,7 @@ import { SellerCardComponent } from '../../components/cards/seller-card/seller-c
 import { TProduct } from '../../components/cards/product-card/product-card.types';
 import { MatDividerModule } from '@angular/material/divider';
 import { ApiService } from '../../services/api/api.service';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -21,6 +22,8 @@ import { ApiService } from '../../services/api/api.service';
 export class HomeComponent implements OnInit {
   newestCards: Array<TProduct> = [];
   mostLovedCards: Array<TProduct> = [];
+  destroyed = new ReplaySubject<void>();
+  destroyedTwo = new ReplaySubject<void>();
   @HostListener('window:load', [])
   onLoad() {
     !localStorage.getItem('cart') &&
@@ -35,6 +38,7 @@ export class HomeComponent implements OnInit {
     try {
       this.apiService
         .readData<Array<TProduct>>('products/newest')
+        .pipe(takeUntil(this.destroyed))
         .subscribe((response: any) => {
           this.newestCards = response.products;
         });
@@ -45,11 +49,19 @@ export class HomeComponent implements OnInit {
     try {
       this.apiService
         .readData<Array<TProduct>>('products/most-loved')
+        .pipe(takeUntil(this.destroyedTwo))
         .subscribe((response: any) => {
           this.mostLovedCards = response.products;
         });
     } catch (error: unknown) {
       error instanceof Error && console.log(error);
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
+    this.destroyedTwo.next();
+    this.destroyedTwo.complete();
   }
 }

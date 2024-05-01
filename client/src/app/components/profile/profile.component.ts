@@ -10,7 +10,7 @@ import {
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { merge } from 'rxjs';
+import { ReplaySubject, merge, takeUntil } from 'rxjs';
 import { MatIcon } from '@angular/material/icon';
 import { MatDivider } from '@angular/material/divider';
 import { ApiService } from '../../services/api/api.service';
@@ -46,13 +46,15 @@ export class ProfileComponent implements OnInit {
   hide = true;
   errorMessage = '';
   isReadOnly = true;
+  destroyed = new ReplaySubject<void>();
+  destroyedTwo = new ReplaySubject<void>();
 
   constructor(
     private apiService: ApiService,
     private _formBuilder: FormBuilder
   ) {
     merge(this.email.statusChanges, this.email.valueChanges)
-      .pipe(takeUntilDestroyed())
+      .pipe(takeUntil(this.destroyed))
       .subscribe(() => this.updateErrorMessage());
   }
 
@@ -74,6 +76,7 @@ export class ProfileComponent implements OnInit {
         .createData<any>(`users/payment/${user.user._id}`, {
           token: user.token,
         })
+        .pipe(takeUntil(this.destroyedTwo))
         .subscribe((response: any) => {
           console.log(response);
           this.userInfo = {
@@ -132,5 +135,12 @@ export class ProfileComponent implements OnInit {
     } else {
       this.errorMessage = '';
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
+    this.destroyedTwo.next();
+    this.destroyedTwo.complete();
   }
 }

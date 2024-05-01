@@ -7,6 +7,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatBadgeModule } from '@angular/material/badge';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api/api.service';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-orders',
@@ -114,6 +115,7 @@ export class OrdersComponent implements OnInit {
     ],
   ];
   dataSourceTwo = this.ELEMENT_DATA_TWO;
+  destroyed = new ReplaySubject<void>();
 
   constructor(private apiService: ApiService) {}
 
@@ -121,6 +123,7 @@ export class OrdersComponent implements OnInit {
     const user = JSON.parse(localStorage.getItem('user')!);
     this.apiService
       .createData(`orders/summary/${user.user._id}`, { token: user.token })
+      .pipe(takeUntil(this.destroyed))
       .subscribe((response: any) => {
         console.log(response);
         this.ELEMENT_DATA = response.orders.map((order: any) => ({
@@ -138,5 +141,10 @@ export class OrdersComponent implements OnInit {
         this.dataSource = this.ELEMENT_DATA;
         this.dataSourceTwo = this.ELEMENT_DATA_TWO;
       });
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
   }
 }

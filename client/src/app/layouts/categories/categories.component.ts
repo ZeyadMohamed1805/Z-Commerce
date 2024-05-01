@@ -8,6 +8,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { ApiService } from '../../services/api/api.service';
 import { TCategory } from './categories.types';
+import { ReplaySubject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-categories',
@@ -32,6 +33,7 @@ export class CategoriesComponent implements OnInit {
   showSubmenu: Array<boolean> = [false, false, false, false];
   isShowing: boolean = true;
   showSubSubMenu: Array<boolean> = [false, false, false, false];
+  destroyed = new ReplaySubject<void>();
 
   constructor(private router: Router, private apiService: ApiService) {}
 
@@ -39,6 +41,7 @@ export class CategoriesComponent implements OnInit {
     try {
       this.apiService
         .readData<Array<TCategory>>('categories')
+        .pipe(takeUntil(this.destroyed))
         .subscribe((response: any) => {
           this.categories = response.categories;
         });
@@ -76,11 +79,7 @@ export class CategoriesComponent implements OnInit {
   }
 
   routerPage(): boolean {
-    return (
-      this.router.url.includes('basket') ||
-      this.router.url.includes('checkout') ||
-      this.router.url.includes('account')
-    );
+    return !this.router.url.includes('home');
   }
 
   mouseenter() {
@@ -93,5 +92,10 @@ export class CategoriesComponent implements OnInit {
     if (!this.isExpanded) {
       this.isShowing = false;
     }
+  }
+
+  ngOnDestroy(): void {
+    this.destroyed.next();
+    this.destroyed.complete();
   }
 }
