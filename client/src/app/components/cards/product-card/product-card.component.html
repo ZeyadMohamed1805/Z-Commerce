@@ -1,65 +1,33 @@
-<mat-card class="example-card" [id]="details._id">
-  <div
-    style="
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 8px 16px;
-    "
-  >
-    <h1>{{ details.name }}</h1>
-    <div style="display: flex; align-items: center; gap: 4px">
-      <button
-        mat-icon-button
-        (click)="addToBasket('cart')"
-        style="
-          background-color: transparent;
-          cursor: pointer;
-          display: grid;
-          place-items: center;
-          border: none;
-        "
-      >
-        <img src="../../../assets/icons/cart.svg" alt="Cart" />
-      </button>
-      <button
-        mat-icon-button
-        (click)="addToBasket('wishlist')"
-        style="
-          background-color: transparent;
-          cursor: pointer;
-          display: grid;
-          place-items: center;
-          border: none;
-        "
-      >
-        <img src="../../../assets/icons/heart.svg" alt="Wishlist" />
-      </button>
-    </div>
-  </div>
-  <img mat-card-image [src]="details.images[0]" [alt]="details.name" />
+<mat-card class="example-card" [id]="details._id" style="gap: 4px">
+  <img
+    mat-card-image
+    [src]="details.images[0]"
+    [alt]="details.name"
+    style="width: 100%; aspect-ratio: 3 / 2"
+  />
 
   <mat-card-header style="position: relative">
-    <img
-      [src]="details.images[0]"
-      mat-card-avatar
-      class="example-header-image"
-    />
-    <mat-card-title>{{ details.seller.name }}</mat-card-title>
-    <mat-card-subtitle>Seller</mat-card-subtitle>
+    <mat-card-title
+      ><span>{{ details.name }}</span></mat-card-title
+    >
+    <mat-card-subtitle
+      ><span>{{ details.seller.name }}</span></mat-card-subtitle
+    >
     <mat-chip-set
       aria-label="categories"
       style="position: absolute; right: 16px"
     >
       @for( category of details.categories; track category._id ) {
-      <mat-chip> {{ category.name }} </mat-chip>
+      <mat-chip>
+        <span>{{ category.name }}</span>
+      </mat-chip>
       }
     </mat-chip-set>
   </mat-card-header>
 
   <mat-card-content>
     <p>
-      {{ details.description }}
+      <span>{{ details.description }}</span>
     </p>
     <div
       style="
@@ -71,11 +39,51 @@
       "
     >
       <span style="font-size: 24px"> {{ details.price | currency }} </span>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <div
+      style="
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 8px;
+      "
+    >
       <span style="display: flex; align-items: center; gap: 4px">
         @for(star of [].constructor(details.rating); track star) {
         <img src="../../../assets/icons/star.svg" alt="Star" />
         }
       </span>
+      <div style="display: flex; align-items: center; gap: 4px">
+        <button
+          mat-icon-button
+          (click)="addToBasket('cart')"
+          style="
+            background-color: transparent;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            border: none;
+          "
+        >
+          <img src="../../../assets/icons/cart.svg" alt="Cart" />
+        </button>
+        <button
+          mat-icon-button
+          (click)="addToBasket('wishlist')"
+          style="
+            background-color: transparent;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            border: none;
+          "
+        >
+          <img src="../../../assets/icons/heart.svg" alt="Wishlist" />
+        </button>
+      </div>
     </div>
-  </mat-card-content>
+  </mat-card-actions>
 </mat-card>
