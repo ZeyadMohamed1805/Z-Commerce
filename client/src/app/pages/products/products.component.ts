@@ -13,7 +13,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconButton } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-products',
@@ -34,47 +33,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ProductsComponent {
   searching: boolean = false;
-  category: string = '';
-  product: string = '';
   options: Array<string> = [];
   types: Array<string> = ['Product', 'Seller'];
   selectedType: string = this.types[0];
   productCards: Array<TProduct> = [];
 
-  constructor(
-    private apiService: ApiService,
-    private activeRouter: ActivatedRoute
-  ) {}
+  constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.activeRouter.queryParamMap.subscribe((params) => {
-      this.category = params.get('category') || '';
-      this.product = this.product.length
-        ? this.product
-        : params.get('name') || '';
-
-      try {
-        this.apiService
-          .readData<Array<TProduct>>(
-            `products?name=${this.product}&category=${this.category}`
-          )
-          .subscribe((response: any) => {
-            this.options = response.products.map(
-              (product: TProduct) => product.name
-            );
-            this.productCards = response.products;
-          });
-      } catch (error: unknown) {
-        this.searching = false;
-        error instanceof Error && console.log(error);
-      }
-    });
-
     try {
       this.apiService
-        .readData<Array<TProduct>>(
-          `products?name=${this.product}&category=${this.category}`
-        )
+        .readData<Array<TProduct>>('products')
         .subscribe((response: any) => {
           this.options = response.products.map(
             (product: TProduct) => product.name
@@ -95,7 +64,7 @@ export class ProductsComponent {
         .readData<Array<TProduct>>(
           `products?${
             this.selectedType === 'Product' ? 'name' : 'seller'
-          }=${name}&category=${this.category}`
+          }=${name}`
         )
         .pipe(
           catchError((error) => {

@@ -18,37 +18,36 @@ export const readProducts = async (
 	const { name, seller, category } = request.query;
 
 	try {
-		let categoryID;
+		let categoryID: string | null = null;
 		// Get The Category IDs
-		if (category) {
+		if (category && category.length) {
 			categoryID = await Category.findOne({
-				name: category && category,
+				name: category,
 			});
 		}
+		let products;
 		// Get The Products From The Database
-		const products = name
-			? categoryID
+		if (!categoryID) {
+			products = name
+				? await Product.find({ name: { $regex: name } })
+				: seller
+				? await Product.find({ "seller.name": { $regex: seller } })
+				: await Product.find();
+		} else {
+			products = name
 				? await Product.find({
 						name: { $regex: name },
 						categories: categoryID,
 				  })
-				: await Product.find({
-						name: { $regex: name },
-				  })
-			: seller
-			? categoryID
+				: seller
 				? await Product.find({
 						"seller.name": { $regex: seller },
 						categories: categoryID,
 				  })
 				: await Product.find({
-						"seller.name": { $regex: seller },
-				  })
-			: categoryID
-			? await Product.find({
-					categories: categoryID,
-			  })
-			: await Product.find();
+						categories: categoryID,
+				  });
+		}
 		// If Products Don't Exist
 		if (!products.length)
 			// Return The Error To The Client
