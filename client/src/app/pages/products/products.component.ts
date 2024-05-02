@@ -48,33 +48,44 @@ export class ProductsComponent {
   constructor(
     private apiService: ApiService,
     private activatedRoute: ActivatedRoute
-  ) {
-    this.product = activatedRoute.snapshot.queryParamMap.get('name') || '';
-    this.category = activatedRoute.snapshot.queryParamMap.get('category') || '';
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.activatedRoute.queryParamMap.subscribe((params) => {
+      this.category = params.get('category') || '';
+      this.product = this.product.length
+        ? this.product
+        : params.get('name') || '';
+
+      try {
+        this.apiService
+          .readData<Array<TProduct>>(
+            `products?name=${this.product}&category=${this.category}`
+          )
+          .pipe(takeUntil(this.destroyed))
+          .subscribe((response: any) => {
+            this.options = response.products.map(
+              (product: TProduct) => product.name
+            );
+            this.productCards = response.products;
+          });
+      } catch (error: unknown) {
+        this.searching = false;
+        error instanceof Error && console.log(error);
+      }
+    });
+
     try {
       this.apiService
         .readData<Array<TProduct>>(
           `products?name=${this.product}&category=${this.category}`
         )
-        .pipe(takeUntil(this.destroyed))
+        .pipe(takeUntil(this.destroyedTwo))
         .subscribe((response: any) => {
           this.options = response.products.map(
             (product: TProduct) => product.name
           );
           this.productCards = response.products;
-        });
-
-      this.apiService
-        .readData<any>('categories')
-        .pipe(takeUntil(this.destroyedTwo))
-        .subscribe((response: any) => {
-          this.categories = response.categories
-            .filter((category: any) => !category.subcategories.length)
-            .map((category: any) => category.name);
-          this.categories.unshift('All');
         });
     } catch (error: unknown) {
       this.searching = false;
@@ -82,7 +93,7 @@ export class ProductsComponent {
     }
   }
 
-  onSearchChange(name: string, type: string, category: string): void {
+  onSearchChange(name: string, type: string): void {
     this.searching = true;
 
     try {
@@ -90,7 +101,7 @@ export class ProductsComponent {
         .readData<Array<TProduct>>(
           `products?${
             this.selectedType === 'Product' ? 'name' : 'seller'
-          }=${name}&category=${category === 'All' ? '' : category}`
+          }=${name}&category=${this.category}`
         )
         .pipe(
           catchError((error) => {

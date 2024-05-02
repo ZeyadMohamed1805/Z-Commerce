@@ -79,7 +79,11 @@ export class CategoriesComponent implements OnInit {
   }
 
   routerPage(): boolean {
-    return !this.router.url.includes('home');
+    return (
+      this.router.url.includes('basket') ||
+      this.router.url.includes('checkout') ||
+      this.router.url.includes('account')
+    );
   }
 
   mouseenter() {
