@@ -6,11 +6,18 @@ import { TProduct } from './product-card.types';
 import { MatIconModule } from '@angular/material/icon';
 import { ApiService } from '../../../services/api/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { SubstringPipe } from '../../../pipes/substring/substring.pipe';
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatChipsModule, MatIconModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatChipsModule,
+    MatIconModule,
+    SubstringPipe,
+  ],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
 })
