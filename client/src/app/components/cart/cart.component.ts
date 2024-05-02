@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
@@ -30,8 +30,8 @@ export class CartComponent {
     'remove',
   ];
   displayedColumnsTwo: string[] = ['title', 'value'];
-  ELEMENT_DATA: Array<any> = JSON.parse(localStorage.getItem('cart')!);
-  ELEMENT_DATA_TWO = [
+  @Input() ELEMENT_DATA: Array<any> = JSON.parse(localStorage.getItem('cart')!);
+  @Input() ELEMENT_DATA_TWO = [
     {
       title: 'Subtotal',
       value: this.ELEMENT_DATA.length
@@ -50,8 +50,10 @@ export class CartComponent {
         : 0,
     },
   ];
-  dataSource = this.ELEMENT_DATA;
-  dataSourceTwo = this.ELEMENT_DATA_TWO;
+  @Input() dataSource = this.ELEMENT_DATA;
+  @Input() dataSourceTwo = this.ELEMENT_DATA_TWO;
+  @Output() amountEmitter = new EventEmitter();
+  @Output() removeEmitter = new EventEmitter();
 
   constructor(private router: Router, private snackBar: MatSnackBar) {}
 
@@ -60,22 +62,24 @@ export class CartComponent {
   }
 
   onAmountChange(element: any, amount: any) {
-    const index = this.ELEMENT_DATA.findIndex(
-      (item) => item._id === element._id
-    );
-    this.ELEMENT_DATA[index].amount = amount;
-    localStorage.setItem('cart', JSON.stringify(this.ELEMENT_DATA));
-    window.location.reload();
+    this.amountEmitter.emit([element, amount]);
+    // const index = this.ELEMENT_DATA.findIndex(
+    //   (item) => item._id === element._id
+    // );
+    // this.ELEMENT_DATA[index].amount = amount;
+    // localStorage.setItem('cart', JSON.stringify(this.ELEMENT_DATA));
+    // window.location.reload();
   }
 
   onRemove(element: any) {
-    localStorage.setItem(
-      'cart',
-      JSON.stringify(
-        this.ELEMENT_DATA.filter((item) => item._id !== element._id)
-      )
-    );
-    window.location.reload();
+    this.removeEmitter.emit(element);
+    // localStorage.setItem(
+    //   'cart',
+    //   JSON.stringify(
+    //     this.ELEMENT_DATA.filter((item) => item._id !== element._id)
+    //   )
+    // );
+    // window.location.reload();
   }
 
   onCheckout() {

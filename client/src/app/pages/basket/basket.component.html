@@ -15,7 +15,14 @@
             <img src="../../../../assets/icons/cart.svg" alt="Cart" />
           </button>
         </ng-template>
-        <app-cart></app-cart>
+        <app-cart
+          [ELEMENT_DATA]="CART_ELEMENT_DATA"
+          [ELEMENT_DATA_TWO]="CART_ELEMENT_DATA_TWO"
+          [dataSource]="dataSource"
+          [dataSourceTwo]="dataSourceTwo"
+          (amountEmitter)="onAmountChange($event)"
+          (removeEmitter)="onRemove($event)"
+        ></app-cart>
       </mat-tab>
       <mat-tab>
         <ng-template mat-tab-label>
@@ -31,7 +38,10 @@
             <img src="../../../../assets/icons/heart.svg" alt="WishList" />
           </button>
         </ng-template>
-        <app-wishlist></app-wishlist>
+        <app-wishlist
+          [ELEMENT_DATA]="WISHLIST_ELEMENT_DATA"
+          (eventEmitter)="onMoveToCart($event)"
+        ></app-wishlist>
       </mat-tab>
     </mat-tab-group>
   </div>

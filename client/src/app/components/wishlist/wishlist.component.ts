@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatTableModule } from '@angular/material/table';
 import { MatSelectModule } from '@angular/material/select';
@@ -13,20 +13,13 @@ import { RouterLink } from '@angular/router';
 })
 export class WishlistComponent {
   displayedColumns: string[] = ['product', 'price', 'state', 'cart'];
-  ELEMENT_DATA: Array<any> = JSON.parse(localStorage.getItem('wishlist')!);
+  @Input() ELEMENT_DATA: Array<any> = JSON.parse(
+    localStorage.getItem('wishlist')!
+  );
+  @Output() eventEmitter = new EventEmitter();
   dataSource = this.ELEMENT_DATA;
 
   onMoveToCart(element: any) {
-    localStorage.setItem(
-      'wishlist',
-      JSON.stringify(
-        this.ELEMENT_DATA.filter((item) => item._id !== element._id)
-      )
-    );
-    const cartItems = localStorage.getItem('cart');
-    const parsedCartItems = cartItems ? JSON.parse(cartItems) : [];
-
-    localStorage.setItem('cart', JSON.stringify([...parsedCartItems, element]));
-    window.location.reload();
+    this.eventEmitter.emit(element);
   }
 }
