@@ -56,9 +56,15 @@
     </div>
     <div class="paginator-container">
       <mat-paginator
-        [length]="this.productCards.length"
-        [pageSize]="6"
+        [showFirstLastButtons]="false"
+        [length]="
+          this.productCards.length < 12
+            ? this.productCards.length
+            : this.productCards.length + 1
+        "
+        [pageSize]="this.productCards.length"
         aria-label="Select page"
+        (page)="onPageClick($event)"
       >
       </mat-paginator>
     </div>

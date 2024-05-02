@@ -59,3 +59,7 @@
         grid-template-rows: repeat(2, 40px);
     }
 }
+
+::ng-deep .mat-mdc-paginator-range-label {
+    display: none;
+}

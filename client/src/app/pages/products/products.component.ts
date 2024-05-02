@@ -44,6 +44,7 @@ export class ProductsComponent {
   destroyed = new Subject<void>();
   destroyedTwo = new Subject<void>();
   destroyedThree = new Subject<void>();
+  destroyedFour = new Subject<void>();
 
   constructor(
     private apiService: ApiService,
@@ -59,7 +60,7 @@ export class ProductsComponent {
       try {
         this.apiService
           .readData<Array<TProduct>>(
-            `products?name=${this.product}&category=${this.category}`
+            `products?name=${this.product}&category=${this.category}&limit=12`
           )
           .pipe(takeUntil(this.destroyed))
           .subscribe((response: any) => {
@@ -77,7 +78,7 @@ export class ProductsComponent {
     try {
       this.apiService
         .readData<Array<TProduct>>(
-          `products?name=${this.product}&category=${this.category}`
+          `products?name=${this.product}&category=${this.category}&limit=12`
         )
         .pipe(takeUntil(this.destroyedTwo))
         .subscribe((response: any) => {
@@ -100,7 +101,7 @@ export class ProductsComponent {
         .readData<Array<TProduct>>(
           `products?${
             this.selectedType === 'Product' ? 'name' : 'seller'
-          }=${name}&category=${this.category}`
+          }=${name}&category=${this.category}&limit=12`
         )
         .pipe(
           catchError((error) => {
@@ -137,6 +138,46 @@ export class ProductsComponent {
     );
   }
 
+  onPageClick(event: any) {
+    console.log(event);
+    this.searching = true;
+
+    try {
+      this.apiService
+        .readData<Array<TProduct>>(
+          `products?${this.selectedType === 'Product' ? 'name' : 'seller'}=${
+            this.product
+          }&category=${this.category}&page=${event.pageIndex + 1}&limit=12`
+        )
+        .pipe(
+          catchError((error) => {
+            this.searching = false;
+            this.options = [];
+            this.productCards = [];
+            return EMPTY;
+          }),
+          takeUntil(this.destroyedFour)
+        )
+        .subscribe((response: any) => {
+          if (this.selectedType === 'Product') {
+            this.options = response.products.map(
+              (product: TProduct) => product.name
+            );
+          } else {
+            this.options = response.products.map(
+              (product: TProduct) => product.seller.name
+            );
+          }
+          this.productCards = response.products;
+          this.searching = false;
+        });
+    } catch (error: unknown) {
+      this.productCards = [];
+      this.options = [];
+      this.searching = false;
+    }
+  }
+
   ngOnDestroy(): void {
     this.destroyed.next();
     this.destroyed.complete();
@@ -144,5 +185,7 @@ export class ProductsComponent {
     this.destroyedTwo.complete();
     this.destroyedThree.next();
     this.destroyedThree.complete();
+    this.destroyedFour.next();
+    this.destroyedFour.complete();
   }
 }

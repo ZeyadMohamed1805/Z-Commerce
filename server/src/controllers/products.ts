@@ -15,11 +15,12 @@ export const readProducts = async (
 	next: NextFunction
 ) => {
 	// Destruct The Name And Seller Name From The Params
-	const { name, seller, category, page } = request.query;
+	const { name, seller, category, page, limit } = request.query;
 
 	try {
 		const currentPage = Number(page) || 1;
-		const startIndex = (currentPage - 1) * 3;
+		const currentLimit = Number(limit) || 12;
+		const startIndex = (currentPage - 1) * currentLimit;
 
 		let categoryID: any = null;
 		// Get The Category IDs
@@ -29,17 +30,18 @@ export const readProducts = async (
 			});
 		}
 		let products;
+		let totalPages;
 		// Get The Products From The Database
 		if (!categoryID) {
 			products = name
 				? await Product.find({ name: { $regex: name } })
 						.skip(startIndex)
-						.limit(3)
+						.limit(currentLimit)
 				: seller
 				? await Product.find({ "seller.name": { $regex: seller } })
 						.skip(startIndex)
-						.limit(3)
-				: await Product.find().skip(startIndex).limit(3);
+						.limit(currentLimit)
+				: await Product.find().skip(startIndex).limit(currentLimit);
 		} else {
 			products = name
 				? await Product.find({
@@ -47,26 +49,28 @@ export const readProducts = async (
 						"categories._id": categoryID._id,
 				  })
 						.skip(startIndex)
-						.limit(3)
+						.limit(currentLimit)
 				: seller
 				? await Product.find({
 						"seller.name": { $regex: seller },
 						"categories._id": categoryID._id,
 				  })
 						.skip(startIndex)
-						.limit(3)
+						.limit(currentLimit)
 				: await Product.find({ "categories._id": categoryID._id })
 						.skip(startIndex)
-						.limit(3);
+						.limit(currentLimit);
 		}
 		// If Products Don't Exist
 		if (!products.length)
 			// Return The Error To The Client
 			return next(createError(404, "No products found"));
 		// Send The Products As A Response To The Client
-		return response
-			.status(200)
-			.json({ status: "Success", products: products });
+		return response.status(200).json({
+			status: "Success",
+			products: products,
+			// totalPages: Math.ceil(totalPages / currentLimit),
+		});
 	} catch (error: unknown) {
 		// Send The Error As A Response To The Client
 		return next(error);
