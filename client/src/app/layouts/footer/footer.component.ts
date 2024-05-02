@@ -30,6 +30,7 @@ export class FooterComponent {
   navLinks: Array<string> = ['home', 'products', 'basket'];
   navButtons: Array<string> = ['login', 'register'];
   loggedIn: boolean = false;
+  isBuyer: boolean = false;
   searching: boolean = false;
   destroyed = new ReplaySubject<void>();
   destroyedTwo = new ReplaySubject<void>();
@@ -39,6 +40,14 @@ export class FooterComponent {
   @HostListener('window:load')
   onLoad() {
     this.loggedIn = Boolean(localStorage.getItem('user'));
+    this.isBuyer = this.loggedIn
+      ? Boolean(!JSON.parse(localStorage.getItem('user')!).user.role)
+      : false;
+    this.navLinks = this.loggedIn
+      ? this.isBuyer
+        ? ['home', 'products', 'basket']
+        : ['home', 'products']
+      : ['home', 'products', 'basket'];
   }
 
   constructor(

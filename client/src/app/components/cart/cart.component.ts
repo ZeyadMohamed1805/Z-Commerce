@@ -63,23 +63,10 @@ export class CartComponent {
 
   onAmountChange(element: any, amount: any) {
     this.amountEmitter.emit([element, amount]);
-    // const index = this.ELEMENT_DATA.findIndex(
-    //   (item) => item._id === element._id
-    // );
-    // this.ELEMENT_DATA[index].amount = amount;
-    // localStorage.setItem('cart', JSON.stringify(this.ELEMENT_DATA));
-    // window.location.reload();
   }
 
   onRemove(element: any) {
     this.removeEmitter.emit(element);
-    // localStorage.setItem(
-    //   'cart',
-    //   JSON.stringify(
-    //     this.ELEMENT_DATA.filter((item) => item._id !== element._id)
-    //   )
-    // );
-    // window.location.reload();
   }
 
   onCheckout() {

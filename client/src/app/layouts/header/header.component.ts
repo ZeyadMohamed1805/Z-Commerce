@@ -42,6 +42,7 @@ export class HeaderComponent implements OnInit {
   navButtons: Array<string> = ['login', 'register'];
   isExpanded: boolean = false;
   loggedIn: boolean = false;
+  isBuyer: boolean = false;
   showSubmenu: boolean = false;
   isShowing: boolean = false;
   showSubSubMenu: boolean = false;
@@ -53,6 +54,14 @@ export class HeaderComponent implements OnInit {
   @HostListener('window:load')
   onLoad() {
     this.loggedIn = Boolean(localStorage.getItem('user'));
+    this.isBuyer = this.loggedIn
+      ? Boolean(!JSON.parse(localStorage.getItem('user')!).user.role)
+      : false;
+    this.navLinks = this.loggedIn
+      ? this.isBuyer
+        ? ['home', 'products', 'basket']
+        : ['home', 'products']
+      : ['home', 'products', 'basket'];
   }
 
   constructor(
