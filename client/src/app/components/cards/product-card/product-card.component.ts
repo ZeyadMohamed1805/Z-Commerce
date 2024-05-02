@@ -4,7 +4,6 @@ import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { TProduct } from './product-card.types';
 import { MatIconModule } from '@angular/material/icon';
-import { ApiService } from '../../../services/api/api.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { SubstringPipe } from '../../../pipes/substring/substring.pipe';
 
@@ -22,6 +21,9 @@ import { SubstringPipe } from '../../../pipes/substring/substring.pipe';
   styleUrl: './product-card.component.scss',
 })
 export class ProductCardComponent {
+  user = localStorage.getItem('user');
+  parsedUser = this.user && JSON.parse(this.user);
+
   @Input() details: TProduct = {
     _id: 'ID',
     name: 'Product',
@@ -42,61 +44,21 @@ export class ProductCardComponent {
     quantity: 5,
   };
 
-  constructor(private apiService: ApiService, private snackBar: MatSnackBar) {}
+  constructor(private snackBar: MatSnackBar) {}
 
   openSnackBar(message: string, action: string) {
     this.snackBar.open(message, action);
   }
 
-  addToCart(): void {
-    const cartItems = localStorage.getItem('cart');
-    let parsedCartItems = cartItems ? JSON.parse(cartItems) : [];
-    let isItemAdded = false;
-
-    parsedCartItems.forEach((element: any) => {
-      if (element._id === this.details._id) {
-        isItemAdded = true;
-      }
-
-      return element;
-    });
-
-    if (!isItemAdded) {
-      localStorage.setItem(
-        'cart',
-        JSON.stringify([...parsedCartItems, { ...this.details, amount: 1 }])
-      );
-      this.openSnackBar('Item is added to your cart!', 'Close');
-    } else {
-      this.openSnackBar('Item is already in your cart', 'Close');
-    }
-  }
-
-  addToWishlist(): void {
-    const wishlistItems = localStorage.getItem('wishlist');
-    let parsedWishlistItems = wishlistItems ? JSON.parse(wishlistItems) : [];
-    let isItemAdded = false;
-
-    parsedWishlistItems = parsedWishlistItems.map((element: any) => {
-      if (element._id === this.details._id) {
-        isItemAdded = true;
-      }
-
-      return element;
-    });
-
-    if (!isItemAdded) {
-      localStorage.setItem(
-        'wishlist',
-        JSON.stringify([...parsedWishlistItems, { ...this.details, amount: 1 }])
-      );
-      this.openSnackBar('Item is added to your wishlist!', 'Close');
-    } else {
-      this.openSnackBar('Item is already in your wishlist', 'Close');
-    }
-  }
-
   addToBasket(type: string): void {
+    if (this.user && this.parsedUser.user.role) {
+      this.openSnackBar(
+        'Sellers are not authorized to have a basket',
+        'Close!'
+      );
+      return;
+    }
+
     const cartItems = localStorage.getItem('cart');
     const wishlistItems = localStorage.getItem('wishlist');
     let parsedCartItems = cartItems ? JSON.parse(cartItems) : [];
