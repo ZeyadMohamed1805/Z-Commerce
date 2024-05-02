@@ -98,9 +98,9 @@ export class ProductsComponent {
             this.options = [];
             this.productCards = [];
             return EMPTY;
-          })
+          }),
+          takeUntil(this.destroyedThree)
         )
-        .pipe(takeUntil(this.destroyedThree))
         .subscribe((response: any) => {
           if (type === 'Product') {
             this.options = response.products.map(

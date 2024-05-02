@@ -18,7 +18,7 @@ export const readProducts = async (
 	const { name, seller, category } = request.query;
 
 	try {
-		let categoryID: string | null = null;
+		let categoryID: any = null;
 		// Get The Category IDs
 		if (category && category.length) {
 			categoryID = await Category.findOne({
@@ -37,16 +37,14 @@ export const readProducts = async (
 			products = name
 				? await Product.find({
 						name: { $regex: name },
-						categories: categoryID,
+						"categories._id": categoryID._id,
 				  })
 				: seller
 				? await Product.find({
 						"seller.name": { $regex: seller },
-						categories: categoryID,
+						"categories._id": categoryID._id,
 				  })
-				: await Product.find({
-						categories: categoryID,
-				  });
+				: await Product.find({ "categories._id": categoryID._id });
 		}
 		// If Products Don't Exist
 		if (!products.length)
