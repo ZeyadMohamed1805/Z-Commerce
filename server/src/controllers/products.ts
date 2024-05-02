@@ -339,12 +339,26 @@ export const deleteProduct = async (
 			});
 		// Delete The Product From The Database
 		const product = await Product.findByIdAndDelete(id);
+		if (!product)
+			return response.status(404).json({
+				status: "Fail",
+				message: "Product was not removed",
+			});
 		// Delete Product Images from Cloudinary
 		if (product?.cloudinary_ids) {
 			product?.cloudinary_ids?.forEach(async (image) => {
 				await cloudinary.uploader.destroy(image);
 			});
 		}
+		// Delete The Product From The Sellers
+		const sellers = await Seller.updateMany({
+			$pull: { inventory: id },
+		});
+		if (!sellers)
+			return response.status(404).json({
+				status: "Fail",
+				message: "Product was not removed from the sellers",
+			});
 		// Return The Response To The Client
 		return response
 			.status(200)

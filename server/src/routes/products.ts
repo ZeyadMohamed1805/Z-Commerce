@@ -4,6 +4,7 @@ import {
 	addToCart,
 	addToWishlist,
 	createProduct,
+	deleteProduct,
 	readInventory,
 	readMostLovedProducts,
 	readNewestProducts,
@@ -23,6 +24,7 @@ router.post("/:id", upload.single("image"), createProduct);
 router.post("/add-cart/:id", verifyUser, addToCart);
 router.post("/add-wishlist/:id", verifyUser, addToWishlist);
 router.put("/:id", updateProduct);
+router.delete("/:id", deleteProduct);
 
 // Exports
 export default router;

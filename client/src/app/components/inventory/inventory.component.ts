@@ -190,17 +190,21 @@ export class InventoryComponent implements OnInit {
       .pipe(takeUntil(this.destroyedFive))
       .subscribe((response) => {
         console.log(response);
-        this.openSnackBar('Product created successfully!', 'Close');
-        // this.updateFormGroups[index] = {
-        //   name: '',
-        //   price: null,
-        //   quantity: null,
-        //   images: null,
-        //   description: '',
-        //   creationDate: new Date(),
-        //   categories: [],
-        //   seller: {},
-        // };
+        this.openSnackBar('Product updated successfully!', 'Close');
+      });
+  }
+
+  deleteProduct(id: string, index: number) {
+    console.log(id, this.updateFormGroups[index].value);
+    this.apiService
+      .deleteData<any>(`products/${id}`)
+      .pipe(takeUntil(this.destroyedFive))
+      .subscribe((response) => {
+        console.log(response);
+        this.openSnackBar('Product deleted successfully!', 'Close');
+        this.updateFormGroups.splice(index, 1);
+        this.ELEMENT_DATA.splice(index, 1);
+        this.dataSource = this.ELEMENT_DATA;
       });
   }
 

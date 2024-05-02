@@ -77,21 +77,21 @@ table {
         margin-right: 8px;
         padding: 4px;
       }
-
-      .submit-button {
-        background-color: #db4444;
-        color: #FFF;
-        padding: 8px 16px;
-        border: none;
-        cursor: pointer;
-        transition-duration: 0.25s;
-        font-size: 16px;
-
-        &:hover {
-            opacity: 0.5;
-        }
-      }
 }
+
+.submit-button {
+    background-color: #db4444;
+    color: #FFF;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+    transition-duration: 0.25s;
+    font-size: 16px;
+
+    &:hover {
+        opacity: 0.5;
+    }
+  }
 
 @media ( max-width: 750px ) {
     form {

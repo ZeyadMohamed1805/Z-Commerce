@@ -13,6 +13,9 @@
       <mat-panel-description
         ><span style="color: black"> Quantity </span></mat-panel-description
       >
+      <mat-panel-description
+        ><span style="color: black"> {{ "" }} </span></mat-panel-description
+      >
     </mat-expansion-panel-header>
   </mat-expansion-panel>
   @for( element of ELEMENT_DATA; track element.product.name ) {
@@ -42,6 +45,16 @@
         <span>
           {{ element.quantity }}
         </span>
+      </mat-panel-description>
+      <mat-panel-description>
+        <button
+          mat-button
+          (click)="deleteProduct(element.id, $index)"
+          class="submit-button"
+          style="font-size: 14px; font-weight: 500; padding: 4px 8px"
+        >
+          <span> Remove </span>
+        </button>
       </mat-panel-description>
     </mat-expansion-panel-header>
     <form
