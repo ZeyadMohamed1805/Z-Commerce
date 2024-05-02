@@ -33,7 +33,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './products.component.scss',
 })
 export class ProductsComponent {
-  searching: boolean = false;
+  searching: boolean = true;
   options: Array<string> = [];
   types: Array<string> = ['Product', 'Seller'];
   selectedType: string = this.types[0];
@@ -53,9 +53,8 @@ export class ProductsComponent {
   ngOnInit(): void {
     this.activatedRoute.queryParamMap.subscribe((params) => {
       this.category = params.get('category') || '';
-      this.product = this.product.length
-        ? this.product
-        : params.get('name') || '';
+      this.product =
+        params.get('name') || this.product.length ? this.product : '';
 
       try {
         this.apiService

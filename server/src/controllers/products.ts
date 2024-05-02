@@ -15,9 +15,12 @@ export const readProducts = async (
 	next: NextFunction
 ) => {
 	// Destruct The Name And Seller Name From The Params
-	const { name, seller, category } = request.query;
+	const { name, seller, category, page } = request.query;
 
 	try {
+		const currentPage = Number(page) || 1;
+		const startIndex = (currentPage - 1) * 3;
+
 		let categoryID: any = null;
 		// Get The Category IDs
 		if (category && category.length) {
@@ -30,21 +33,31 @@ export const readProducts = async (
 		if (!categoryID) {
 			products = name
 				? await Product.find({ name: { $regex: name } })
+						.skip(startIndex)
+						.limit(3)
 				: seller
 				? await Product.find({ "seller.name": { $regex: seller } })
-				: await Product.find();
+						.skip(startIndex)
+						.limit(3)
+				: await Product.find().skip(startIndex).limit(3);
 		} else {
 			products = name
 				? await Product.find({
 						name: { $regex: name },
 						"categories._id": categoryID._id,
 				  })
+						.skip(startIndex)
+						.limit(3)
 				: seller
 				? await Product.find({
 						"seller.name": { $regex: seller },
 						"categories._id": categoryID._id,
 				  })
-				: await Product.find({ "categories._id": categoryID._id });
+						.skip(startIndex)
+						.limit(3)
+				: await Product.find({ "categories._id": categoryID._id })
+						.skip(startIndex)
+						.limit(3);
 		}
 		// If Products Don't Exist
 		if (!products.length)
