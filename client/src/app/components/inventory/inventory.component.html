@@ -186,5 +186,12 @@
     </mat-select>
   </mat-form-field>
   <mat-divider />
-  <button mat-button class="submit-button">Submit</button>
+  <button
+    mat-button
+    [disabled]="isLoading"
+    [ngStyle]="{ cursor: isLoading ? 'progress' : 'auto' }"
+    class="submit-button"
+  >
+    {{ isLoading ? "Loading..." : "Submit" }}
+  </button>
 </form>

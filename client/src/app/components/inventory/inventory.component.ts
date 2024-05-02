@@ -44,6 +44,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
   styleUrl: './inventory.component.scss',
 })
 export class InventoryComponent implements OnInit {
+  isLoading = false;
   panelOpenState = false;
   displayedColumns: string[] = ['image', 'name', 'price', 'quantity'];
   amounts: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
@@ -140,6 +141,7 @@ export class InventoryComponent implements OnInit {
   }
 
   addProduct() {
+    this.isLoading = true;
     const user = JSON.parse(localStorage.getItem('user')!);
     this.apiService
       .createDataWithFile(
@@ -168,6 +170,7 @@ export class InventoryComponent implements OnInit {
           categories: [],
           seller: {},
         };
+        this.isLoading = false;
       });
   }
 
