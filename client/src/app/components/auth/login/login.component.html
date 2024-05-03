@@ -8,31 +8,28 @@
       matInput
       placeholder="pat@example.com"
       [formControl]="email"
-      (blur)="updateErrorMessage()"
+      (blur)="updateErrorMessages()"
       required
     />
     @if (email.invalid) {
-    <mat-error>{{ errorMessage }}</mat-error>
+    <mat-error>{{ emailErrorMessage }}</mat-error>
     }
   </mat-form-field>
   <mat-form-field>
     <mat-label>Password</mat-label>
-    <input
-      matInput
-      [type]="hide ? 'password' : 'text'"
-      [formControl]="password"
-    />
-    <button
-      mat-icon-button
-      class="password-icon"
-      matSuffix
-      (click)="hide = !hide"
-      [attr.aria-label]="'Hide password'"
-      [attr.aria-pressed]="hide"
-    >
-      <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-    </button>
+    <input matInput type="password" [formControl]="password" />
+    @if (password.invalid) {
+    <mat-error>{{ passwordErrorMessage }}</mat-error>
+    }
   </mat-form-field>
   <mat-divider />
-  <button mat-button class="submit-button">Submit</button>
+  <button
+    mat-button
+    [disabled]="passwordErrorMessage.length || emailErrorMessage.length"
+    [ngClass]="{ disabled: submit.disabled }"
+    #submit
+    class="submit-button"
+  >
+    Submit
+  </button>
 </form>
