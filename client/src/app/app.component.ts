@@ -16,6 +16,4 @@ import { CategoriesComponent } from './layouts/categories/categories.component';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'client';
-}
+export class AppComponent {}

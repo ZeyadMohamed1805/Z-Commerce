@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, HostListener } from '@angular/core';
+import { Component } from '@angular/core';
 import { CartComponent } from '../../components/cart/cart.component';
 import { WishlistComponent } from '../../components/wishlist/wishlist.component';
 import { MatSelectModule } from '@angular/material/select';

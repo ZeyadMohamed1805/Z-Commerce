@@ -13,8 +13,8 @@ import { LoginComponent } from '../../components/auth/login/login.component';
 import { RegisterComponent } from '../../components/auth/register/register.component';
 import { ApiService } from '../../services/api/api.service';
 import { TProduct } from '../../components/cards/product-card/product-card.types';
-import { catchError, takeUntil } from 'rxjs/operators';
-import { EMPTY, ReplaySubject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { ReplaySubject } from 'rxjs';
 
 @Component({
   selector: 'app-header',
