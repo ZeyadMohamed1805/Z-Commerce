@@ -4,39 +4,30 @@
   </h1>
   <mat-form-field>
     <mat-label>Name</mat-label>
-    <input matInput placeholder="Name" required [formControl]="name" />
+    <input
+      matInput
+      placeholder="Name"
+      required
+      (blur)="updateErrorMessages()"
+      [formControl]="name"
+    />
+    @if (name.invalid) {
+    <mat-error>{{ errorMessages[0] }}</mat-error>
+    }
   </mat-form-field>
   <mat-form-field>
     <mat-label>Email</mat-label>
-    <input
-      matInput
-      placeholder="pat@example.com"
-      [formControl]="email"
-      (blur)="updateErrorMessage()"
-      required
-    />
+    <input matInput placeholder="Email" [formControl]="email" required />
     @if (email.invalid) {
-    <mat-error>{{ errorMessage }}</mat-error>
+    <mat-error>{{ errorMessages[1] }}</mat-error>
     }
   </mat-form-field>
   <mat-form-field>
     <mat-label>Password</mat-label>
-    <input
-      matInput
-      required
-      [type]="hide ? 'password' : 'text'"
-      [formControl]="password"
-    />
-    <button
-      mat-icon-button
-      class="password-icon"
-      matSuffix
-      (click)="hide = !hide"
-      [attr.aria-label]="'Hide password'"
-      [attr.aria-pressed]="hide"
-    >
-      <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-    </button>
+    <input matInput required type="password" [formControl]="password" />
+    @if (password.invalid) {
+    <mat-error>{{ errorMessages[2] }}</mat-error>
+    }
   </mat-form-field>
   <mat-form-field>
     <mat-select
@@ -51,7 +42,24 @@
       >
       }
     </mat-select>
+    @if (option.invalid) {
+    <mat-error>{{ errorMessages[3] }}</mat-error>
+    }
   </mat-form-field>
   <mat-divider />
-  <button mat-button class="submit-button">Submit</button>
+  <button
+    mat-button
+    class="submit-button"
+    [disabled]="
+      errorMessages[0].length ||
+      errorMessages[1].length ||
+      errorMessages[2].length ||
+      errorMessages[3].length
+    "
+    [ngClass]="{ disabled: submit.disabled }"
+    #submit
+    class="submit-button"
+  >
+    Submit
+  </button>
 </form>

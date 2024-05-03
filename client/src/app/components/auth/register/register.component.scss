@@ -32,6 +32,11 @@ form {
       }
 }
 
+.disabled {
+  opacity: 0.5;
+  cursor: not-allowed !important;
+}
+
 @media ( max-width: 750px ) {
     form {
         width: 100%;

@@ -65,7 +65,6 @@ export const createUser = async (
 			? await new Buyer({ user: savedUser._id }).save()
 			: await new Seller({
 					user: savedUser._id,
-					inventory: ["662ae178e49fef5c59b15606"],
 			  }).save();
 		// Send The User As A Response To The Client
 		return response
