@@ -38,7 +38,7 @@ import { EMPTY, ReplaySubject } from 'rxjs';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit {
-  navLinks: Array<string> = ['home', 'products', 'basket'];
+  navLinks: Array<string> = ['home', 'products', 'basket', 'account'];
   navButtons: Array<string> = ['login', 'register'];
   isExpanded: boolean = false;
   loggedIn: boolean = false;
@@ -59,8 +59,8 @@ export class HeaderComponent implements OnInit {
       : false;
     this.navLinks = this.loggedIn
       ? this.isBuyer
-        ? ['home', 'products', 'basket']
-        : ['home', 'products']
+        ? ['home', 'products', 'basket', 'account']
+        : ['home', 'products', 'account']
       : ['home', 'products', 'basket'];
   }
 
