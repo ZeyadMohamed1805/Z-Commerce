@@ -20,8 +20,20 @@
     }
 }
 
+@media (max-width: 940px) {
+    .home .container .cards-container {
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+}
+
 @media (max-width: 800px) {
     .home .container {
-        padding: 144px 40px 24px 104px;
+        padding: 168px 40px 24px 104px;
+    }
+}
+
+@media (max-width: 500px) {
+    .home .container .cards-container {
+        grid-template-columns: 1fr;
     }
 }
