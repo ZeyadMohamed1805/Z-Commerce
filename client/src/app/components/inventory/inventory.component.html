@@ -105,13 +105,27 @@
         />
       </mat-form-field>
       <mat-divider />
-      <button mat-button class="submit-button">Submit</button>
+      <button
+        mat-button
+        class="submit-button"
+        #update
+        [ngClass]="{ disabled: update.disabled }"
+        [disabled]="
+          this.updateFormGroups[$index].controls.firstCtrl.errors ||
+          this.updateFormGroups[$index].controls.secondCtrl.errors ||
+          this.updateFormGroups[$index].controls.thirdCtrl.errors ||
+          this.updateFormGroups[$index].controls.fifthCtrl.errors
+        "
+        [ngStyle]="{ cursor: isLoading ? 'progress' : 'cursor' }"
+      >
+        Submit
+      </button>
     </form>
   </mat-expansion-panel>
   }
 </mat-accordion>
 
-<form (submit)="addProduct()" [formGroup]="formGroup">
+<form (submit)="addProduct()">
   <h1>
     <span>Add Product</span>
   </h1>
@@ -153,7 +167,16 @@
   </div>
   <mat-form-field>
     <mat-label>Name</mat-label>
-    <input matInput placeholder="Name" required formControlName="firstCtrl" />
+    <input
+      matInput
+      placeholder="Name"
+      required
+      [formControl]="name"
+      (blur)="updateErrorMessages()"
+    />
+    @if (name.invalid) {
+    <mat-error>{{ errorMessages[0] }}</mat-error>
+    }
   </mat-form-field>
   <mat-form-field>
     <mat-label>Price</mat-label>
@@ -162,8 +185,11 @@
       type="number"
       placeholder="Price"
       required
-      formControlName="secondCtrl"
+      [formControl]="price"
     />
+    @if (price.invalid) {
+    <mat-error>{{ errorMessages[1] }}</mat-error>
+    }
   </mat-form-field>
   <mat-form-field>
     <mat-label>Quantity</mat-label>
@@ -172,8 +198,11 @@
       number
       placeholder="Quantity"
       required
-      formControlName="thirdCtrl"
+      [formControl]="quantity"
     />
+    @if (quantity.invalid) {
+    <mat-error>{{ errorMessages[2] }}</mat-error>
+    }
   </mat-form-field>
   <mat-form-field>
     <mat-label>Description</mat-label>
@@ -182,15 +211,18 @@
       number
       placeholder="Description"
       required
-      formControlName="fifthCtrl"
+      [formControl]="description"
     />
+    @if (description.invalid) {
+    <mat-error>{{ errorMessages[3] }}</mat-error>
+    }
   </mat-form-field>
   <mat-form-field>
     <mat-select
       matInput
       placeholder="Categories"
       class="select"
-      formControlName="sixthCtrl"
+      [formControl]="category"
     >
       @for (category of categories; track category._id) {
       <mat-option [value]="category">
@@ -198,12 +230,23 @@
       </mat-option>
       }
     </mat-select>
+    @if (category.invalid) {
+    <mat-error>{{ errorMessages[4] }}</mat-error>
+    }
   </mat-form-field>
   <mat-divider />
   <button
     mat-button
-    [disabled]="isLoading"
-    [ngStyle]="{ cursor: isLoading ? 'progress' : 'auto' }"
+    #submit
+    [ngClass]="{ disabled: submit.disabled }"
+    [disabled]="
+      name.invalid ||
+      price.invalid ||
+      quantity.invalid ||
+      description.invalid ||
+      category.invalid
+    "
+    [ngStyle]="{ cursor: isLoading ? 'progress' : 'cursor' }"
     class="submit-button"
   >
     {{ isLoading ? "Loading..." : "Submit" }}

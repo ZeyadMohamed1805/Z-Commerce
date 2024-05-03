@@ -48,6 +48,16 @@ export class InventoryComponent implements OnInit {
   panelOpenState = false;
   displayedColumns: string[] = ['image', 'name', 'price', 'quantity'];
   amounts: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  name = new FormControl('', [Validators.required, Validators.maxLength(15)]);
+  price = new FormControl('', [Validators.required, Validators.max(5000)]);
+  quantity = new FormControl('', [Validators.required, Validators.max(100)]);
+  description = new FormControl('', [
+    Validators.required,
+    Validators.minLength(10),
+    Validators.maxLength(50),
+  ]);
+  category = new FormControl('', [Validators.required]);
+  errorMessages = ['', '', '', '', ''];
   options: Array<string> = ['Buyer', 'Seller'];
   categories: Array<any> = [
     { _id: 0, name: 'One' },
@@ -79,9 +89,63 @@ export class InventoryComponent implements OnInit {
     private _formBuilder: FormBuilder,
     private snackBar: MatSnackBar
   ) {
-    merge(this.email.statusChanges, this.email.valueChanges)
+    merge(this.name.statusChanges, this.name.valueChanges)
       .pipe(takeUntil(this.destroyed))
-      .subscribe(() => this.updateErrorMessage());
+      .subscribe(() => this.updateErrorMessages());
+    merge(this.price.statusChanges, this.price.valueChanges)
+      .pipe(takeUntil(this.destroyedTwo))
+      .subscribe(() => this.updateErrorMessages());
+    merge(this.quantity.statusChanges, this.quantity.valueChanges)
+      .pipe(takeUntil(this.destroyedThree))
+      .subscribe(() => this.updateErrorMessages());
+    merge(this.description.statusChanges, this.description.valueChanges)
+      .pipe(takeUntil(this.destroyedThree))
+      .subscribe(() => this.updateErrorMessages());
+    merge(this.category.statusChanges, this.category.valueChanges)
+      .pipe(takeUntil(this.destroyedThree))
+      .subscribe(() => this.updateErrorMessages());
+  }
+
+  updateErrorMessages() {
+    if (this.name.hasError('required')) {
+      this.errorMessages[0] = 'You must enter a name';
+    } else if (this.name.hasError('maxlength')) {
+      this.errorMessages[0] = 'Name is too long';
+    } else {
+      this.errorMessages[0] = '';
+    }
+
+    if (this.price.hasError('required')) {
+      this.errorMessages[1] = 'You must enter a price';
+    } else if (this.price.hasError('max')) {
+      this.errorMessages[1] = 'Price must be less than 5000';
+    } else {
+      this.errorMessages[1] = '';
+    }
+
+    if (this.quantity.hasError('required')) {
+      this.errorMessages[2] = 'You must enter a quantity';
+    } else if (this.quantity.hasError('max')) {
+      this.errorMessages[2] = 'Quantity must be less than 100';
+    } else {
+      this.errorMessages[2] = '';
+    }
+
+    if (this.description.hasError('required')) {
+      this.errorMessages[3] = 'You must enter a description';
+    } else if (this.description.hasError('minlength')) {
+      this.errorMessages[3] = 'Description is too short';
+    } else if (this.description.hasError('maxlength')) {
+      this.errorMessages[3] = 'Description is too long';
+    } else {
+      this.errorMessages[3] = '';
+    }
+
+    if (this.category.hasError('required')) {
+      this.errorMessages[4] = 'You must choose a category';
+    } else {
+      this.errorMessages[4] = '';
+    }
   }
 
   ngOnInit(): void {
@@ -111,10 +175,26 @@ export class InventoryComponent implements OnInit {
         this.dataSource = this.ELEMENT_DATA;
         this.updateFormGroups = response.products.map((product: any) =>
           this._formBuilder.group({
-            firstCtrl: [product.name, Validators.required],
-            secondCtrl: [product.price, Validators.required],
-            thirdCtrl: [product.quantity, Validators.required],
-            fifthCtrl: [product.description, Validators.required],
+            firstCtrl: [
+              product.name,
+              [Validators.required, Validators.maxLength(15)],
+            ],
+            secondCtrl: [
+              product.price,
+              [Validators.required, Validators.max(5000)],
+            ],
+            thirdCtrl: [
+              product.quantity,
+              [Validators.required, Validators.max(100)],
+            ],
+            fifthCtrl: [
+              product.description,
+              [
+                Validators.required,
+                Validators.minLength(10),
+                Validators.maxLength(50),
+              ],
+            ],
           })
         );
       });
@@ -125,16 +205,6 @@ export class InventoryComponent implements OnInit {
     this.snackBar.open(message, action);
   }
 
-  updateErrorMessage() {
-    if (this.email.hasError('required')) {
-      this.errorMessage = 'You must enter a value';
-    } else if (this.email.hasError('email')) {
-      this.errorMessage = 'Not a valid email';
-    } else {
-      this.errorMessage = '';
-    }
-  }
-
   onFileSelected(event: any) {
     this.addProductInfo.images = event.target.files[0];
     this.image = URL.createObjectURL(event.target.files[0]);
@@ -143,55 +213,77 @@ export class InventoryComponent implements OnInit {
   addProduct() {
     this.isLoading = true;
     const user = JSON.parse(localStorage.getItem('user')!);
-    this.apiService
-      .createDataWithFile(
-        `products/${user.user._id}`,
-        {
-          name: this.formGroup.value.firstCtrl,
-          price: this.formGroup.value.secondCtrl,
-          quantity: this.formGroup.value.thirdCtrl,
-          description: this.formGroup.value.fifthCtrl,
-          categories: this.formGroup.value.sixthCtrl,
-          creationDate: new Date(),
-        },
-        this.addProductInfo.images!
-      )
-      .pipe(takeUntil(this.destroyedFour))
-      .subscribe((response) => {
-        console.log(response);
-        this.openSnackBar('Product created successfully!', 'Close');
-        this.addProductInfo = {
-          name: '',
-          price: null,
-          quantity: null,
-          images: null,
-          description: '',
-          creationDate: new Date(),
-          categories: [],
-          seller: {},
-        };
-        this.isLoading = false;
-      });
+    if (
+      user &&
+      !this.name.invalid &&
+      !this.price.invalid &&
+      !this.quantity.invalid &&
+      !this.description.invalid &&
+      !this.category.invalid
+    ) {
+      this.apiService
+        .createDataWithFile(
+          `products/${user.user._id}`,
+          {
+            name: this.name.value,
+            price: this.price.value,
+            quantity: this.quantity.value,
+            description: this.description.value,
+            categories: this.category.value,
+          },
+          this.addProductInfo.images!
+        )
+        .pipe(takeUntil(this.destroyedFour))
+        .subscribe((response) => {
+          console.log(response);
+          this.openSnackBar('Product created successfully!', 'Close');
+          this.name.reset();
+          this.price.reset();
+          this.quantity.reset();
+          this.description.reset();
+          this.category.reset();
+          this.errorMessages = ['', '', '', '', ''];
+          this.addProductInfo = {
+            name: '',
+            price: null,
+            quantity: null,
+            images: null,
+            description: '',
+            creationDate: new Date(),
+            categories: [],
+            seller: {},
+          };
+          this.isLoading = false;
+        });
+    }
   }
 
   updateProduct(id: string, index: number) {
-    console.log(id, this.updateFormGroups[index].value);
+    // console.log(id, this.updateFormGroups[index].controls.firstCtrl.errors);
     const user = JSON.parse(localStorage.getItem('user')!);
-    this.apiService
-      .updateData<any>(`products/${id}`, {
-        product: {
-          name: this.updateFormGroups[index].value.firstCtrl,
-          price: this.updateFormGroups[index].value.secondCtrl,
-          quantity: this.updateFormGroups[index].value.thirdCtrl,
-          description: this.updateFormGroups[index].value.fifthCtrl,
-        },
-        token: user.token,
-      })
-      .pipe(takeUntil(this.destroyedFive))
-      .subscribe((response) => {
-        console.log(response);
-        this.openSnackBar('Product updated successfully!', 'Close');
-      });
+    if (
+      user &&
+      !this.updateFormGroups[index].controls.firstCtrl.errors &&
+      !this.updateFormGroups[index].controls.secondCtrl.errors &&
+      !this.updateFormGroups[index].controls.thirdCtrl.errors &&
+      !this.updateFormGroups[index].controls.fifthCtrl.errors
+    ) {
+      this.apiService
+        .updateData<any>(`products/${id}`, {
+          product: {
+            name: this.updateFormGroups[index].value.firstCtrl,
+            price: this.updateFormGroups[index].value.secondCtrl,
+            quantity: this.updateFormGroups[index].value.thirdCtrl,
+            description: this.updateFormGroups[index].value.fifthCtrl,
+          },
+          token: user.token,
+        })
+        .pipe(takeUntil(this.destroyedFive))
+        .subscribe((response) => {
+          console.log(response);
+          this.openSnackBar('Product updated successfully!', 'Close');
+        });
+    }
   }
 
   deleteProduct(id: string, index: number) {
