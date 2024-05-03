@@ -1,4 +1,5 @@
 <mat-accordion>
+  @if (ELEMENT_DATA.length) {
   <mat-expansion-panel hideToggle disabled>
     <mat-expansion-panel-header>
       <mat-panel-title
@@ -18,7 +19,7 @@
       >
     </mat-expansion-panel-header>
   </mat-expansion-panel>
-  @for( element of ELEMENT_DATA; track element.product.name ) {
+  } @for( element of ELEMENT_DATA; track element.product.name ) {
   <mat-expansion-panel
     (opened)="panelOpenState = true"
     (closed)="panelOpenState = false"

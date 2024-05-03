@@ -93,6 +93,21 @@ table {
     }
   }
 
+  .remove-button {
+    min-width: 140px;
+    background-color: #db4444;
+    color: #FFF;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition-duration: 0.25s;
+    font-size: 16px;
+
+    &:hover {
+        opacity: 0.5;
+    }
+}
+
 @media ( max-width: 750px ) {
     form {
         width: 100%;
