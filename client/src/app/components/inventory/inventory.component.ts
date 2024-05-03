@@ -237,6 +237,40 @@ export class InventoryComponent implements OnInit {
         .subscribe((response) => {
           console.log(response);
           this.openSnackBar('Product created successfully!', 'Close');
+          this.updateFormGroups.push(
+            this._formBuilder.group({
+              firstCtrl: [
+                response.product.name,
+                [Validators.required, Validators.maxLength(15)],
+              ],
+              secondCtrl: [
+                response.product.price,
+                [Validators.required, Validators.max(5000)],
+              ],
+              thirdCtrl: [
+                response.product.quantity,
+                [Validators.required, Validators.max(100)],
+              ],
+              fifthCtrl: [
+                response.product.description,
+                [
+                  Validators.required,
+                  Validators.minLength(10),
+                  Validators.maxLength(50),
+                ],
+              ],
+            })
+          );
+          this.ELEMENT_DATA.push({
+            id: response.product._id,
+            product: {
+              image: response.product.images[0] || '',
+              name: response.product.name,
+            },
+            price: response.product.price,
+            quantity: response.product.quantity,
+          });
+          this.dataSource = this.ELEMENT_DATA;
           this.name.reset();
           this.price.reset();
           this.quantity.reset();
@@ -282,6 +316,16 @@ export class InventoryComponent implements OnInit {
         .subscribe((response) => {
           console.log(response);
           this.openSnackBar('Product updated successfully!', 'Close');
+          this.ELEMENT_DATA[index] = {
+            id: response.product._id,
+            product: {
+              image: response.product.images[0] || '',
+              name: response.product.name,
+            },
+            price: response.product.price,
+            quantity: response.product.quantity,
+          };
+          this.dataSource = this.ELEMENT_DATA;
         });
     }
   }
