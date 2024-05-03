@@ -25,7 +25,7 @@
   <mat-divider />
   <button
     mat-button
-    [disabled]="passwordErrorMessage.length || emailErrorMessage.length"
+    [disabled]="email.invalid || password.invalid"
     [ngClass]="{ disabled: submit.disabled }"
     #submit
     class="submit-button"

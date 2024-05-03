@@ -51,10 +51,7 @@
     mat-button
     class="submit-button"
     [disabled]="
-      errorMessages[0].length ||
-      errorMessages[1].length ||
-      errorMessages[2].length ||
-      errorMessages[3].length
+      name.invalid || email.invalid || password.invalid || option.invalid
     "
     [ngClass]="{ disabled: submit.disabled }"
     #submit

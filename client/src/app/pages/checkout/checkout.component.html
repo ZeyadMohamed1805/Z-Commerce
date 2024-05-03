@@ -1,8 +1,8 @@
 <section class="checkout">
   <div class="container">
     <mat-stepper [linear]="true" #stepper>
-      <mat-step [stepControl]="firstFormGroup">
-        <form [formGroup]="firstFormGroup">
+      <mat-step>
+        <form>
           <ng-template matStepLabel>Contact</ng-template>
           <div class="inputs-container">
             <mat-form-field>
@@ -10,18 +10,25 @@
               <input
                 matInput
                 placeholder="Address"
-                formControlName="firstCtrl"
+                [formControl]="address"
+                (blur)="updateErrorMessages()"
                 required
               />
+              @if (address.invalid) {
+              <mat-error>{{ errorMessages[0] }}</mat-error>
+              }
             </mat-form-field>
             <mat-form-field>
               <mat-label>Phone</mat-label>
               <input
                 matInput
                 placeholder="Phone"
-                formControlName="secondCtrl"
+                [formControl]="phone"
                 required
               />
+              @if (phone.invalid) {
+              <mat-error>{{ errorMessages[1] }}</mat-error>
+              }
             </mat-form-field>
             <mat-form-field>
               <mat-label>Delivery Date</mat-label>
@@ -29,32 +36,23 @@
                 matInput
                 placeholder="Date"
                 type="date"
-                formControlName="thirdCtrl"
+                [formControl]="date"
                 required
               />
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>CVV</mat-label>
-              <input
-                matInput
-                type="number"
-                placeholder="CVV"
-                formControlName="fourthCtrl"
-                required
-              />
-            </mat-form-field>
-            <mat-form-field>
-              <mat-label>Card No.</mat-label>
-              <input
-                matInput
-                placeholder="Card No."
-                type="number"
-                formControlName="fifthCtrl"
-                required
-              />
+              @if (date.invalid) {
+              <mat-error>{{ errorMessages[2] }}</mat-error>
+              }
             </mat-form-field>
             <div>
-              <button matStepperNext class="next-button">Next</button>
+              <button
+                matStepperNext
+                #submit
+                [ngClass]="{ disabled: submit.disabled }"
+                [disabled]="address.invalid || phone.invalid || date.invalid"
+                class="next-button"
+              >
+                <span> Next </span>
+              </button>
             </div>
           </div>
         </form>

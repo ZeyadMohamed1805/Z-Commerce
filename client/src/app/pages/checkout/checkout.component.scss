@@ -80,6 +80,12 @@
     }
 }
 
+.disabled {
+    opacity: 0.5;
+    cursor: not-allowed !important;
+  }
+  
+
 .previous-button, .next-button {
     background-color: #db4444;
     border: solid 2px #db4444;

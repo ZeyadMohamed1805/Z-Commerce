@@ -65,8 +65,6 @@ export class ProfileComponent implements OnInit {
     fourthCtrl: [this.options[this.userInfo.role], Validators.required],
     fifthCtrl: [this.userInfo.address, Validators.required],
     sixthCtrl: [this.userInfo.phone, Validators.required],
-    seventhCtrl: [this.userInfo.cvv, Validators.required],
-    eighthCtrl: [this.userInfo.card, Validators.required],
   });
 
   ngOnInit(): void {
@@ -86,8 +84,6 @@ export class ProfileComponent implements OnInit {
             role: response.user.role,
             address: response.payment && response.payment.address,
             phone: response.payment && response.payment.phone,
-            cvv: response.payment && response.payment.cvv,
-            card: response.payment && response.payment.card,
           };
           this.formGroup = this._formBuilder.group({
             firstCtrl: [
@@ -112,14 +108,6 @@ export class ProfileComponent implements OnInit {
             ],
             sixthCtrl: [
               { value: this.userInfo.phone, disabled: true },
-              Validators.required,
-            ],
-            seventhCtrl: [
-              { value: this.userInfo.cvv, disabled: true },
-              Validators.required,
-            ],
-            eighthCtrl: [
-              { value: this.userInfo.card, disabled: true },
               Validators.required,
             ],
           });

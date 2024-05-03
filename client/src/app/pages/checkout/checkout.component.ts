@@ -4,6 +4,7 @@ import {
   Validators,
   FormsModule,
   ReactiveFormsModule,
+  FormControl,
 } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -14,7 +15,7 @@ import { MatTableModule } from '@angular/material/table';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api/api.service';
-import { ReplaySubject, takeUntil } from 'rxjs';
+import { ReplaySubject, merge, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-checkout',
@@ -62,14 +63,65 @@ export class CheckoutComponent implements OnInit {
   displayedColumnsTwo: string[] = ['title', 'value'];
   amounts: Array<number> = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
   ELEMENT_DATA_TWO: any = [];
+  address = new FormControl('', [
+    Validators.required,
+    Validators.minLength(10),
+    Validators.maxLength(50),
+  ]);
+  phone = new FormControl('', [
+    Validators.required,
+    Validators.minLength(8),
+    Validators.maxLength(15),
+  ]);
+  date = new FormControl('', [Validators.required]);
+  errorMessages = ['', '', ''];
   dataSourceTwo = this.ELEMENT_DATA_TWO;
   destroyed = new ReplaySubject<void>();
   destroyedTwo = new ReplaySubject<void>();
+  destroyedThree = new ReplaySubject<void>();
 
   constructor(
     private _formBuilder: FormBuilder,
     private apiService: ApiService
-  ) {}
+  ) {
+    merge(this.address.statusChanges, this.address.valueChanges)
+      .pipe(takeUntil(this.destroyed))
+      .subscribe(() => this.updateErrorMessages());
+    merge(this.phone.statusChanges, this.phone.valueChanges)
+      .pipe(takeUntil(this.destroyedTwo))
+      .subscribe(() => this.updateErrorMessages());
+    merge(this.date.statusChanges, this.date.valueChanges)
+      .pipe(takeUntil(this.destroyedThree))
+      .subscribe(() => this.updateErrorMessages());
+  }
+
+  updateErrorMessages() {
+    if (this.address.hasError('required')) {
+      this.errorMessages[0] = 'You must enter an Address';
+    } else if (this.address.hasError('minlength')) {
+      this.errorMessages[0] = 'Address is too short';
+    } else if (this.address.hasError('maxlength')) {
+      this.errorMessages[0] = 'Address is too long';
+    } else {
+      this.errorMessages[0] = '';
+    }
+
+    if (this.phone.hasError('required')) {
+      this.errorMessages[1] = 'You must enter a phone';
+    } else if (this.phone.hasError('minlength')) {
+      this.errorMessages[1] = 'Phone is too short';
+    } else if (this.phone.hasError('maxlength')) {
+      this.errorMessages[1] = 'Phone is too long';
+    } else {
+      this.errorMessages[1] = '';
+    }
+
+    if (this.date.hasError('required')) {
+      this.errorMessages[2] = 'You must enter a delivery date';
+    } else {
+      this.errorMessages[2] = '';
+    }
+  }
 
   ngOnInit(): void {
     const user = JSON.parse(localStorage.getItem('user')!);
@@ -80,6 +132,9 @@ export class CheckoutComponent implements OnInit {
         .subscribe((response) => {
           console.log(response);
           this.contactInfo = response.payment;
+          // this.address.value = this.contactInfo.address;
+          // this.phone.value = this.contactInfo.phone;
+          // this.date.value = this.contactInfo.date;
           this.firstFormGroup = this._formBuilder.group({
             firstCtrl: [this.contactInfo.address, Validators.required],
             secondCtrl: [this.contactInfo.phone, Validators.required],
@@ -122,11 +177,16 @@ export class CheckoutComponent implements OnInit {
   onSubmit() {
     const user = JSON.parse(localStorage.getItem('user')!);
     const cart = JSON.parse(localStorage.getItem('cart')!);
-    if (user) {
+    if (
+      user &&
+      !this.address.invalid &&
+      !this.phone.invalid &&
+      !this.date.invalid
+    ) {
       this.apiService
         .createData<any>(`orders/${user.user._id}`, {
           order: {
-            deliveryDate: this.firstFormGroup.value.thirdCtrl,
+            deliveryDate: this.date.value,
             user: user.user._id,
             sellers: cart.map((item: any) => item.seller._id),
             state: 0,
@@ -137,10 +197,8 @@ export class CheckoutComponent implements OnInit {
           },
           payment: !user.user.paymentDetails.length
             ? {
-                address: this.firstFormGroup.value.firstCtrl,
-                phone: this.firstFormGroup.value.secondCtrl,
-                cvv: this.firstFormGroup.value.fourthCtrl,
-                card: this.firstFormGroup.value.fifthCtrl,
+                address: this.address.value,
+                phone: this.phone.value,
                 user: user.user._id,
               }
             : null,

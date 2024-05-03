@@ -7,17 +7,21 @@ const { Schema } = mongoose;
 const ProductSchema = new Schema<IProduct, Model<IProduct>>(
 	{
 		images: [{ type: String }],
-		name: { type: String, required: true },
-		price: { type: Number, required: true },
+		name: { type: String, required: true, maxlength: 15 },
+		price: { type: Number, required: true, max: 5000 },
 		rating: { type: Number, required: true, default: 5, min: 1, max: 5 },
-		description: { type: String, required: true, minlength: 15 },
+		description: {
+			type: String,
+			required: true,
+			minlength: 10,
+			maxlength: 50,
+		},
 		state: {
 			type: Number,
 			required: true,
 			default: 1,
 			enum: EProductState,
 		},
-		creationDate: { type: Date, required: true, default: Date.now() },
 		categories: [
 			{
 				_id: {
@@ -28,7 +32,7 @@ const ProductSchema = new Schema<IProduct, Model<IProduct>>(
 				name: { type: String, required: true },
 			},
 		],
-		quantity: { type: Number, required: true, default: 0 },
+		quantity: { type: Number, required: true, default: 0, max: 100 },
 		seller: {
 			_id: { type: Schema.Types.ObjectId, ref: "Seller", required: true },
 			name: { type: String, required: true },

@@ -18,22 +18,7 @@
   </mat-form-field>
   <mat-form-field>
     <mat-label>Password</mat-label>
-    <input
-      matInput
-      required
-      [type]="hide ? 'password' : 'text'"
-      formControlName="thirdCtrl"
-    />
-    <button
-      mat-icon-button
-      class="password-icon"
-      matSuffix
-      (click)="hide = !hide"
-      [attr.aria-label]="'Hide password'"
-      [attr.aria-pressed]="hide"
-    >
-      <mat-icon>{{ hide ? "visibility_off" : "visibility" }}</mat-icon>
-    </button>
+    <input matInput required type="password" formControlName="thirdCtrl" />
   </mat-form-field>
   <mat-form-field>
     <mat-select
@@ -62,26 +47,6 @@
   <mat-form-field>
     <mat-label>Phone</mat-label>
     <input matInput placeholder="Phone" required formControlName="sixthCtrl" />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>CVV</mat-label>
-    <input
-      matInput
-      type="number"
-      placeholder="CVV"
-      required
-      formControlName="seventhCtrl"
-    />
-  </mat-form-field>
-  <mat-form-field>
-    <mat-label>Card No.</mat-label>
-    <input
-      matInput
-      placeholder="Card No."
-      type="number"
-      required
-      formControlName="eighthCtrl"
-    />
   </mat-form-field>
   }
 </form>

@@ -6,17 +6,10 @@ const { Schema } = mongoose;
 // Payments Schema
 const PaymentSchema = new Schema<IPayment, Model<IPayment>>(
 	{
-		address: { type: String, required: true, minlength: 8, maxlength: 50 },
-		card: { type: Number, required: true, minlength: 16, maxlength: 16 },
-		cvv: {
-			type: Number,
-			required: true,
-			match: [/^[0-9]{3,4}$/, "Invalid cvv number"],
-		},
+		address: { type: String, required: true, minlength: 10, maxlength: 50 },
 		phone: {
-			type: Number,
+			type: String,
 			required: true,
-			unique: true,
 			minlength: 8,
 			maxlength: 15,
 		},
