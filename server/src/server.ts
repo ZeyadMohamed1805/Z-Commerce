@@ -24,7 +24,7 @@ server.use(function (request, res: Response, next: NextFunction) {
 	// Website you wish to allow to connect
 	res.setHeader(
 		"Access-Control-Allow-Origin",
-		'"https://z-commerce-rho.vercel.app'
+		"https://z-commerce-rho.vercel.app"
 	);
 
 	// Request methods you wish to allow
