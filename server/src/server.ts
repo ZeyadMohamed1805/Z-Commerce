@@ -17,7 +17,7 @@ const server: Express = express();
 // Middlewares
 server.use(
 	cors({
-		origin: ["https://z-commerce-rho.vercel.app/"],
+		origin: ["https://z-commerce-rho.vercel.app"],
 	})
 );
 server.use(function (request, res: Response, next: NextFunction) {
