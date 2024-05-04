@@ -76,6 +76,7 @@ export class CheckoutComponent implements OnInit {
   date = new FormControl('', [Validators.required]);
   errorMessages = ['', '', ''];
   dataSourceTwo = this.ELEMENT_DATA_TWO;
+  isLoading = false;
   destroyed = new ReplaySubject<void>();
   destroyedTwo = new ReplaySubject<void>();
   destroyedThree = new ReplaySubject<void>();
@@ -174,7 +175,8 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  onSubmit() {
+  onSubmit(stepper: any) {
+    this.isLoading = true;
     const user = JSON.parse(localStorage.getItem('user')!);
     const cart = JSON.parse(localStorage.getItem('cart')!);
     if (
@@ -228,12 +230,14 @@ export class CheckoutComponent implements OnInit {
         })
         .pipe(takeUntil(this.destroyedTwo))
         .subscribe((response) => {
+          this.isLoading = false;
           console.log(response);
           localStorage.setItem('cart', JSON.stringify([]));
           localStorage.setItem(
             'user',
             JSON.stringify({ user: response.user, token: user.token })
           );
+          stepper.next();
         });
     }
   }

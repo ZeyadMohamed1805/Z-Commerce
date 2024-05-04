@@ -40,6 +40,8 @@ export const createOrder = async (
 		body,
 	} = request;
 
+	console.log(1);
+
 	try {
 		if (!id)
 			// Return The Error To The Client
@@ -51,8 +53,10 @@ export const createOrder = async (
 			);
 		if (body.payment) {
 			const userPayment = await Payment.findOne({ user: id });
+			console.log(2);
 			if (!userPayment) {
 				const savedPayment = await new Payment(body.payment).save();
+				console.log(3);
 				if (!savedPayment)
 					// Return The Error To The Client
 					return next(
@@ -66,6 +70,7 @@ export const createOrder = async (
 					{ paymentDetails: [savedPayment._id] },
 					{ new: true }
 				);
+				console.log(4);
 				if (!updatedUser)
 					// Return The Error To The Client
 					return next(
@@ -78,6 +83,7 @@ export const createOrder = async (
 			}
 		}
 		const order = await new Order(body.order).save();
+		console.log(5);
 		if (!order)
 			// Return The Error To The Client
 			return next(createError(500, "Order was not created successfully"));
@@ -86,6 +92,7 @@ export const createOrder = async (
 			{ $push: { orders: order._id } },
 			{ new: true }
 		);
+		console.log(6);
 		if (!updatedUser)
 			// Return The Error To The Client
 			return next(
@@ -95,6 +102,7 @@ export const createOrder = async (
 				)
 			);
 		const sellers = await Seller.find({ _id: { $in: order.sellers } });
+		console.log(7);
 		sellers.forEach(async (seller: any) => {
 			const updatedSellerUser = await User.findByIdAndUpdate(
 				seller.user,
@@ -108,10 +116,12 @@ export const createOrder = async (
 					createError(500, "Seller order was not added successfully")
 				);
 		});
+		console.log(8);
 		const summary = await new Summary({
 			...body.summary,
 			order: order._id,
 		}).save();
+		console.log(9);
 		if (!summary)
 			// Return The Error To The Client
 			return next(
@@ -122,10 +132,12 @@ export const createOrder = async (
 			{ summary: summary._id },
 			{ new: true }
 		);
+		console.log(10);
 		if (!updatedOrder)
 			// Return The Error To The Client
 			return next(createError(500, "Order doesn't have the summary"));
 		const newUser = await User.findById(id);
+		console.log(11);
 		return response.status(200).json({ status: "Success", user: newUser });
 	} catch (error: unknown) {
 		// Send The Error As A Response To The Client

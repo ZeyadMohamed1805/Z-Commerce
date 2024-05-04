@@ -87,8 +87,16 @@
             <tr mat-row *matRowDef="let row; columns: displayedColumnsTwo"></tr>
           </table>
           <div>
-            <button matStepperNext (click)="onSubmit()" class="next-button">
-              Confirm
+            <button
+              [disabled]="isLoading"
+              [ngStyle]="{
+                cursor: isLoading ? 'progress' : 'cursor'
+              }"
+              #submit
+              (click)="onSubmit(stepper)"
+              class="next-button"
+            >
+              {{ isLoading ? "Loading...." : "Confirm" }}
             </button>
             <button matStepperPrevious class="previous-button">Back</button>
           </div>

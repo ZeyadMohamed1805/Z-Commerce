@@ -116,7 +116,13 @@
           this.updateFormGroups[$index].controls.thirdCtrl.errors ||
           this.updateFormGroups[$index].controls.fifthCtrl.errors
         "
-        [ngStyle]="{ cursor: isLoading ? 'progress' : 'cursor' }"
+        [ngStyle]="{
+          cursor: isLoading
+            ? 'progress'
+            : update.disabled
+            ? 'not-allowed'
+            : 'cursor'
+        }"
       >
         Submit
       </button>
@@ -246,7 +252,13 @@
       description.invalid ||
       category.invalid
     "
-    [ngStyle]="{ cursor: isLoading ? 'progress' : 'cursor' }"
+    [ngStyle]="{
+      cursor: isLoading
+        ? 'progress'
+        : submit.disabled
+        ? 'not-allowed'
+        : 'cursor'
+    }"
     class="submit-button"
   >
     {{ isLoading ? "Loading..." : "Submit" }}
