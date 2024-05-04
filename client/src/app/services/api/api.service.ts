@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  private baseUrl: string = 'http://localhost:5000/api/v1';
+  private baseUrl: string = 'https://z-commerce-wp36.onrender.com/api/v1';
 
   constructor(private http: HttpClient) {}
 

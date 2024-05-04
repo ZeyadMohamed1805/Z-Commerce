@@ -17,7 +17,7 @@ const server: Express = express();
 // Middlewares
 server.use(
 	cors({
-		origin: ["http://localhost:4200", "http://127.0.0.1:5500"],
+		origin: [`${process.env.BASE_URL}`],
 	})
 );
 server.use(bodyParser.json());
