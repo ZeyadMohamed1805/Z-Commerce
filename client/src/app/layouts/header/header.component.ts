@@ -38,7 +38,7 @@ import { ReplaySubject } from 'rxjs';
   styleUrl: './header.component.scss',
 })
 export class HeaderComponent implements OnInit {
-  navLinks: Array<string> = ['home', 'products', 'basket', 'account'];
+  navLinks: Array<string> = [];
   navButtons: Array<string> = ['login', 'register'];
   isExpanded: boolean = false;
   loggedIn: boolean = false;
