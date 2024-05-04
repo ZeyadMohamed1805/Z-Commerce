@@ -8,6 +8,7 @@ import {
   withFetch,
   withInterceptorsFromDi,
 } from '@angular/common/http';
+import { HashLocationStrategy, LocationStrategy } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,5 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideAnimationsAsync(),
     provideHttpClient(withInterceptorsFromDi(), withFetch()),
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
   ],
 };
