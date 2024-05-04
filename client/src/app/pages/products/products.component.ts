@@ -60,7 +60,7 @@ export class ProductsComponent {
       try {
         this.apiService
           .readData<Array<TProduct>>(
-            `products?name=${this.product}&category=${this.category}&limit=12`
+            `products?name=${this.product}&category=${this.category}&limit=6`
           )
           .pipe(takeUntil(this.destroyed))
           .subscribe((response: any) => {
@@ -78,7 +78,7 @@ export class ProductsComponent {
     try {
       this.apiService
         .readData<Array<TProduct>>(
-          `products?name=${this.product}&category=${this.category}&limit=12`
+          `products?name=${this.product}&category=${this.category}&limit=6`
         )
         .pipe(takeUntil(this.destroyedTwo))
         .subscribe((response: any) => {
@@ -101,7 +101,7 @@ export class ProductsComponent {
         .readData<Array<TProduct>>(
           `products?${
             this.selectedType === 'Product' ? 'name' : 'seller'
-          }=${name}&category=${this.category}&limit=12`
+          }=${name}&category=${this.category}&limit=6`
         )
         .pipe(
           catchError((error) => {
@@ -147,7 +147,7 @@ export class ProductsComponent {
         .readData<Array<TProduct>>(
           `products?${this.selectedType === 'Product' ? 'name' : 'seller'}=${
             this.product
-          }&category=${this.category}&page=${event.pageIndex + 1}&limit=12`
+          }&category=${this.category}&page=${event.pageIndex + 1}&limit=6`
         )
         .pipe(
           catchError((error) => {
