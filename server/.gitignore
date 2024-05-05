@@ -18,3 +18,4 @@ results
 build
 
 node_modules
+.vercel
