@@ -8,6 +8,7 @@
   (mouseleave)="mouseleave()"
 >
   <mat-nav-list>
+    @if(categories.length) {
     <mat-list-item class="parent" (click)="onCategoryClick()">
       <div class="navItemClass">
         <span class="category-full-width" *ngIf="isExpanded || isShowing">{{
@@ -95,6 +96,14 @@
       </div>
       } } }
     </div>
-    } } }
+    } } } } @else {
+    <div class="card is-loading">
+      <div class="content">
+        @for(category of [].constructor(loadingCount); track category) {
+        <p>{{ "" }}</p>
+        }
+      </div>
+    </div>
+    }
   </mat-nav-list>
 </mat-sidenav>

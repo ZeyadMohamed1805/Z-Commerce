@@ -1,3 +1,4 @@
+@if (details) {
 <mat-card class="example-card" [id]="details._id" style="gap: 4px">
   <img
     mat-card-image
@@ -87,3 +88,6 @@
     </div>
   </mat-card-actions>
 </mat-card>
+} @else {
+<app-loading-card />
+}

@@ -6,6 +6,10 @@
     <div class="cards-container">
       @for(card of newestCards; track card._id) {
       <app-product-card [details]="card"></app-product-card>
+      } @empty {
+      <app-product-card [details]="null"></app-product-card>
+      <app-product-card [details]="null"></app-product-card>
+      <app-product-card [details]="null"></app-product-card>
       }
     </div>
     <mat-divider />
@@ -13,6 +17,10 @@
     <div class="cards-container">
       @for(card of mostLovedCards; track card._id) {
       <app-product-card [details]="card"></app-product-card>
+      } @empty {
+      <app-product-card [details]="null"></app-product-card>
+      <app-product-card [details]="null"></app-product-card>
+      <app-product-card [details]="null"></app-product-card>
       }
     </div>
   </div>

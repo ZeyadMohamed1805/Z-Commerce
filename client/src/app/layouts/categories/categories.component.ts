@@ -30,6 +30,7 @@ import { ReplaySubject, takeUntil } from 'rxjs';
 export class CategoriesComponent implements OnInit {
   categories: Array<TCategory> = [];
   isExpanded: boolean = true;
+  loadingCount: number = 4;
   showSubmenu: Array<boolean> = [false, false, false, false];
   isShowing: boolean = true;
   showSubSubMenu: Array<boolean> = [false, false, false, false];
@@ -55,9 +56,11 @@ export class CategoriesComponent implements OnInit {
     if (window.innerWidth >= 800) {
       this.isExpanded = true;
       this.isShowing = true;
+      this.loadingCount = 4;
     } else {
       this.isExpanded = false;
       this.isShowing = false;
+      this.loadingCount = 1;
     }
   }
 
@@ -66,9 +69,11 @@ export class CategoriesComponent implements OnInit {
     if (window.innerWidth >= 800) {
       this.isExpanded = true;
       this.isShowing = true;
+      this.loadingCount = 4;
     } else {
       this.isExpanded = false;
       this.isShowing = false;
+      this.loadingCount = 1;
     }
   }
 

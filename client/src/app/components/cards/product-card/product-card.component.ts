@@ -5,11 +5,18 @@ import { CommonModule } from '@angular/common';
 import { TProduct } from './product-card.types';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { LoadingCardComponent } from '../loading-card/loading-card.component';
 
 @Component({
   selector: 'app-product-card',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatChipsModule, MatIconModule],
+  imports: [
+    CommonModule,
+    MatCardModule,
+    MatChipsModule,
+    MatIconModule,
+    LoadingCardComponent,
+  ],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.scss',
 })
@@ -17,25 +24,7 @@ export class ProductCardComponent {
   user = localStorage.getItem('user');
   parsedUser = this.user && JSON.parse(this.user);
 
-  @Input() details: TProduct = {
-    _id: 'ID',
-    name: 'Product',
-    description: 'Description',
-    images: ['Photo.png'],
-    seller: {
-      _id: 'ID',
-      name: 'Seller',
-    },
-    categories: [
-      { _id: 'ID0', name: 'Category' },
-      { _id: 'ID1', name: 'Category' },
-      { _id: 'ID2', name: 'Category' },
-    ],
-    rating: 5,
-    price: 199,
-    state: 1,
-    quantity: 5,
-  };
+  @Input() details: TProduct | null = null;
 
   constructor(private snackBar: MatSnackBar) {}
 
@@ -60,13 +49,13 @@ export class ProductCardComponent {
     let isItemAddedToWishlist = false;
 
     parsedCartItems.forEach((element: any) => {
-      if (element._id === this.details._id) {
+      if (element._id === this.details?._id) {
         isItemAddedToCart = true;
       }
     });
 
     parsedWishlistItems.forEach((element: any) => {
-      if (element._id === this.details._id) {
+      if (element._id === this.details?._id) {
         isItemAddedToWishlist = true;
       }
     });
@@ -90,7 +79,7 @@ export class ProductCardComponent {
             'wishlist',
             JSON.stringify(
               parsedWishlistItems.filter(
-                (item: any) => item._id !== this.details._id
+                (item: any) => item._id !== this.details?._id
               )
             )
           );
